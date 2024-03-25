@@ -1,0 +1,56 @@
+<div th:fragment="header">
+    <div class="header-upper">
+        <div class="auto-container">
+            <div class="inner-container d-flex justify-content-between align-items-center flex-wrap">
+                <!-- Logo Box -->
+                <div class="logo-box d-flex align-items-center">
+                    <div class="logo">
+                        <a href="index.html"><img th:src="@{/images/logo.jpg}" alt=""></a>
+                    </div>
+                </div>
+                <!-- Search Box -->
+                <div class="search-box">
+                    <form method="post" action="shop.html">
+                        <div class="form-group">
+                            <input type="search" name="search-field" value="" placeholder="Search Product" required>
+                            <button type="submit" th:style="|background:url(@{/images/icons/search.jpg});|"></button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Options Box -->
+                <div class="options-box d-flex align-items-center">
+                    <div class="login-icon">
+                        <a href="login.html">Login</a>
+                    </div>
+                    <div class="login-icon">
+                        <a href="signup.html">Sign up</a>
+                    </div>
+                    <a href="account.html"><span class="icon"><img th:src="@{/images/icons/account.jpg}" alt="" /></span></a>
+                    <div class="cart-box-two">
+                        <a href="cart.html"><span class="icon"><img th:src="@{/images/icons/cart.jpg}" alt="" /></span></a>
+                        <span class="total-like">3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-lower">
+        <div class="auto-container">
+            <div class="nav-outer d-flex justify-content-between align-items-center flex-wrap">
+                <div class="select-categories">
+                    <div class="category"> Categories </div>
+                    <ul class="categories-list">
+                        <li><a href="shop.html"><span class="icon"><img th:src="@{/images/icons/menu-icon-1.jpg}" alt="" /></span>Armchair</a></li>
+                        <li><a href="shop.html"><span class="icon"><img th:src="@{/images/icons/menu-icon-2.jpg}" alt="" /></span>Chair</a></li>
+                        <li><a href="shop.html"><span class="icon"><img th:src="@{/images/icons/menu-icon-3.jpg}" alt="" /></span>Sofa</a></li>
+                        <li><a href="shop.html"><span class="icon"><img th:src="@{/images/icons/menu-icon-4.jpg}" alt="" /></span>Dresser</a></li>
+                        <li><a href="shop.html"><span class="icon"><img th:src="@{/images/icons/menu-icon-7.jpg}" alt="" /></span>Table</a></li>
+                        <li><a href="shop.html"><span class="icon"><img th:src="@{/images/icons/menu-icon-8.jpg}" alt="" /></span>Closet</a></li>
+                        <li><a href="shop.html"><span class="icon"><img th:src="@{/images/icons/menu-icon-9.jpg}" alt="" /></span>Bed</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
