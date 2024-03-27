@@ -28,7 +28,7 @@
 <div class="page-wrapper">
 
     <!-- Header -->
-    <header class="main-header header-style-three" th:insert="blocks/header :: header"></header>
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
 
     <!-- Main Section -->
@@ -75,9 +75,8 @@
     <!-- End Main Section -->
 
     <!-- Footer -->
-    <footer class="main-footer style-three" th:insert="blocks/footer :: footer"></footer>
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
     <!-- End Footer -->
-
 </div>
 
 <!-- Scroll To Top -->

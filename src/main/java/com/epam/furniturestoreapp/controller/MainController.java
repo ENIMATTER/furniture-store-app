@@ -9,4 +9,24 @@ public class MainController {
     public String mainPage(){
         return "index";
     }
+
+    @GetMapping("/account")
+    public String account(){
+        return "account";
+    }
+
+    @GetMapping("/cart")
+    public String cart(){
+        return "cart";
+    }
+
+    @GetMapping("/checkout")
+    public String checkout(){
+        return "checkout";
+    }
+
+    @GetMapping("/edit-address")
+    public String editAddress(){
+        return "edit-address";
+    }
 }

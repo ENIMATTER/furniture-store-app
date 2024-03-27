@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Furniture store</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/responsive.css}" rel="stylesheet"/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+          rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.jpg}"/>
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.jpg}"/>
+
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+    <!-- End Header -->
+
+    <!-- Cart Section -->
+    <section class="shoping-cart-section">
+        <div class="auto-container">
+            <div class="row clearfix">
+
+                <!-- Cart Column -->
+                <div class="cart-column col-lg-8 col-md-12 col-sm-12">
+                    <div class="inner-column">
+
+                        <!--Cart Outer-->
+                        <div class="cart-outer">
+                            <div class="table-outer">
+                                <table class="cart-table">
+                                    <thead class="cart-header">
+                                    <tr>
+                                        <th class="prod-column">product</th>
+                                        <th>&nbsp;</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                    <tr>
+                                        <td colspan="2" class="prod-column">
+                                            <div class="column-box">
+                                                <figure class="prod-thumb">
+                                                    <span class="cross-icon flaticon-cancel-1"></span>
+                                                    <a href="shop-detail.html"><img
+                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
+                                                </figure>
+                                                <h6 class="prod-title">Super chair</h6>
+                                                <div class="prod-text">Color: Brown</div>
+                                            </div>
+                                        </td>
+
+                                        <td class="price">$32.00</td>
+                                        <!-- Quantity Box -->
+                                        <td class="quantity-box">
+                                            <div class="item-quantity">
+                                                <input class="qty-spinner" type="text" value="2" name="quantity">
+                                            </div>
+                                        </td>
+                                        <td class="sub-total">$64.00</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2" class="prod-column">
+                                            <div class="column-box">
+                                                <figure class="prod-thumb">
+                                                    <span class="cross-icon flaticon-cancel-1"></span>
+                                                    <a href="shop-detail.html"><img
+                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
+                                                </figure>
+                                                <h6 class="prod-title">Super sofa</h6>
+                                                <div class="prod-text">Color: Black</div>
+                                            </div>
+                                        </td>
+
+                                        <td class="price">$199.00</td>
+                                        <!-- Quantity Box -->
+                                        <td class="quantity-box">
+                                            <div class="item-quantity">
+                                                <input class="qty-spinner" type="text" value="1" name="quantity">
+                                            </div>
+                                        </td>
+                                        <td class="sub-total">$199.00</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2" class="prod-column">
+                                            <div class="column-box">
+                                                <figure class="prod-thumb">
+                                                    <span class="cross-icon flaticon-cancel-1"></span>
+                                                    <a href="shop-detail.html"><img
+                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
+                                                </figure>
+                                                <h6 class="prod-title">Super table</h6>
+                                                <div class="prod-text">Color: White</div>
+                                            </div>
+                                        </td>
+
+                                        <td class="price">$99.00</td>
+                                        <!-- Quantity Box -->
+                                        <td class="quantity-box">
+                                            <div class="item-quantity">
+                                                <input class="qty-spinner" type="text" value="1" name="quantity">
+                                            </div>
+                                        </td>
+                                        <td class="sub-total">$99.00</td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Total Column -->
+                <div class="total-column col-lg-4 col-md-12 col-sm-12">
+                    <div class="inner-column">
+
+                        <!-- Cart Total Outer -->
+                        <div class="cart-total-outer">
+                            <!-- Title Box -->
+                            <div class="title-box">
+                                <h6>Cart Totals</h6>
+                            </div>
+                            <div class="cart-total-box">
+                                <ul class="cart-totals">
+                                    <li>Totals : <span>$362.00</span></li>
+                                </ul>
+                                <!-- Buttons Box -->
+                                <div class="buttons-box">
+                                    <a href="/checkout" class="theme-btn proceed-btn">
+                                        Proceed To Checkout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- End Cart Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/touchspin.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

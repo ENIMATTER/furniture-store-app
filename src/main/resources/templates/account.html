@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Furniture store</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/responsive.css}" rel="stylesheet"/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+          rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.jpg}"/>
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.jpg}"/>
+</head>
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+    <!-- End Header -->
+
+    <!-- Account Section -->
+    <div class="account-section">
+        <div class="auto-container">
+            <div class="inner-container">
+                <div class="row clearfix">
+                    <div class="column col-lg-8 col-md-12 col-sm-12">
+                        <div class="buttons-box">
+                            <a href="orders.html" class="theme-btn account-btn">
+                                Orders
+                            </a>
+                            <a href="edit-user.html" class="theme-btn account-btn">
+                                Edit user information
+                            </a>
+                            <a href="/edit-address" class="theme-btn account-btn">
+                                Edit address
+                            </a>
+                            <a href="/" class="theme-btn account-btn">
+                                Delete account
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Account Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+
+</div>
+<!-- End PageWrapper -->
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>
