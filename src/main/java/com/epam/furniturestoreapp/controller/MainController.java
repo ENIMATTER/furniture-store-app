@@ -5,10 +5,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
-    @GetMapping("/")
-    public String mainPage(){
-        return "index";
-    }
 
     @GetMapping("/account")
     public String account(){
@@ -55,13 +51,14 @@ public class MainController {
         return "shop-detail";
     }
 
-    @GetMapping("/shop")
-    public String shop(){
-        return "shop";
-    }
+//    @GetMapping("/shop")
+//    public String shop(){
+//        return "shop";
+//    }
 
     @GetMapping("/signup")
     public String signup(){
         return "signup";
     }
+
 }

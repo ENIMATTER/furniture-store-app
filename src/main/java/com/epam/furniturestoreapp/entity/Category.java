@@ -23,7 +23,7 @@ public class Category {
 
     @Size(max = 50, message = "Category name must be less than 50")
     @NotBlank(message = "Category name is mandatory")
-    @Column(name = "CategoryName")
+    @Column(name = "categoryname")
     private String categoryName;
 
 }

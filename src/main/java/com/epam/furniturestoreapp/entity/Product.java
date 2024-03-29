@@ -23,20 +23,24 @@ public class Product {
 
     @Size(max = 50, message = "Product name must be less than 50")
     @NotBlank(message = "Product name is mandatory")
-    @Column(name = "ProductName")
+    @Column(name = "productname")
     private String productName;
 
     @Size(max = 2000, message = "Product description must be less than 2000")
     @NotBlank(message = "Product description is mandatory")
-    @Column(name = "ProductDescription")
+    @Column(name = "productdescription")
     private String productDescription;
 
     @ManyToOne
     @JoinColumn(name = "categoryID", referencedColumnName = "categoryID")
     private Category categoryID;
 
+    @NotBlank(message = "Price is mandatory")
+    @Column(name = "price")
+    private double price;
+
     @NotBlank(message = "Stock quantity is mandatory")
-    @Column(name = "StockQuantity")
+    @Column(name = "stockquantity")
     private int stockQuantity;
 
     @Size(max = 100, message = "Dimensions must be less than 100")
@@ -54,8 +58,8 @@ public class Product {
     @Column(name = "Color")
     private String color;
 
-    @NotBlank(message = "Average rating quantity is mandatory")
-    @Column(name = "AverageRating")
+    @NotBlank(message = "Average rating is mandatory")
+    @Column(name = "averagerating")
     private double averageRating;
 
 }
