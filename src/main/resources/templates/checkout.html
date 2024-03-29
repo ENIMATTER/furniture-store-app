@@ -1,27 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>Furniture store</title>
 
-    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
-    <link th:href="@{/css/style.css}" rel="stylesheet"/>
-    <link th:href="@{/css/responsive.css}" rel="stylesheet"/>
-
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.jpg}"/>
-    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.jpg}"/>
-</head>
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
 
 <body>
 
 <div class="page-wrapper">
-
     <!-- Header -->
     <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
@@ -30,57 +16,45 @@
     <section class="checkout-section">
         <div class="auto-container">
             <div class="row clearfix">
-
                 <!-- Form Column -->
                 <div class="form-column col-lg-8 col-md-12 col-sm-12">
                     <div class="inner-column">
                         <h4>Delivery Information</h4>
                         <!-- Shipping Form -->
                         <div class="shipping-form">
-                            <form method="post" action="index.html">
+                            <form method="get" action="/not-found">
                                 <div class="row clearfix">
-
                                     <div class="col-lg-6 col-md-6 col-sm-12 form-group">
                                         <input type="text" name="name" placeholder="Enter your name" required="required">
                                     </div>
-
                                     <div class="col-lg-6 col-md-6 col-sm-12 form-group">
                                         <input type="text" name="surname" placeholder="Enter your surname" required="required">
                                     </div>
-
                                     <div class="col-lg-6 col-md-6 col-sm-12 form-group">
                                         <input type="text" name="phone" placeholder="Enter your phone number" required="required">
                                     </div>
-
                                     <div class="col-lg-6 col-md-6 col-sm-12 form-group">
                                         <input type="text" name="street" placeholder="Enter your street" required="required">
                                     </div>
-
                                     <div class="col-lg-6 col-md-6 col-sm-12 form-group">
                                         <input type="text" name="city" placeholder="Enter your city" required="required">
                                     </div>
-
                                     <div class="col-lg-6 col-md-6 col-sm-12 form-group">
                                         <input type="text" name="state" placeholder="Enter your state" required="required">
                                     </div>
-
                                     <div class="col-lg-6 col-md-6 col-sm-12 form-group">
                                         <input type="text" name="country" placeholder="Enter your country" required="required">
                                     </div>
-
                                     <div class="col-lg-6 col-md-6 col-sm-12 form-group">
                                         <input type="text" name="zipcode" placeholder="Enter your zip code" required="required">
                                     </div>
-
                                     <div class="col-lg-12 col-md-12 col-sm-12 form-group">
                                         <textarea class="" name="message" placeholder="Additional information"></textarea>
                                     </div>
-
                                 </div>
                             </form>
                         </div>
                         <!-- End Shipping Form -->
-
                     </div>
                 </div>
 
@@ -94,18 +68,14 @@
                                 <li>Subtotal<span>$362.00</span></li>
                                 <li>Shipping Fee<span>$30.00</span></li>
                             </ul>
-
                             <!-- Order Total -->
                             <div class="order-total">Total <span>$392.00</span></div>
-
                             <div class="button-box">
-                                <button class="theme-btn pay-btn" onclick="document.location='index.html'">Proceed to pay</button>
+                                <button class="theme-btn pay-btn" onclick="document.location='/'">Proceed to pay</button>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>

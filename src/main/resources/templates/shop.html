@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+    <!-- End Header -->
+
+    <!-- Sidebar Page Container -->
+    <div class="sidebar-page-container">
+        <div class="auto-container">
+            <div class="row clearfix">
+
+                <!-- Content Side -->
+                <div class="content-side col-lg-9 col-md-12 col-sm-12">
+                    <!-- Filter Box -->
+                    <div class="filter-box">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div class="right-box d-flex">
+                                <div class="form-group">
+                                    <select name="currency" class="custom-select-box">
+                                        <option>A-Z</option>
+                                        <option>Z-A</option>
+                                        <option>From lowest price</option>
+                                        <option>From highest price</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Filter Box -->
+
+                    <div class="shops-outer">
+                        <div class="row clearfix">
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Shop Item -->
+                            <div class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating">
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="fa fa-star"></span>
+                                            <span class="light fa fa-star"></span>
+                                        </div>
+                                        <h6><a href="shop-detail.html">Table</a></h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price"><span>$99.52</span> $62.00</div>
+                                            <!-- Quantity Box -->
+                                            <div class="quantity-box">
+                                                <div class="item-quantity">
+                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Sidebar Side -->
+                <div class="sidebar-side col-lg-3 col-md-12 col-sm-12">
+                    <aside class="sidebar sticky-top">
+
+                        <div class="sidebar-widget category-widget">
+                            <div class="widget-content">
+                                <div class="sidebar-title">
+                                    <h6>Price</h6>
+                                </div>
+                                <input name="height-field" placeholder="From" style="border: revert;">
+                                <input name="width-field" placeholder="To" style="border: revert;"><br>
+                            </div>
+                        </div>
+                        <br>
+
+                        <div class="sidebar-widget category-widget">
+                            <div class="widget-content">
+                                <div class="sidebar-title">
+                                    <h6>Dimensions</h6>
+                                </div>
+                                <input name="height-field" placeholder="Height" style="border: revert;">
+                                <input name="width-field" placeholder="Width" style="border: revert;"><br>
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Colors Widget -->
+                        <div class="sidebar-widget colors-widget">
+                            <div class="widget-content">
+                                <!-- Sidebar Title -->
+                                <div class="sidebar-title">
+                                    <h6>Colors</h6>
+                                </div>
+                                <div class="sel-colors">
+                                    <div class="color-box"><input type="radio" name="colors" checked
+                                                                  id="color-one"><label
+                                            style="background-color:#c4c4c4;" for="color-one"></label></div>
+                                    <div class="color-box"><input type="radio" name="colors" id="color-two"><label
+                                            style="background-color:#0b5fb5;" for="color-two"></label></div>
+                                    <div class="color-box"><input type="radio" name="colors" id="color-three"><label
+                                            style="background-color:#00a651;" for="color-three"></label></div>
+                                    <div class="color-box"><input type="radio" name="colors" id="color-four"><label
+                                            style="background-color:#fee496;" for="color-four"></label></div>
+                                    <div class="color-box"><input type="radio" name="colors" id="color-five"><label
+                                            style="background-color:#bc25bf;" for="color-five"></label></div>
+                                    <div class="color-box"><input type="radio" name="colors" id="color-six"><label
+                                            style="background-color:#000000;" for="color-six"></label></div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        <!-- Brands Widget -->
+                        <div class="sidebar-widget brands-widget">
+                            <div class="widget-content">
+                                <!-- Sidebar Title -->
+                                <div class="sidebar-title">
+                                    <h6>Material</h6>
+                                </div>
+
+                                <!-- Brands List -->
+                                <div class="brands-list">
+                                    <form method="post" action="shop.html">
+
+                                        <div class="form-group">
+                                            <div class="check-box">
+                                                <input type="checkbox" name="remember-password" id="type-1">
+                                                <label for="type-1">Wood</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="check-box">
+                                                <input type="checkbox" name="remember-password" id="type-2">
+                                                <label for="type-2">Metal</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="check-box">
+                                                <input type="checkbox" name="remember-password" id="type-3">
+                                                <label for="type-3">Glass</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="check-box">
+                                                <input type="checkbox" name="remember-password" id="type-4">
+                                                <label for="type-4">Leather</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="check-box">
+                                                <input type="checkbox" name="remember-password" id="type-5">
+                                                <label for="type-5">Textile</label>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/touchspin.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

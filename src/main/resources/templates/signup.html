@@ -9,46 +9,47 @@
 
 <div class="page-wrapper">
 
-    <!-- Header -->
-    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
-    <!-- End Header -->
+  <!-- Header -->
+  <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+  <!-- End Header -->
 
-    <!-- Register Section -->
+    <!-- Sign up Section -->
     <div class="register-section">
         <div class="auto-container">
             <div class="inner-container">
                 <div class="row clearfix">
                     <div class="column col-lg-8 col-md-12 col-sm-12">
                         <div class="styled-form">
-                            <h4>Edit address</h4>
-                            <form method="get" action="/account">
+                            <h4>Sign Up</h4>
+                            <form method="get" action="/">
                                 <div class="form-group">
-                                    <label>Your street</label>
-                                    <input type="text" name="street" value="1 Street" placeholder="Enter your street"
+                                    <label>Your first name</label>
+                                    <input type="text" name="firstname" value="" placeholder="Enter your first name"
                                            required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Your city</label>
-                                    <input type="text" name="city" value="City" placeholder="Enter your city" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Your state</label>
-                                    <input type="text" name="state" value="State" placeholder="Enter your state"
+                                    <label>Your last name</label>
+                                    <input type="text" name="lastname" value="" placeholder="Enter your last name"
                                            required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Your country</label>
-                                    <input type="text" name="country" value="Country" placeholder="Enter your country"
+                                    <label>Your email address</label>
+                                    <input type="email" name="email" value="" placeholder="Enter your email address"
                                            required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Your zip code</label>
-                                    <input type="text" name="zip-code" value="00000" placeholder="Enter zip code"
+                                    <label>Your phone number</label>
+                                    <input type="text" name="phone" value="" placeholder="Enter your phone number"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Your password</label>
+                                    <input type="password" name="password" value="" placeholder="Enter your password"
                                            required>
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="theme-btn btn-style-one">
-                                        Save
+                                        Sign Up
                                     </button>
                                 </div>
                             </form>
@@ -58,11 +59,12 @@
             </div>
         </div>
     </div>
-    <!-- End Register Section -->
+    <!-- End Sign up Section -->
 
     <!-- Footer -->
     <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
     <!-- End Footer -->
+
 </div>
 
 <!-- Scroll To Top -->

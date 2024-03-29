@@ -1,32 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>Furniture store</title>
 
-    <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
-    <link th:href="@{/css/style.css}" rel="stylesheet"/>
-    <link th:href="@{/css/responsive.css}" rel="stylesheet"/>
-
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
-          rel="stylesheet">
-
-    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.jpg}"/>
-    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.jpg}"/>
-</head>
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
 
 <body>
-
 <div class="page-wrapper">
-
     <!-- Header -->
     <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
@@ -38,10 +18,10 @@
                 <div class="row clearfix">
                     <div class="column col-lg-8 col-md-12 col-sm-12">
                         <div class="buttons-box">
-                            <a href="orders.html" class="theme-btn account-btn">
+                            <a href="/orders" class="theme-btn account-btn">
                                 Orders
                             </a>
-                            <a href="edit-user.html" class="theme-btn account-btn">
+                            <a href="/edit-user" class="theme-btn account-btn">
                                 Edit user information
                             </a>
                             <a href="/edit-address" class="theme-btn account-btn">
@@ -61,7 +41,6 @@
     <!-- Footer -->
     <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
     <!-- End Footer -->
-
 </div>
 <!-- End PageWrapper -->
 

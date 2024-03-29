@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+    <!-- End Header -->
+
+    <!-- Shop Detail Section -->
+    <section class="shop-detail-section">
+        <div class="auto-container">
+            <!-- Upper Box -->
+            <div class="upper-box">
+                <div class="row clearfix">
+                    <!-- Gallery Column -->
+                    <div class="gallery-column col-lg-6 col-md-12 col-sm-12">
+                        <div class="inner-column">
+                            <div class="carousel-outer">
+                                <!-- Swiper -->
+                                <div class="swiper-container content-carousel">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide">
+                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
+                                                                     class="lightbox-image"><img
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
+                                                                     class="lightbox-image"><img
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
+                                                                     class="lightbox-image"><img
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
+                                                                     class="lightbox-image"><img
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
+                                                                     class="lightbox-image"><img
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="swiper-container thumbs-carousel">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide">
+                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}" alt="">
+                                            </figure>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}" alt="">
+                                            </figure>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}" alt="">
+                                            </figure>
+                                        </div>
+                                        <div class="swiper-slide">
+                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}" alt="">
+                                            </figure>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content Column -->
+                    <div class="content-column col-lg-6 col-md-12 col-sm-12">
+                        <div class="inner-column">
+                            <h3>Table</h3>
+                            <!-- Rating -->
+                            <div class="rating">
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="light fa fa-star"></span>
+                                <i>(2 customer review)</i>
+                            </div>
+                            <!-- Price -->
+                            <div class="price">$62.00 <span>$92.52</span> <i>-33%</i></div>
+                            <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                tempor incididunt ut labore et dolore.
+                            </div>
+
+                            <!-- Category -->
+                            <div class="categories"><span>Category: </span>Table</div>
+
+                            <!-- Social Box -->
+                            <ul class="social-box">
+                                <li class="share">Share:</li>
+                                <li><a href="https://www.facebook.com/" class="fa fa-facebook-f"></a></li>
+                                <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
+                                <li><a href="https://www.linkedin.com/" class="fa fa-linkedin"></a></li>
+                            </ul>
+
+                            <div class="d-flex align-items-center flex-wrap">
+
+                                <!-- Button Box -->
+                                <div class="button-box">
+                                    <a href="/cart" class="theme-btn btn-style-one">
+                                        Add to cart
+                                    </a>
+                                </div>
+
+                                <!-- Quantity Box -->
+                                <div class="quantity-box">
+                                    <div class="item-quantity">
+                                        <input class="qty-spinner" type="text" value="1" name="quantity">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Upper Box -->
+
+            <!-- Lower Box -->
+            <br>
+            <div class="lower-box">
+
+                <!-- Product Info Tabs -->
+                <div class="product-info-tabs">
+                    <!-- Product Tabs -->
+                    <div class="prod-tabs tabs-box">
+
+                        <!-- Tab Btns -->
+                        <ul class="tab-btns tab-buttons clearfix">
+                            <li data-tab="#prod-details" class="tab-btn active-btn">Product Details</li>
+                            <li data-tab="#prod-review" class="tab-btn">Review (02)</li>
+                        </ul>
+
+                        <!-- Tabs Container -->
+                        <div class="tabs-content">
+
+                            <!-- Tab / Active Tab -->
+                            <div class="tab active-tab" id="prod-details">
+                                <div class="content">
+                                    <h3>Lorem ipsum dolor sit amet</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
+                                        vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
+                                        nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
+                                        cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
+                                        quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
+                                        bibendum dui. Aenean consequat pulvinar luctus</p>
+                                    <h5>More Details</h5>
+                                    <div class="row clearfix">
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <ul class="list-one">
+                                                <li>Lorem Ipsum is simply dummy text of the printing and typesetting
+                                                    industry
+                                                </li>
+                                                <li>Lorem Ipsum has been the ‘s standard dummy text. Lorem Ipsumum is
+                                                    simply dummy text.
+                                                </li>
+                                                <li>type here your detail one by one li more add</li>
+                                                <li>has been the industry’s standard dummy text ever since. Lorem Ips
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            <ul class="list-two">
+                                                <li>Lorem Ipsum generators on the tend to repeat.</li>
+                                                <li>If you are going to use a passage.</li>
+                                                <li>Lorem Ipsum generators on the tend to repeat.</li>
+                                                <li>Lorem Ipsum generators on the tend to repeat.</li>
+                                                <li>If you are going to use a passage.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Tab-->
+                            <div class="tab" id="prod-review">
+                                <!--Reviews Container-->
+                                <div class="comments-area">
+                                    <!--Comment Box-->
+                                    <div class="comment-box">
+                                        <div class="comment">
+                                            <div class="comment-inner">
+                                                <div class="comment-info clearfix">Ivan – March 17, 2024:</div>
+                                                <div class="rating">
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                </div>
+                                                <div class="text">Lorem Ipsum is simply dummy text of the printing and
+                                                    typesetting industry.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Comment Box-->
+                                    <div class="comment-box reply-comment">
+                                        <div class="comment">
+                                            <div class="comment-inner">
+                                                <div class="comment-info clearfix">Petr – March 19, 2024:</div>
+                                                <div class="rating">
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star"></span>
+                                                    <span class="fa fa-star-o"></span>
+                                                </div>
+                                                <div class="text">Lorem Ipsum is simply dummy text of the printing and
+                                                    typesetting industry.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Comment Form -->
+                                <div class="shop-comment-form">
+                                    <h4>Add Your Comments</h4>
+                                    <div class="rating-box">
+                                        <div class="text"> Your Rating:</div>
+                                        <div class="rating">
+                                            <span class="fa fa-star-o"></span>
+                                            <span class="fa fa-star-o"></span>
+                                            <span class="fa fa-star-o"></span>
+                                            <span class="fa fa-star-o"></span>
+                                            <span class="fa fa-star-o"></span>
+                                        </div>
+                                    </div>
+                                    <form method="get" action="/shop-detail">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <label>Your comment</label>
+                                                <textarea name="message" placeholder=""></textarea>
+                                            </div>
+
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <button class="theme-btn btn-style-four">
+                                                    Publish
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End Product Info Tabs-->
+
+            </div>
+            <!-- End Lower Box -->
+
+        </div>
+    </section>
+    <br><br>
+    <!-- End Shop Page Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/magnific-popup.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/touchspin.js}"></script>
+<script type="text/javascript" th:src="@{/js/swiper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

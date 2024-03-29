@@ -29,4 +29,39 @@ public class MainController {
     public String editAddress(){
         return "edit-address";
     }
+
+    @GetMapping("/edit-user")
+    public String editUser(){
+        return "edit-user";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
+    @GetMapping("/not-found")
+    public String notFound(){
+        return "not-found";
+    }
+
+    @GetMapping("/orders")
+    public String orders(){
+        return "orders";
+    }
+
+    @GetMapping("/shop-detail")
+    public String shopDetail(){
+        return "shop-detail";
+    }
+
+    @GetMapping("/shop")
+    public String shop(){
+        return "shop";
+    }
+
+    @GetMapping("/signup")
+    public String signup(){
+        return "signup";
+    }
 }
