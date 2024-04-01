@@ -25,12 +25,13 @@
                         <div class="d-flex justify-content-between align-items-center flex-wrap">
                             <div class="right-box d-flex">
                                 <div class="form-group">
-                                    <select name="currency" class="custom-select-box">
-                                        <option>A-Z</option>
-                                        <option>Z-A</option>
-                                        <option>From lowest price</option>
-                                        <option>From highest price</option>
-                                    </select>
+                                    <form method="post" th:action="@{'/products'}" th:object="${filterAndSearch}">
+                                        <select name="filter" class="custom-select-box" >
+                                            <option th:each="filter : ${filterList}" th:text="${filter}"
+                                                    th:value="${filter}"></option>
+                                        </select>
+                                        <button class="theme-btn btn-style-submit-one" type="submit">Submit</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -99,19 +100,20 @@
                                     <h6>Colors</h6>
                                 </div>
                                 <div class="sel-colors">
-                                    <div class="color-box"><input type="radio" name="colors" checked
-                                                                  id="color-one"><label
-                                            style="background-color:#c4c4c4;" for="color-one"></label></div>
+                                    <div class="color-box"><input type="radio" name="colors" id="color-one"><label
+                                            style="background-color:#e0dfdf;" for="color-one"></label></div>
                                     <div class="color-box"><input type="radio" name="colors" id="color-two"><label
                                             style="background-color:#0b5fb5;" for="color-two"></label></div>
                                     <div class="color-box"><input type="radio" name="colors" id="color-three"><label
                                             style="background-color:#00a651;" for="color-three"></label></div>
                                     <div class="color-box"><input type="radio" name="colors" id="color-four"><label
-                                            style="background-color:#fee496;" for="color-four"></label></div>
+                                            style="background-color:#f7ff01;" for="color-four"></label></div>
                                     <div class="color-box"><input type="radio" name="colors" id="color-five"><label
-                                            style="background-color:#bc25bf;" for="color-five"></label></div>
+                                            style="background-color:#ff0000;" for="color-five"></label></div>
                                     <div class="color-box"><input type="radio" name="colors" id="color-six"><label
                                             style="background-color:#000000;" for="color-six"></label></div>
+                                    <div class="color-box"><input type="radio" name="colors" id="color-seven"><label
+                                            style="background-color:#65270c;" for="color-seven"></label></div>
                                 </div>
                             </div>
                         </div>

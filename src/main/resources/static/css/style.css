@@ -10160,3 +10160,17 @@
     padding-left: 450px;
     padding-bottom: 150px;
 }
+
+.btn-style-submit-one {
+    position: relative;
+    font-weight:500;
+    overflow: hidden;
+    text-align:center;
+    padding: 1px 10px;
+    display:flex;
+    color: var(--white-color);
+    font-size: var(--font-10);
+    text-transform: capitalize;
+    font-family: var(--font-family-Jost);
+    background-color: var(--black-color);
+}
