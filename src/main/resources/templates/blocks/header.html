@@ -11,9 +11,9 @@
                 </div>
                 <!-- Search Box -->
                 <div class="search-box">
-                    <form method="post" th:action="@{'/products/search'}" th:object="${name}">
+                    <form method="post" th:action="@{'/products'}">
                         <div class="form-group">
-                            <input th:value="${lastSearch}" name="name" type="search" placeholder="Search Product" required>
+                            <input th:name="search" type="search" placeholder="Search Product" required>
                             <button type="submit" th:style="|background:url(@{/images/icons/search.jpg});|"></button>
                         </div>
                     </form>
@@ -43,7 +43,7 @@
                     <div class="category"> Categories </div>
                     <ul class="categories-list">
                         <li><a th:href="@{/products}">All products</a></li>
-                        <li th:each="category: ${categories}"><a th:href="@{'/products/' + ${category.getCategoryID()}}" th:text="${category.getCategoryName()}"></a></li>
+                        <li th:each="category: ${categories}"><a th:href="@{'/products/category/' + ${category.getCategoryID()}}" th:text="${category.getCategoryName()}"></a></li>
                     </ul>
                 </div>
             </div>

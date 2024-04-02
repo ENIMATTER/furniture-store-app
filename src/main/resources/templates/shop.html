@@ -25,10 +25,10 @@
                         <div class="d-flex justify-content-between align-items-center flex-wrap">
                             <div class="right-box d-flex">
                                 <div class="form-group">
-                                    <form method="post" th:action="@{'/products'}" th:object="${filterAndSearch}">
-                                        <select name="filter" class="custom-select-box" >
-                                            <option th:each="filter : ${filterList}" th:text="${filter}"
-                                                    th:value="${filter}"></option>
+                                    <form method="post" th:action="@{'/products'}">
+                                        <select th:name="filter" class="custom-select-box" >
+                                            <option th:each="filters : ${filterList}" th:text="${filters}"
+                                                    th:value="${filters}"></option>
                                         </select>
                                         <button class="theme-btn btn-style-submit-one" type="submit">Submit</button>
                                     </form>
@@ -75,19 +75,11 @@
                                 <div class="sidebar-title">
                                     <h6>Price</h6>
                                 </div>
-                                <input name="height-field" placeholder="From" style="border: revert;">
-                                <input name="width-field" placeholder="To" style="border: revert;"><br>
-                            </div>
-                        </div>
-                        <br>
-
-                        <div class="sidebar-widget category-widget">
-                            <div class="widget-content">
-                                <div class="sidebar-title">
-                                    <h6>Dimensions</h6>
-                                </div>
-                                <input name="height-field" placeholder="Height" style="border: revert;">
-                                <input name="width-field" placeholder="Width" style="border: revert;"><br>
+                                <form method="post" th:action="@{'/products'}">
+                                    <input th:name="from" placeholder="From" style="border: revert;">
+                                    <input th:name="to" placeholder="To" style="border: revert;"><br>
+                                    <button class="theme-btn btn-style-submit-one" type="submit">Submit</button>
+                                </form>
                             </div>
                         </div>
                         <br>
@@ -99,73 +91,66 @@
                                 <div class="sidebar-title">
                                     <h6>Colors</h6>
                                 </div>
-                                <div class="sel-colors">
-                                    <div class="color-box"><input type="radio" name="colors" id="color-one"><label
-                                            style="background-color:#e0dfdf;" for="color-one"></label></div>
-                                    <div class="color-box"><input type="radio" name="colors" id="color-two"><label
-                                            style="background-color:#0b5fb5;" for="color-two"></label></div>
-                                    <div class="color-box"><input type="radio" name="colors" id="color-three"><label
-                                            style="background-color:#00a651;" for="color-three"></label></div>
-                                    <div class="color-box"><input type="radio" name="colors" id="color-four"><label
-                                            style="background-color:#f7ff01;" for="color-four"></label></div>
-                                    <div class="color-box"><input type="radio" name="colors" id="color-five"><label
-                                            style="background-color:#ff0000;" for="color-five"></label></div>
-                                    <div class="color-box"><input type="radio" name="colors" id="color-six"><label
-                                            style="background-color:#000000;" for="color-six"></label></div>
-                                    <div class="color-box"><input type="radio" name="colors" id="color-seven"><label
-                                            style="background-color:#65270c;" for="color-seven"></label></div>
-                                </div>
+                                <form method="post" th:action="@{'/products'}">
+                                    <div class="sel-colors">
+                                        <div th:each="colors : ${colorMap}" class="color-box">
+                                            <input type="submit" th:name="color" th:value="${colors.key}" th:id="${colors.key}">
+                                            <label th:style="|${colors.value};|" th:for="${colors.key}"></label>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <br>
 
-                        <!-- Brands Widget -->
+                        <!-- Material Widget -->
                         <div class="sidebar-widget brands-widget">
                             <div class="widget-content">
-                                <!-- Sidebar Title -->
                                 <div class="sidebar-title">
                                     <h6>Material</h6>
                                 </div>
-
-                                <!-- Brands List -->
                                 <div class="brands-list">
-                                    <form method="post" action="shop.html">
+                                    <form method="post" th:action="@{'/products'}">
+<!--                                        <div class="form-group">-->
+<!--                                            <div class="check-box">-->
+<!--                                                <input type="checkbox" name="remember-password" id="type-1">-->
+<!--                                                <label for="type-1">Wood</label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-group">-->
+<!--                                            <div class="check-box">-->
+<!--                                                <input type="checkbox" name="remember-password" id="type-2">-->
+<!--                                                <label for="type-2">Metal</label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-group">-->
+<!--                                            <div class="check-box">-->
+<!--                                                <input type="checkbox" name="remember-password" id="type-3">-->
+<!--                                                <label for="type-3">Glass</label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-group">-->
+<!--                                            <div class="check-box">-->
+<!--                                                <input type="checkbox" name="remember-password" id="type-4">-->
+<!--                                                <label for="type-4">Leather</label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-group">-->
+<!--                                            <div class="check-box">-->
+<!--                                                <input type="checkbox" name="remember-password" id="type-5">-->
+<!--                                                <label for="type-5">Textile</label>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
 
-                                        <div class="form-group">
+                                        <div th:each="materialListEl : ${materialList}" class="form-group">
                                             <div class="check-box">
-                                                <input type="checkbox" name="remember-password" id="type-1">
-                                                <label for="type-1">Wood</label>
+                                                <input th:value="${materialListEl}" type="checkbox" name="materials" th:id="${materialListEl}">
+                                                <label th:for="${materialListEl}" th:text="${materialListEl}"></label>
                                             </div>
                                         </div>
 
-                                        <div class="form-group">
-                                            <div class="check-box">
-                                                <input type="checkbox" name="remember-password" id="type-2">
-                                                <label for="type-2">Metal</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="check-box">
-                                                <input type="checkbox" name="remember-password" id="type-3">
-                                                <label for="type-3">Glass</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="check-box">
-                                                <input type="checkbox" name="remember-password" id="type-4">
-                                                <label for="type-4">Leather</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="check-box">
-                                                <input type="checkbox" name="remember-password" id="type-5">
-                                                <label for="type-5">Textile</label>
-                                            </div>
-                                        </div>
-
+                                        <br>
+                                        <button class="theme-btn btn-style-submit-one" type="submit">Submit</button>
                                     </form>
                                 </div>
 
