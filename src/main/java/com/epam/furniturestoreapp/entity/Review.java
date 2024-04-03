@@ -27,7 +27,7 @@ public class Review {
     private Product productID;
 
     @ManyToOne
-    @JoinColumn(name = "userTableID", referencedColumnName = "userTableID")
+    @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
     private UserTable userTableID;
 
     @NotBlank(message = "Rating is mandatory")
@@ -36,11 +36,11 @@ public class Review {
 
     @Size(max = 2000, message = "Review comment description must be less than 2000")
     @NotBlank(message = "Review comment description is mandatory")
-    @Column(name = "ReviewComment")
+    @Column(name = "reviewcomment")
     private String reviewComment;
 
     @NotBlank(message = "Review date is mandatory")
-    @Column(name = "ReviewDate")
+    @Column(name = "reviewdate")
     private LocalDateTime reviewDate;
 
 }

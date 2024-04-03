@@ -29,27 +29,32 @@
                                         <div class="swiper-slide">
                                             <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
                                                                      class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
+                                            </figure>
                                         </div>
                                         <div class="swiper-slide">
                                             <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
                                                                      class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
+                                            </figure>
                                         </div>
                                         <div class="swiper-slide">
                                             <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
                                                                      class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
+                                            </figure>
                                         </div>
                                         <div class="swiper-slide">
                                             <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
                                                                      class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
+                                            </figure>
                                         </div>
                                         <div class="swiper-slide">
                                             <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
                                                                      class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a></figure>
+                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
+                                            </figure>
                                         </div>
                                     </div>
                                 </div>
@@ -57,19 +62,23 @@
                                 <div class="swiper-container thumbs-carousel">
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide">
-                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}" alt="">
+                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                       alt="">
                                             </figure>
                                         </div>
                                         <div class="swiper-slide">
-                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}" alt="">
+                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                       alt="">
                                             </figure>
                                         </div>
                                         <div class="swiper-slide">
-                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}" alt="">
+                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                       alt="">
                                             </figure>
                                         </div>
                                         <div class="swiper-slide">
-                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}" alt="">
+                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                       alt="">
                                             </figure>
                                         </div>
                                     </div>
@@ -80,24 +89,17 @@
                     <!-- Content Column -->
                     <div class="content-column col-lg-6 col-md-12 col-sm-12">
                         <div class="inner-column">
-                            <h3>Table</h3>
+                            <!-- Product name -->
+                            <h3 th:text="${product.getProductName()}"></h3>
+
                             <!-- Rating -->
-                            <div class="rating">
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="fa fa-star"></span>
-                                <span class="light fa fa-star"></span>
-                                <i>(2 customer review)</i>
-                            </div>
+                            <div class="rating" th:text="'Rating: ' + ${product.getAverageRating()}"></div>
+
                             <!-- Price -->
-                            <div class="price">$62.00 <span>$92.52</span> <i>-33%</i></div>
-                            <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore.
-                            </div>
+                            <div class="price" th:text="'$' + ${product.getPrice()}"></div>
 
                             <!-- Category -->
-                            <div class="categories"><span>Category: </span>Table</div>
+                            <div class="categories" th:text="'Category: ' + ${category.getCategoryName()}"></div>
 
                             <!-- Social Box -->
                             <ul class="social-box">
@@ -132,57 +134,25 @@
 
             <!-- Lower Box -->
             <br>
+            <br>
+            <br>
             <div class="lower-box">
 
                 <!-- Product Info Tabs -->
                 <div class="product-info-tabs">
                     <!-- Product Tabs -->
                     <div class="prod-tabs tabs-box">
-
-                        <!-- Tab Btns -->
+                        <!-- Tab Buttons -->
                         <ul class="tab-btns tab-buttons clearfix">
                             <li data-tab="#prod-details" class="tab-btn active-btn">Product Details</li>
-                            <li data-tab="#prod-review" class="tab-btn">Review (02)</li>
+                            <li data-tab="#prod-review" class="tab-btn">Reviews</li>
                         </ul>
-
                         <!-- Tabs Container -->
                         <div class="tabs-content">
-
                             <!-- Tab / Active Tab -->
                             <div class="tab active-tab" id="prod-details">
                                 <div class="content">
-                                    <h3>Lorem ipsum dolor sit amet</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vulputate
-                                        vestibulum Phasellus rhoncus, dolor eget viverra pretium, dolor tellus aliquet
-                                        nunc vitae ultricies erat elit eu lacus. Vestibulum non justo consectetur,
-                                        cursus ante, tincidunt sapien. Nulla quis diam sit amet turpis interdum accumsan
-                                        quis nec enim. Vivamus faucibus ex sed nibh egestas elementum. Mauris et
-                                        bibendum dui. Aenean consequat pulvinar luctus</p>
-                                    <h5>More Details</h5>
-                                    <div class="row clearfix">
-                                        <div class="col-lg-6 col-md-12 col-sm-12">
-                                            <ul class="list-one">
-                                                <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                    industry
-                                                </li>
-                                                <li>Lorem Ipsum has been the ‘s standard dummy text. Lorem Ipsumum is
-                                                    simply dummy text.
-                                                </li>
-                                                <li>type here your detail one by one li more add</li>
-                                                <li>has been the industry’s standard dummy text ever since. Lorem Ips
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="col-lg-6 col-md-12 col-sm-12">
-                                            <ul class="list-two">
-                                                <li>Lorem Ipsum generators on the tend to repeat.</li>
-                                                <li>If you are going to use a passage.</li>
-                                                <li>Lorem Ipsum generators on the tend to repeat.</li>
-                                                <li>Lorem Ipsum generators on the tend to repeat.</li>
-                                                <li>If you are going to use a passage.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                    <p th:text="${product.getProductDescription()}"></p>
                                 </div>
                             </div>
 
@@ -191,58 +161,46 @@
                                 <!--Reviews Container-->
                                 <div class="comments-area">
                                     <!--Comment Box-->
-                                    <div class="comment-box">
+                                    <div class="comment-box" th:each="review: ${reviews}">
                                         <div class="comment">
                                             <div class="comment-inner">
-                                                <div class="comment-info clearfix">Ivan – March 17, 2024:</div>
-                                                <div class="rating">
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                </div>
-                                                <div class="text">Lorem Ipsum is simply dummy text of the printing and
-                                                    typesetting industry.
-                                                </div>
+                                                <div class="comment-info clearfix"
+                                                     th:text="${review.getUserTableID().getFirstname()} + ' - ' + ${review.getReviewDate()}"></div>
+                                                <div class="rating" th:text="'Rate: ' + ${review.getRating()}"></div>
+                                                <div class="text" th:text="${review.getReviewComment()}"></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!--Comment Box-->
-                                    <div class="comment-box reply-comment">
-                                        <div class="comment">
-                                            <div class="comment-inner">
-                                                <div class="comment-info clearfix">Petr – March 19, 2024:</div>
-                                                <div class="rating">
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star"></span>
-                                                    <span class="fa fa-star-o"></span>
-                                                </div>
-                                                <div class="text">Lorem Ipsum is simply dummy text of the printing and
-                                                    typesetting industry.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
 
                                 <!-- Comment Form -->
                                 <div class="shop-comment-form">
                                     <h4>Add Your Comments</h4>
-                                    <div class="rating-box">
-                                        <div class="text"> Your Rating:</div>
-                                        <div class="rating">
-                                            <span class="fa fa-star-o"></span>
-                                            <span class="fa fa-star-o"></span>
-                                            <span class="fa fa-star-o"></span>
-                                            <span class="fa fa-star-o"></span>
-                                            <span class="fa fa-star-o"></span>
-                                        </div>
-                                    </div>
                                     <form method="get" action="/shop-detail">
+                                        <div class="rating-box">
+                                            <div class="text"> Your Rating:</div>
+                                            <div class="rating">
+                                                <input id="input-rating1" name="input-rating" type="radio" value="1"/>
+                                                <label for="input-rating1">1 <span class="fa fa-star"></span></label>
+                                            </div>
+                                            <div class="rating">
+                                                <input id="input-rating2" name="input-rating" type="radio" value="2"/>
+                                                <label for="input-rating2">2 <span class="fa fa-star"></span></label>
+                                            </div>
+                                            <div class="rating">
+                                                <input id="input-rating3" name="input-rating" type="radio" value="3"/>
+                                                <label for="input-rating3">3 <span class="fa fa-star"></span></label>
+                                            </div>
+                                            <div class="rating">
+                                                <input id="input-rating4" name="input-rating" type="radio" value="4"/>
+                                                <label for="input-rating4">4 <span class="fa fa-star"></span></label>
+                                            </div>
+                                            <div class="rating">
+                                                <input id="input-rating5" name="input-rating" type="radio" value="5"/>
+                                                <label for="input-rating5">5 <span class="fa fa-star"></span></label>
+                                            </div>
+                                        </div>
+
                                         <div class="row clearfix">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                                                 <label>Your comment</label>

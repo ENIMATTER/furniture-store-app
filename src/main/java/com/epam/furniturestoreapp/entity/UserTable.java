@@ -14,11 +14,11 @@ import javax.validation.constraints.Size;
 @Setter
 @Getter
 @ToString
-@Table(name = "userTable")
+@Table(name = "usertable")
 public class UserTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "UserTableID")
+    @Column(name = "usertableid")
     private long userTableID;
 
     @Size(max = 50, message = "Firstname must be less than 50")
@@ -38,12 +38,12 @@ public class UserTable {
 
     @Size(max = 50, message = "User password must be less than 50")
     @NotBlank(message = "User password is mandatory")
-    @Column(name = "UserPassword")
+    @Column(name = "userpassword")
     private String userPassword;
 
     @Size(max = 50, message = "Phone number must be less than 50")
     @NotBlank(message = "Phone number is mandatory")
-    @Column(name = "PhoneNumber")
+    @Column(name = "phonenumber")
     private String phoneNumber;
 
     @NotBlank(message = "Balance is mandatory")

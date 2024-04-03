@@ -2,8 +2,11 @@ package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.entity.Product;
+import com.epam.furniturestoreapp.entity.Review;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.ProductService;
+import com.epam.furniturestoreapp.service.ReviewService;
+import com.epam.furniturestoreapp.service.UserTableService;
 import com.epam.furniturestoreapp.util.Color;
 import com.epam.furniturestoreapp.util.Material;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,27 +16,37 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
+import static com.epam.furniturestoreapp.util.StaticVariables.thActionForProductsByCategory;
+
 @RequestMapping("/products")
 @Controller
-public class ShopController {
+public class ProductsController {
     private final CategoryService categoryService;
     private final ProductService productService;
+    private final ReviewService reviewService;
+    private final UserTableService userTableService;
+
     private static final List<String> filterList;
     private static final Map<Color, String> colorMap;
     private static final List<Material> materialList;
     private final List<Category> categories;
 
-    private final String thActionForAllProducts = "/products";
-    private final String thActionForProductsByCategory = "/products/category/";
+    private static final String lastAdded = "Last added";
+    private static final String byRating = "By rating";
+    private static final String AZ = "A-Z";
+    private static final String ZA = "Z-A";
+    private static final String fromLowestPrice = "From lowest price";
+    private static final String fromHighestPrice = "From highest price";
 
     static {
         filterList = new ArrayList<>();
-        filterList.add("Last added");
-        filterList.add("By rating");
-        filterList.add("A-Z");
-        filterList.add("Z-A");
-        filterList.add("From lowest price");
-        filterList.add("From highest price");
+        filterList.add(lastAdded);
+        filterList.add(byRating);
+        filterList.add(AZ);
+        filterList.add(ZA);
+        filterList.add(fromLowestPrice);
+        filterList.add(fromHighestPrice);
     }
 
     static {
@@ -57,23 +70,26 @@ public class ShopController {
     }
 
     @Autowired
-    public ShopController(CategoryService categoryService, ProductService productService) {
+    public ProductsController(CategoryService categoryService, ProductService productService, ReviewService reviewService, UserTableService userTableService) {
         this.categoryService = categoryService;
         this.productService = productService;
-
+        this.reviewService = reviewService;
+        this.userTableService = userTableService;
         categories = categoryService.findAll();
     }
 
     @GetMapping("/category/{id}")
     public String getProductsByCategoryId(@PathVariable long id, Model model) {
         Category category = categoryService.findById(id);
+        model.addAttribute("categories", categories);
         if (category == null) {
+            model.addAttribute("thAction", thActionForAllProducts);
             return "not-found";
         }
         List<Product> products = productService.getAllProductsByCategory(category);
         addToModelBasicAttributes(model, products);
-        model.addAttribute("thAction", thActionForProductsByCategory + id);
         model.addAttribute("categoryId", id);
+        model.addAttribute("thAction", thActionForProductsByCategory + id);
         return "shop";
     }
 
@@ -88,6 +104,8 @@ public class ShopController {
                                            Model model) {
         List<Product> products;
         Category category = categoryService.findById(id);
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", thActionForProductsByCategory + id);
         if (category == null) {
             return "not-found";
         }
@@ -108,7 +126,6 @@ public class ShopController {
         filterOrder(products, filter);
 
         addToModelBasicAttributes(model, products);
-        model.addAttribute("thAction", thActionForProductsByCategory + id);
         model.addAttribute("categoryId", id);
         return "shop";
     }
@@ -151,6 +168,22 @@ public class ShopController {
         return "shop";
     }
 
+    @GetMapping("/{id}")
+    public String getProductById(@PathVariable long id, Model model) {
+        Product product = productService.getProductById(id);
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", thActionForAllProducts);
+        if (product == null) {
+            return "not-found";
+        }
+        Category category = product.getCategoryID();
+        List<Review> reviews = reviewService.getAllReviewsByProduct(product);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("category", category);
+        model.addAttribute("product", product);
+        return "shop-detail";
+    }
+
     private void addToModelBasicAttributes(Model model, List<Product> products){
         model.addAttribute("categories", categories);
         model.addAttribute("filterList", filterList);
@@ -161,12 +194,12 @@ public class ShopController {
 
     private void filterOrder(List<Product> products, String filter){
         switch (filter) {
-            case "By rating" -> products.sort(((o1, o2) -> (int) (o2.getAverageRating() - o1.getAverageRating())));
-            case "Last added" -> Collections.reverse(products);
-            case "A-Z" -> products.sort((Comparator.comparing(Product::getProductName)));
-            case "Z-A" -> products.sort(((o1, o2) -> o2.getProductName().compareTo(o1.getProductName())));
-            case "From highest price" -> products.sort(((o1, o2) -> (int) (o2.getPrice() - o1.getPrice())));
-            case "From lowest price" -> products.sort((Comparator.comparingDouble(Product::getPrice)));
+            case byRating -> products.sort(((o1, o2) -> (int) (o2.getAverageRating() - o1.getAverageRating())));
+            case lastAdded -> Collections.reverse(products);
+            case AZ -> products.sort((Comparator.comparing(Product::getProductName)));
+            case ZA -> products.sort(((o1, o2) -> o2.getProductName().compareTo(o1.getProductName())));
+            case fromHighestPrice -> products.sort(((o1, o2) -> (int) (o2.getPrice() - o1.getPrice())));
+            case fromLowestPrice -> products.sort((Comparator.comparingDouble(Product::getPrice)));
         }
         filterList.remove(filter);
         filterList.add(0, filter);

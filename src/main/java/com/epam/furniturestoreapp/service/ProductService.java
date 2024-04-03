@@ -127,4 +127,9 @@ public class ProductService {
     public List<Product> getAllByProductNameContaining(String productName){
         return productRepository.getAllByProductNameContaining(productName);
     }
+
+
+    public Product getProductById(long id) {
+        return productRepository.findById(id).orElse(null);
+    }
 }
