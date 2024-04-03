@@ -12,6 +12,7 @@ import java.util.List;
 @Controller
 public class MainPageController {
     private final CategoryService categoryService;
+    private final String thActionForAllProducts = "/products";
 
     @Autowired
     public MainPageController(CategoryService categoryService){
@@ -22,6 +23,7 @@ public class MainPageController {
     public String mainPage(Model model){
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
+        model.addAttribute("thAction", thActionForAllProducts);
         return "index";
     }
 }

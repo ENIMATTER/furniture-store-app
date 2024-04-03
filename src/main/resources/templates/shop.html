@@ -13,49 +13,38 @@
     <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
 
-    <!-- Sidebar Page Container -->
-    <div class="sidebar-page-container">
-        <div class="auto-container">
-            <div class="row clearfix">
+    <form method="post" th:action="@{${thAction}}">
+        <!-- Sidebar Page Container -->
+        <div class="sidebar-page-container">
+            <div class="auto-container">
+                <div class="row clearfix">
 
-                <!-- Content Side -->
-                <div class="content-side col-lg-9 col-md-12 col-sm-12">
-                    <!-- Filter Box -->
-                    <div class="filter-box">
-                        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                            <div class="right-box d-flex">
-                                <div class="form-group">
-                                    <form method="post" th:action="@{'/products'}">
-                                        <select th:name="filter" class="custom-select-box" >
-                                            <option th:each="filters : ${filterList}" th:text="${filters}"
-                                                    th:value="${filters}"></option>
-                                        </select>
-                                        <button class="theme-btn btn-style-submit-one" type="submit">Submit</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Filter Box -->
+                    <!-- Content Side -->
+                    <div class="content-side col-lg-9 col-md-12 col-sm-12">
 
-                    <div class="shops-outer">
-                        <div class="row clearfix">
-                            <!-- Shop Item -->
-                            <div th:each="product: ${products}" class="shop-item col-lg-4 col-md-4 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="image">
-                                        <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
-                                                                    alt=""/></a>
-                                    </div>
-                                    <div class="lower-content">
-                                        <div class="rating" th:text="'Rating: ' + ${product.getAverageRating()}"></div>
-                                        <h6><a href="/shop-detail" th:text="${product.getProductName()}">Table</a></h6>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="price" th:text="'$' + ${product.getPrice()}"></div>
-                                            <!-- Quantity Box -->
-                                            <div class="quantity-box">
-                                                <div class="item-quantity">
-                                                    <input class="qty-spinner" type="text" value="0" name="quantity">
+
+                        <div class="shops-outer">
+                            <div class="row clearfix">
+                                <!-- Shop Item -->
+                                <div th:each="product: ${products}" class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image">
+                                            <a href="/shop-detail"><img th:src="@{/images/resource/products/table1.jpg}"
+                                                                        alt=""/></a>
+                                        </div>
+                                        <div class="lower-content">
+                                            <div class="rating"
+                                                 th:text="'Rating: ' + ${product.getAverageRating()}"></div>
+                                            <h6><a href="/shop-detail" th:text="${product.getProductName()}">Table</a>
+                                            </h6>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="price" th:text="'$' + ${product.getPrice()}"></div>
+                                                <!-- Quantity Box -->
+                                                <div class="quantity-box">
+                                                    <div class="item-quantity">
+                                                        <input class="qty-spinner" type="text" value="0"
+                                                               name="quantity">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -64,104 +53,82 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Sidebar Side -->
-                <div class="sidebar-side col-lg-3 col-md-12 col-sm-12">
-                    <aside class="sidebar sticky-top">
+                    <!-- Sidebar Side -->
+                    <div class="sidebar-side col-lg-3 col-md-12 col-sm-12">
+                        <aside class="sidebar sticky-top">
 
-                        <div class="sidebar-widget category-widget">
-                            <div class="widget-content">
-                                <div class="sidebar-title">
-                                    <h6>Price</h6>
+                            <div class="filter-box">
+                                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    <div class="right-box d-flex">
+                                        <div class="form-group">
+                                            <select th:name="filter" class="custom-select-box">
+                                                <option th:each="filters : ${filterList}" th:text="${filters}"
+                                                        th:value="${filters}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <form method="post" th:action="@{'/products'}">
+                            </div>
+                            <br>
+
+                            <div class="sidebar-widget category-widget">
+                                <div class="widget-content">
+                                    <div class="sidebar-title">
+                                        <h6>Price</h6>
+                                    </div>
                                     <input th:name="from" placeholder="From" style="border: revert;">
                                     <input th:name="to" placeholder="To" style="border: revert;"><br>
-                                    <button class="theme-btn btn-style-submit-one" type="submit">Submit</button>
-                                </form>
-                            </div>
-                        </div>
-                        <br>
-
-                        <!-- Colors Widget -->
-                        <div class="sidebar-widget colors-widget">
-                            <div class="widget-content">
-                                <!-- Sidebar Title -->
-                                <div class="sidebar-title">
-                                    <h6>Colors</h6>
                                 </div>
-                                <form method="post" th:action="@{'/products'}">
+                            </div>
+                            <br>
+
+                            <!-- Colors Widget -->
+                            <div class="sidebar-widget colors-widget">
+                                <div class="widget-content">
+                                    <!-- Sidebar Title -->
+                                    <div class="sidebar-title">
+                                        <h6>Colors</h6>
+                                    </div>
                                     <div class="sel-colors">
                                         <div th:each="colors : ${colorMap}" class="color-box">
-                                            <input type="submit" th:name="color" th:value="${colors.key}" th:id="${colors.key}">
+                                            <input type="radio" th:name="color" th:value="${colors.key}"
+                                                   th:id="${colors.key}">
                                             <label th:style="|${colors.value};|" th:for="${colors.key}"></label>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
-                        </div>
-                        <br>
-
-                        <!-- Material Widget -->
-                        <div class="sidebar-widget brands-widget">
-                            <div class="widget-content">
-                                <div class="sidebar-title">
-                                    <h6>Material</h6>
                                 </div>
-                                <div class="brands-list">
-                                    <form method="post" th:action="@{'/products'}">
-<!--                                        <div class="form-group">-->
-<!--                                            <div class="check-box">-->
-<!--                                                <input type="checkbox" name="remember-password" id="type-1">-->
-<!--                                                <label for="type-1">Wood</label>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="form-group">-->
-<!--                                            <div class="check-box">-->
-<!--                                                <input type="checkbox" name="remember-password" id="type-2">-->
-<!--                                                <label for="type-2">Metal</label>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="form-group">-->
-<!--                                            <div class="check-box">-->
-<!--                                                <input type="checkbox" name="remember-password" id="type-3">-->
-<!--                                                <label for="type-3">Glass</label>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="form-group">-->
-<!--                                            <div class="check-box">-->
-<!--                                                <input type="checkbox" name="remember-password" id="type-4">-->
-<!--                                                <label for="type-4">Leather</label>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="form-group">-->
-<!--                                            <div class="check-box">-->
-<!--                                                <input type="checkbox" name="remember-password" id="type-5">-->
-<!--                                                <label for="type-5">Textile</label>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
+                            </div>
+                            <br>
 
+                            <!-- Material Widget -->
+                            <div class="sidebar-widget brands-widget">
+                                <div class="widget-content">
+                                    <div class="sidebar-title">
+                                        <h6>Material</h6>
+                                    </div>
+                                    <div class="brands-list">
                                         <div th:each="materialListEl : ${materialList}" class="form-group">
                                             <div class="check-box">
-                                                <input th:value="${materialListEl}" type="checkbox" name="materials" th:id="${materialListEl}">
+                                                <input th:value="${materialListEl}" type="checkbox" name="materials"
+                                                       th:id="${materialListEl}">
                                                 <label th:for="${materialListEl}" th:text="${materialListEl}"></label>
                                             </div>
                                         </div>
-
                                         <br>
                                         <button class="theme-btn btn-style-submit-one" type="submit">Submit</button>
-                                    </form>
+                                    </div>
+
                                 </div>
-
                             </div>
-                        </div>
-                    </aside>
-                </div>
+                        </aside>
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 
     <!-- Footer -->
     <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>

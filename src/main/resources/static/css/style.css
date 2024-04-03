@@ -10166,10 +10166,10 @@
     font-weight:500;
     overflow: hidden;
     text-align:center;
-    padding: 1px 10px;
+    padding: 5px 15px;
     display:flex;
     color: var(--white-color);
-    font-size: var(--font-10);
+    font-size: var(--font-15);
     text-transform: capitalize;
     font-family: var(--font-family-Jost);
     background-color: var(--black-color);

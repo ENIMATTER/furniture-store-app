@@ -51,11 +51,6 @@ public class MainController {
         return "shop-detail";
     }
 
-//    @GetMapping("/shop")
-//    public String shop(){
-//        return "shop";
-//    }
-
     @GetMapping("/signup")
     public String signup(){
         return "signup";

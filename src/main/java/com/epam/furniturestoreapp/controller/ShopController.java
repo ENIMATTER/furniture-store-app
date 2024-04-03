@@ -21,6 +21,10 @@ public class ShopController {
     private static final List<String> filterList;
     private static final Map<Color, String> colorMap;
     private static final List<Material> materialList;
+    private final List<Category> categories;
+
+    private final String thActionForAllProducts = "/products";
+    private final String thActionForProductsByCategory = "/products/category/";
 
     static {
         filterList = new ArrayList<>();
@@ -56,33 +60,64 @@ public class ShopController {
     public ShopController(CategoryService categoryService, ProductService productService) {
         this.categoryService = categoryService;
         this.productService = productService;
+
+        categories = categoryService.findAll();
     }
 
     @GetMapping("/category/{id}")
     public String getProductsByCategoryId(@PathVariable long id, Model model) {
-        List<Category> categories = categoryService.findAll();
-        model.addAttribute("categories", categories);
         Category category = categoryService.findById(id);
         if (category == null) {
             return "not-found";
         }
         List<Product> products = productService.getAllProductsByCategory(category);
-        model.addAttribute("products", products);
-        model.addAttribute("filterList", filterList);
-        model.addAttribute("colorMap", colorMap);
-        model.addAttribute("materialList", materialList);
+        addToModelBasicAttributes(model, products);
+        model.addAttribute("thAction", thActionForProductsByCategory + id);
+        model.addAttribute("categoryId", id);
+        return "shop";
+    }
+
+    @PostMapping("/category/{id}")
+    public String postProductsByCategoryId(@PathVariable long id,
+                                           @RequestParam(value = "search", required = false) String search,
+                                           @RequestParam(value = "filter", defaultValue = "Last added") String filter,
+                                           @RequestParam(value = "from", required = false) Double from,
+                                           @RequestParam(value = "to", required = false) Double to,
+                                           @RequestParam(value = "color", required = false) Color color,
+                                           @RequestParam(value = "materials", required = false) Material[] materials,
+                                           Model model) {
+        List<Product> products;
+        Category category = categoryService.findById(id);
+        if (category == null) {
+            return "not-found";
+        }
+
+        // Search
+        if (search == null || search.isEmpty()) {
+            products = productService.getAllProductsByCategory(category);
+        } else {
+            products = productService.getAllByCategoryIDAndProductNameContaining(category, search);
+        }
+
+        // Filter by price, color and material
+        if(from != null || to != null || color != null || materials != null){
+            products = productService.getAllByCategoryIDAndPriceBetweenAndColorAndMaterial(category, from, to, color, materials);
+        }
+
+        // Filter order
+        filterOrder(products, filter);
+
+        addToModelBasicAttributes(model, products);
+        model.addAttribute("thAction", thActionForProductsByCategory + id);
+        model.addAttribute("categoryId", id);
         return "shop";
     }
 
     @GetMapping
     public String getProducts(Model model) {
-        List<Category> categories = categoryService.findAll();
         List<Product> products = productService.getAllProducts();
-        model.addAttribute("categories", categories);
-        model.addAttribute("products", products);
-        model.addAttribute("filterList", filterList);
-        model.addAttribute("colorMap", colorMap);
-        model.addAttribute("materialList", materialList);
+        addToModelBasicAttributes(model, products);
+        model.addAttribute("thAction", thActionForAllProducts);
         return "shop";
     }
 
@@ -94,17 +129,37 @@ public class ShopController {
                                   @RequestParam(value = "color", required = false) Color color,
                                   @RequestParam(value = "materials", required = false) Material[] materials,
                                   Model model) {
-        List<Category> categories = categoryService.findAll();
         List<Product> products;
 
         // Search
         if (search == null || search.isEmpty()) {
             products = productService.getAllProducts();
         } else {
-            products = productService.getAllProductsByName(search);
+            products = productService.getAllByProductNameContaining(search);
+        }
+
+        // Filter by price, color and material
+        if(from != null || to != null || color != null || materials != null){
+            products = productService.getAllByPriceBetweenAndColorAndMaterial(from, to, color, materials);
         }
 
         // Filter order
+        filterOrder(products, filter);
+
+        addToModelBasicAttributes(model, products);
+        model.addAttribute("thAction", thActionForAllProducts);
+        return "shop";
+    }
+
+    private void addToModelBasicAttributes(Model model, List<Product> products){
+        model.addAttribute("categories", categories);
+        model.addAttribute("filterList", filterList);
+        model.addAttribute("colorMap", colorMap);
+        model.addAttribute("materialList", materialList);
+        model.addAttribute("products", products);
+    }
+
+    private void filterOrder(List<Product> products, String filter){
         switch (filter) {
             case "By rating" -> products.sort(((o1, o2) -> (int) (o2.getAverageRating() - o1.getAverageRating())));
             case "Last added" -> Collections.reverse(products);
@@ -115,28 +170,5 @@ public class ShopController {
         }
         filterList.remove(filter);
         filterList.add(0, filter);
-
-        // Filter price
-        if(from != null && to != null){
-            products = productService.getAllProductsInRange(from, to);
-        }
-
-        // Filter color
-        if(color != null){
-            products = productService.getAllProductsByColor(color);
-        }
-
-        // Filter materials
-        if(materials != null){
-            products = productService.getAllProductsByMaterial(materials);
-        }
-
-        model.addAttribute("categories", categories);
-        model.addAttribute("filterList", filterList);
-        model.addAttribute("products", products);
-        model.addAttribute("colorMap", colorMap);
-        model.addAttribute("materialList", materialList);
-
-        return "shop";
     }
 }

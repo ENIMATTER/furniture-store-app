@@ -11,7 +11,7 @@
                 </div>
                 <!-- Search Box -->
                 <div class="search-box">
-                    <form method="post" th:action="@{'/products'}">
+                    <form method="post" th:action="@{${thAction}}">
                         <div class="form-group">
                             <input th:name="search" type="search" placeholder="Search Product" required>
                             <button type="submit" th:style="|background:url(@{/images/icons/search.jpg});|"></button>

@@ -28,23 +28,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Product> getAllProductsByName(String name) {
-        return productRepository.getAllByProductName(name);
-    }
-
-    public List<Product> getAllProductsInRange(Double from, Double to) {
-        List<Product> productList = productRepository.findAll();
-        productList.removeIf(p -> p.getPrice() < from || p.getPrice() > to);
-        return productList;
-    }
-
-    public List<Product> getAllProductsByColor(Color color) {
-        List<Product> productList = productRepository.findAll();
-        productList.removeIf(p -> !color.name().equals(p.getColor()));
-        return productList;
-    }
-
-    public List<Product> getAllProductsByMaterial(Material[] material) {
+    private List<Product> getAllProductsByMaterial(Material[] material) {
         List<Product> productList = productRepository.findAll();
         List<Product> result = new ArrayList<>();
         List<String> materialStrings = new ArrayList<>();
@@ -58,5 +42,89 @@ public class ProductService {
             }
         }
         return result;
+    }
+
+    public List<Product> getAllByPriceBetweenAndColorAndMaterial(Double price, Double price2, Color color, Material[] material){
+        List<Product> productList = new ArrayList<>();
+        List<Product> allProductsByMaterial = new ArrayList<>();
+        String colorStr = "";
+        if(color != null){
+            colorStr = color.name();
+        }
+        if(material != null){
+            allProductsByMaterial = getAllProductsByMaterial(material);
+        }
+        if((price == null || price2 == null) && color != null && material != null){
+            productList = productRepository.getAllByColor(colorStr);
+            productList.retainAll(allProductsByMaterial);
+        }
+        if(price != null && price2 != null && color != null && material != null){
+            productList = productRepository.getAllByPriceBetweenAndColor(price, price2, colorStr);
+            productList.retainAll(allProductsByMaterial);
+        }
+        if(price != null && price2 != null && color != null && material == null){
+            productList = productRepository.getAllByPriceBetweenAndColor(price, price2, colorStr);
+        }
+        if(price != null && price2 != null && color == null && material != null){
+            productList = productRepository.getAllByPriceBetween(price, price2);
+            productList.retainAll(allProductsByMaterial);
+        }
+        if(price != null && price2 != null && color == null && material == null){
+            productList = productRepository.getAllByPriceBetween(price, price2);
+        }
+        if(price == null && price2 == null && color != null && material == null){
+            productList = productRepository.getAllByColor(colorStr);
+        }
+        if(price == null && price2 == null && color == null && material != null){
+            productList = allProductsByMaterial;
+        }
+        return productList;
+    }
+
+    public List<Product> getAllByCategoryIDAndProductNameContaining(Category categoryID, String productName){
+        return productRepository.getAllByCategoryIDAndProductNameContaining(categoryID, productName);
+    }
+
+    public List<Product> getAllByCategoryIDAndPriceBetweenAndColorAndMaterial(Category category, Double price, Double price2, Color color, Material[] material) {
+        List<Product> productList = new ArrayList<>();
+        List<Product> allProductsByMaterial = new ArrayList<>();
+        String colorStr = "";
+        if(color != null){
+            colorStr = color.name();
+        }
+        if(material != null){
+            allProductsByMaterial = getAllProductsByMaterial(material);
+        }
+        if((price == null || price2 == null) && color != null && material != null){
+            productList = productRepository.getAllByCategoryIDAndColor(category, colorStr);
+            productList.retainAll(allProductsByMaterial);
+        }
+        if(price != null && price2 != null && color != null && material != null){
+            productList = productRepository.getAllByCategoryIDAndPriceBetweenAndColor(category, price, price2, colorStr);
+            productList.retainAll(allProductsByMaterial);
+        }
+        if(price != null && price2 != null && color != null && material == null){
+            productList = productRepository.getAllByCategoryIDAndPriceBetweenAndColor(category, price, price2, colorStr);
+        }
+        if(price != null && price2 != null && color == null && material != null){
+            productList = productRepository.getAllByCategoryIDAndPriceBetween(category, price, price2);
+            productList.retainAll(allProductsByMaterial);
+        }
+        if(price != null && price2 != null && color == null && material == null){
+            productList = productRepository.getAllByCategoryIDAndPriceBetween(category, price, price2);
+        }
+        if(price == null && price2 == null && color != null && material == null){
+            productList = productRepository.getAllByCategoryIDAndColor(category, colorStr);
+        }
+        if(price == null && price2 == null && color == null && material != null){
+            List<Product> productsByCategory = productRepository.getAllByCategoryID(category);
+            productsByCategory.retainAll(allProductsByMaterial);
+            productList = productsByCategory;
+        }
+        return productList;
+    }
+
+    public List<Product> getAllByProductNameContaining(String productName){
+        return productRepository.getAllByProductNameContaining(productName);
     }
 }

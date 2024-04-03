@@ -10,5 +10,12 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> getAllByCategoryID(Category category);
-    List<Product> getAllByProductName(String name);
+    List<Product> getAllByPriceBetweenAndColor(double price, double price2, String color);
+    List<Product> getAllByPriceBetween(double price, double price2);
+    List<Product> getAllByColor(String color);
+    List<Product> getAllByCategoryIDAndPriceBetweenAndColor(Category categoryID, double price, double price2, String color);
+    List<Product> getAllByCategoryIDAndPriceBetween(Category categoryID, double price, double price2);
+    List<Product> getAllByCategoryIDAndColor(Category categoryID, String color);
+    List<Product> getAllByProductNameContaining(String productName);
+    List<Product> getAllByCategoryIDAndProductNameContaining(Category categoryID, String productName);
 }
