@@ -21,30 +21,30 @@
                     <div class="column col-lg-8 col-md-12 col-sm-12">
                         <div class="styled-form">
                             <h4>Sign Up</h4>
-                            <form method="get" action="/">
+                            <form method="post" action="/signup">
                                 <div class="form-group">
                                     <label>Your first name</label>
-                                    <input type="text" name="firstname" value="" placeholder="Enter your first name"
+                                    <input type="text" th:name="firstname" placeholder="Enter your first name"
                                            required>
                                 </div>
                                 <div class="form-group">
                                     <label>Your last name</label>
-                                    <input type="text" name="lastname" value="" placeholder="Enter your last name"
+                                    <input type="text" th:name="lastname" placeholder="Enter your last name"
                                            required>
                                 </div>
                                 <div class="form-group">
                                     <label>Your email address</label>
-                                    <input type="email" name="email" value="" placeholder="Enter your email address"
+                                    <input type="email" th:name="email" placeholder="Enter your email address"
                                            required>
                                 </div>
                                 <div class="form-group">
                                     <label>Your phone number</label>
-                                    <input type="text" name="phone" value="" placeholder="Enter your phone number"
+                                    <input type="text" th:name="phoneNumber" placeholder="Enter your phone number"
                                            required>
                                 </div>
                                 <div class="form-group">
                                     <label>Your password</label>
-                                    <input type="password" name="password" value="" placeholder="Enter your password"
+                                    <input type="password" th:name="userPassword" placeholder="Enter your password"
                                            required>
                                 </div>
                                 <div class="form-group">

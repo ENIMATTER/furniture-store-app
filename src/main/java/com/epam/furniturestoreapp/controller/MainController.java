@@ -37,6 +37,13 @@ public class MainController {
         return "not-found";
     }
 
+    @GetMapping("/error")
+    public String error(Model model){
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", thActionForAllProducts);
+        return "error";
+    }
+
     ////////////////////////////////////////
 
     @GetMapping("/account")
@@ -64,19 +71,9 @@ public class MainController {
         return "edit-user";
     }
 
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
-
     @GetMapping("/orders")
     public String orders(){
         return "orders";
-    }
-
-    @GetMapping("/signup")
-    public String signup(){
-        return "signup";
     }
 
 }

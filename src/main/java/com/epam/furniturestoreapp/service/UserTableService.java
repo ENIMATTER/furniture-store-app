@@ -33,4 +33,12 @@ public class UserTableService {
     public void deleteById(long id) {
         userTableRepository.deleteById(id);
     }
+
+    public boolean existsByEmail(String email) {
+        return userTableRepository.existsByEmail(email);
+    }
+
+    public UserTable getUserByEmail(String email) {
+        return userTableRepository.getByEmail(email);
+    }
 }
