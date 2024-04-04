@@ -20,4 +20,8 @@ public class ReviewService {
     public List<Review> getAllReviewsByProduct(Product productID){
         return reviewRepository.getAllByProductID(productID);
     }
+
+    public void addReview(Review review) {
+        reviewRepository.save(review);
+    }
 }

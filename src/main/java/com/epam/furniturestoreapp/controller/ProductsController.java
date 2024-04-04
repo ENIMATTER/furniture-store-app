@@ -25,7 +25,6 @@ public class ProductsController {
     private final CategoryService categoryService;
     private final ProductService productService;
     private final ReviewService reviewService;
-    private final UserTableService userTableService;
 
     private static final List<String> filterList;
     private static final Map<Color, String> colorMap;
@@ -70,11 +69,10 @@ public class ProductsController {
     }
 
     @Autowired
-    public ProductsController(CategoryService categoryService, ProductService productService, ReviewService reviewService, UserTableService userTableService) {
+    public ProductsController(CategoryService categoryService, ProductService productService, ReviewService reviewService) {
         this.categoryService = categoryService;
         this.productService = productService;
         this.reviewService = reviewService;
-        this.userTableService = userTableService;
         categories = categoryService.findAll();
     }
 
@@ -88,7 +86,6 @@ public class ProductsController {
         }
         List<Product> products = productService.getAllProductsByCategory(category);
         addToModelBasicAttributes(model, products);
-        model.addAttribute("categoryId", id);
         model.addAttribute("thAction", thActionForProductsByCategory + id);
         return "shop";
     }
@@ -126,7 +123,6 @@ public class ProductsController {
         filterOrder(products, filter);
 
         addToModelBasicAttributes(model, products);
-        model.addAttribute("categoryId", id);
         return "shop";
     }
 

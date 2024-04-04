@@ -175,28 +175,41 @@
 
                                 <!-- Comment Form -->
                                 <div class="shop-comment-form">
-                                    <h4>Add Your Comments</h4>
-                                    <form method="get" action="/shop-detail">
+                                    <h4>Add your review</h4>
+                                    <form method="post" action="/review">
+                                        <input type="hidden" id="productID" th:name="productID" th:value="${product.getProductID()}"/>
+
+
+
+
+<!--                                        TEMPORARY!!!! DELETE IN FUTURE-->
+                                        <input type="hidden" id="userTableID" th:name="userTableID" th:value="3"/>
+
+
+
+
+
+
                                         <div class="rating-box">
-                                            <div class="text"> Your Rating:</div>
+                                            <div class="text"> Your rating:</div>
                                             <div class="rating">
-                                                <input id="input-rating1" name="input-rating" type="radio" value="1"/>
+                                                <input id="input-rating1" th:name="rating" type="radio" value="1"/>
                                                 <label for="input-rating1">1 <span class="fa fa-star"></span></label>
                                             </div>
                                             <div class="rating">
-                                                <input id="input-rating2" name="input-rating" type="radio" value="2"/>
+                                                <input id="input-rating2" th:name="rating" type="radio" value="2"/>
                                                 <label for="input-rating2">2 <span class="fa fa-star"></span></label>
                                             </div>
                                             <div class="rating">
-                                                <input id="input-rating3" name="input-rating" type="radio" value="3"/>
+                                                <input id="input-rating3" th:name="rating" type="radio" value="3"/>
                                                 <label for="input-rating3">3 <span class="fa fa-star"></span></label>
                                             </div>
                                             <div class="rating">
-                                                <input id="input-rating4" name="input-rating" type="radio" value="4"/>
+                                                <input id="input-rating4" th:name="rating" type="radio" value="4"/>
                                                 <label for="input-rating4">4 <span class="fa fa-star"></span></label>
                                             </div>
                                             <div class="rating">
-                                                <input id="input-rating5" name="input-rating" type="radio" value="5"/>
+                                                <input id="input-rating5" th:name="rating" type="radio" value="5" checked/>
                                                 <label for="input-rating5">5 <span class="fa fa-star"></span></label>
                                             </div>
                                         </div>
@@ -204,11 +217,11 @@
                                         <div class="row clearfix">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                                                 <label>Your comment</label>
-                                                <textarea name="message" placeholder=""></textarea>
+                                                <textarea th:name="reviewComment" placeholder="" required></textarea>
                                             </div>
 
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                <button class="theme-btn btn-style-four">
+                                                <button type="submit" class="theme-btn btn-style-four">
                                                     Publish
                                                 </button>
                                             </div>

@@ -42,5 +42,4 @@ public class Review {
     @NotBlank(message = "Review date is mandatory")
     @Column(name = "reviewdate")
     private LocalDateTime reviewDate;
-
 }

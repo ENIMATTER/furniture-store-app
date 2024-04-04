@@ -22,7 +22,7 @@ public class UserTableService {
         return userTableRepository.existsById(id);
     }
 
-    public UserTable findById(long id) {
+    public UserTable getUserById(long id) {
         return userTableRepository.findById(id).orElse(null);
     }
 
