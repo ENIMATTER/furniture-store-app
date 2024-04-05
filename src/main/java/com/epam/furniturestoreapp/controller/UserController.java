@@ -4,11 +4,15 @@ import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.UserTableService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,42 +53,38 @@ public class UserController {
             return "error";
         }
 
+        String codedPassword = new BCryptPasswordEncoder().encode(userPassword);
+
         UserTable user = new UserTable();
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setEmail(email);
-        user.setUserPassword(userPassword);
+        user.setUserPassword(codedPassword);
         user.setPhoneNumber(phoneNumber);
+        user.setBalance(0);
+        user.setRoles("USER");
 
         userTableService.addUser(user);
 
         return "redirect:/";
     }
 
-    @GetMapping("/loginTemp")
+    // Spring Security custom login form (email like username)
+    @GetMapping("/login")
     public String getLogin(Model model) {
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
-        return "loginTemp";
+        return "login";
     }
 
-    @PostMapping("/loginTemp")
-    public String postLogin(@RequestParam("email") String email,
-                            @RequestParam("userPassword") String userPassword,
-                            Model model) {
-
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
-
-        UserTable user = userTableService.getUserByEmail(email);
-
-        if(user == null){
-            return "error";
+    // Spring Security custom logout
+    @GetMapping("/logout")
+    public String customLogout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null){
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-        if(!user.getUserPassword().equals(userPassword)){
-            return "error";
-        }
-
-        return "redirect:/";
+        return "redirect:/login?logout";
     }
+
 }
