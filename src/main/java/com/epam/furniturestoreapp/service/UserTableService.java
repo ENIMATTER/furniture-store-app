@@ -3,35 +3,26 @@ package com.epam.furniturestoreapp.service;
 import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.repo.UserTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class UserTableService {
-    private final UserTableRepository userTableRepository;
+public class UserTableService implements UserDetailsService {
 
     @Autowired
-    public UserTableService(UserTableRepository userTableRepository){
-        this.userTableRepository = userTableRepository;
-    }
+    private UserTableRepository userTableRepository;
 
     public void addUser(UserTable user) {
         userTableRepository.save(user);
     }
 
-    public boolean existsById(long id) {
-        return userTableRepository.existsById(id);
-    }
-
     public UserTable getUserById(long id) {
         return userTableRepository.findById(id).orElse(null);
-    }
-
-    public void updateUser(UserTable user) {
-        userTableRepository.save(user);
-    }
-
-    public void deleteById(long id) {
-        userTableRepository.deleteById(id);
     }
 
     public boolean existsByEmail(String email) {
@@ -39,6 +30,28 @@ public class UserTableService {
     }
 
     public UserTable getUserByEmail(String email) {
-        return userTableRepository.getByEmail(email);
+        return userTableRepository.getByEmail(email).orElse(null);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<UserTable> user = userTableRepository.getByEmail(username);
+        if(user.isPresent()){
+            UserTable userObj = user.get();
+            return User.builder()
+                    .username(userObj.getEmail())
+                    .password(userObj.getUserPassword())
+                    .roles(getRoles(userObj))
+                    .build();
+        } else {
+            throw new UsernameNotFoundException("user not found");
+        }
+    }
+
+    private String[] getRoles(UserTable userObj) {
+        if (userObj.getRoles() == null) {
+            return new String[]{"USER"};
+        }
+        return userObj.getRoles().split(",");
     }
 }

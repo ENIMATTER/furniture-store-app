@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Optional;
 
 @Repository
 public interface UserTableRepository extends JpaRepository<UserTable, Long> {
     boolean existsByEmail(String email);
-    UserTable getByEmail(String email);
+    Optional<UserTable> getByEmail(String email);
 }

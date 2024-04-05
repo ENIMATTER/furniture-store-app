@@ -36,7 +36,7 @@ public class UserTable {
     @Column(name = "Email")
     private String email;
 
-    @Size(max = 50, message = "User password must be less than 50")
+    @Size(max = 100, message = "User password must be less than 100")
     @NotBlank(message = "User password is mandatory")
     @Column(name = "userpassword")
     private String userPassword;
@@ -49,4 +49,9 @@ public class UserTable {
     @NotBlank(message = "Balance is mandatory")
     @Column(name = "Balance")
     private double balance;
+
+    @Size(max = 50, message = "Roles must be less than 50")
+    @NotBlank(message = "Roles is mandatory")
+    @Column(name = "roles")
+    private String roles;
 }

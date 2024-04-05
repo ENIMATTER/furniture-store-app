@@ -61,14 +61,14 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/loginTemp")
     public String getLogin(Model model) {
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
-        return "login";
+        return "loginTemp";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/loginTemp")
     public String postLogin(@RequestParam("email") String email,
                             @RequestParam("userPassword") String userPassword,
                             Model model) {
