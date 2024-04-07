@@ -6,7 +6,6 @@ import com.epam.furniturestoreapp.entity.Review;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.ProductService;
 import com.epam.furniturestoreapp.service.ReviewService;
-import com.epam.furniturestoreapp.service.UserTableService;
 import com.epam.furniturestoreapp.util.Color;
 import com.epam.furniturestoreapp.util.Material;
 import org.springframework.beans.factory.annotation.Autowired;

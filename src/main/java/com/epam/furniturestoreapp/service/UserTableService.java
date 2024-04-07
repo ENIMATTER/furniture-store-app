@@ -54,4 +54,12 @@ public class UserTableService implements UserDetailsService {
         }
         return userObj.getRoles().split(",");
     }
+
+    public void editUser(UserTable user) {
+        userTableRepository.save(user);
+    }
+
+    public void deleteUser(UserTable user) {
+        userTableRepository.delete(user);
+    }
 }

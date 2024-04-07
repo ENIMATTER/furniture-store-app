@@ -27,9 +27,12 @@
                             <a href="/edit-address" class="theme-btn account-btn">
                                 Edit address
                             </a>
-                            <a href="/" class="theme-btn account-btn">
-                                Delete account
-                            </a>
+                            <form th:method="delete" th:action="@{/account}">
+                                <input type="hidden" name="_method" value="delete">
+                                <button type="submit" class="theme-btn account-btn">
+                                    Delete account
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

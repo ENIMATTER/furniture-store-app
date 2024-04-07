@@ -14,12 +14,10 @@ import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProd
 @Controller
 public class MainController {
 
-    private final CategoryService categoryService;
     private final List<Category> categories;
 
     @Autowired
     public MainController(CategoryService categoryService) {
-        this.categoryService = categoryService;
         categories = categoryService.findAll();
     }
 
@@ -37,19 +35,14 @@ public class MainController {
         return "not-found";
     }
 
-    @GetMapping("/error")
+    @GetMapping("/error-page")
     public String error(Model model){
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
-        return "error";
+        return "error-page";
     }
 
     ////////////////////////////////////////
-
-    @GetMapping("/account")
-    public String account(){
-        return "account";
-    }
 
     @GetMapping("/cart")
     public String cart(){
@@ -59,16 +52,6 @@ public class MainController {
     @GetMapping("/checkout")
     public String checkout(){
         return "checkout";
-    }
-
-    @GetMapping("/edit-address")
-    public String editAddress(){
-        return "edit-address";
-    }
-
-    @GetMapping("/edit-user")
-    public String editUser(){
-        return "edit-user";
     }
 
     @GetMapping("/orders")

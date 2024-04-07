@@ -1,11 +1,10 @@
 package com.epam.furniturestoreapp.service;
 
 import com.epam.furniturestoreapp.entity.Address;
+import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.repo.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AddressService {
@@ -16,27 +15,23 @@ public class AddressService {
         this.addressRepository = addressRepository;
     }
 
-    public List<Address> findAll() {
-        return addressRepository.findAll();
+    public Address getByUserTableID(UserTable userTableID){
+        return addressRepository.getByUserTableID(userTableID).orElse(new Address());
     }
 
-    public void addAddress(Address address){
+    public Address getAddressById(Long addressID) {
+        return addressRepository.findById(addressID).orElse(null);
+    }
+
+    public void editAddress(Address address) {
         addressRepository.save(address);
     }
 
-    public boolean existsById(long id) {
-        return addressRepository.existsById(id);
-    }
-
-    public Address findById(long id) {
-        return addressRepository.findById(id).orElse(null);
-    }
-
-    public void deleteById(long id) {
-        addressRepository.deleteById(id);
-    }
-
-    public void updateAddress(Address address) {
+    public void addAddress(Address address) {
         addressRepository.save(address);
+    }
+
+    public void deleteAddress(Address address) {
+        addressRepository.delete(address);
     }
 }

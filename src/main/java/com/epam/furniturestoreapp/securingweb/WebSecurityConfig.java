@@ -35,9 +35,14 @@ public class WebSecurityConfig {
                     auth.requestMatchers("/images/**").permitAll();
                     auth.requestMatchers("/fonts/**").permitAll();
                     auth.requestMatchers("/").permitAll();
-                    auth.requestMatchers("/account").hasRole("ADMIN");
-                    auth.requestMatchers("/cart").hasRole("USER");
-                    auth.requestMatchers("/signupTemp").hasRole("USER");
+                    auth.requestMatchers("/signup").permitAll();
+                    auth.requestMatchers("/products/**").permitAll();
+                    auth.requestMatchers("/account").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers("/cart").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers("/checkout").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers("/orders").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers("/edit-user").hasAnyRole("USER", "ADMIN");
+                    auth.requestMatchers("/edit-address").hasAnyRole("USER", "ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> {

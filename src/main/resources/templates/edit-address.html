@@ -13,7 +13,7 @@
     <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
 
-    <!-- Register Section -->
+    <!-- Address Section -->
     <div class="register-section">
         <div class="auto-container">
             <div class="inner-container">
@@ -21,30 +21,33 @@
                     <div class="column col-lg-8 col-md-12 col-sm-12">
                         <div class="styled-form">
                             <h4>Edit address</h4>
-                            <form method="get" action="/account">
+                            <form th:method="put" th:action="@{/edit-address}">
+                                <input type="hidden" name="_method" value="put">
+                                <input type="hidden" th:name="addressID" th:value="${address.getAddressID()}"/>
                                 <div class="form-group">
                                     <label>Your street</label>
-                                    <input type="text" name="street" value="1 Street" placeholder="Enter your street"
-                                           required>
+                                    <input type="text" th:name="street" th:value="${address.getStreet()}"
+                                           placeholder="Enter your street" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Your city</label>
-                                    <input type="text" name="city" value="City" placeholder="Enter your city" required>
+                                    <input type="text" th:name="city" th:value="${address.getCity()}"
+                                           placeholder="Enter your city" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Your state</label>
-                                    <input type="text" name="state" value="State" placeholder="Enter your state"
-                                           required>
+                                    <input type="text" th:name="state" th:value="${address.getState()}"
+                                           placeholder="Enter your state" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Your country</label>
-                                    <input type="text" name="country" value="Country" placeholder="Enter your country"
-                                           required>
+                                    <input type="text" th:name="country" th:value="${address.getCountry()}"
+                                           placeholder="Enter your country" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Your zip code</label>
-                                    <input type="text" name="zip-code" value="00000" placeholder="Enter zip code"
-                                           required>
+                                    <input type="text" th:name="zipCode" th:value="${address.getZipCode()}"
+                                           placeholder="Enter zip code" required>
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="theme-btn btn-style-one">
@@ -58,7 +61,7 @@
             </div>
         </div>
     </div>
-    <!-- End Register Section -->
+    <!-- End Address Section -->
 
     <!-- Footer -->
     <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>

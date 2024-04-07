@@ -8,6 +8,7 @@ import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.ProductService;
 import com.epam.furniturestoreapp.service.ReviewService;
 import com.epam.furniturestoreapp.service.UserTableService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,6 @@ import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProd
 @Controller
 @RequestMapping("/review")
 public class ReviewController {
-    private final CategoryService categoryService;
     private final ProductService productService;
     private final ReviewService reviewService;
     private final UserTableService userTableService;
@@ -30,7 +30,6 @@ public class ReviewController {
     private final List<Category> categories;
 
     public ReviewController(CategoryService categoryService, ProductService productService, ReviewService reviewService, UserTableService userTableService) {
-        this.categoryService = categoryService;
         this.productService = productService;
         this.reviewService = reviewService;
         this.userTableService = userTableService;
@@ -39,14 +38,14 @@ public class ReviewController {
 
     @PostMapping
     String postReview(@RequestParam("productID") long productID,
-                      @RequestParam("userTableID") long userTableID,
                       @RequestParam("rating") int rating,
                       @RequestParam("reviewComment") String reviewComment,
                       Model model) {
 
         Product product = productService.getProductById(productID);
-        UserTable user = userTableService.getUserById(userTableID);
         LocalDateTime reviewDate = LocalDateTime.now();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserTable user = userTableService.getUserByEmail(email);
 
         Review review = new Review();
         review.setProductID(product);
@@ -58,7 +57,6 @@ public class ReviewController {
 
         Category category = product.getCategoryID();
         List<Review> reviews = reviewService.getAllReviewsByProduct(product);
-
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
         model.addAttribute("reviews", reviews);

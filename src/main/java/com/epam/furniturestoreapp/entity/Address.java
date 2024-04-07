@@ -21,8 +21,8 @@ public class Address {
     @Column(name = "AddressID")
     private long addressID;
 
-    @ManyToOne
-    @JoinColumn(name = "userTableID", referencedColumnName = "userTableID")
+    @OneToOne
+    @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
     private UserTable userTableID;
 
     @Size(max = 50, message = "Street must be less than 50")
@@ -47,6 +47,6 @@ public class Address {
 
     @Size(max = 50, message = "Zip code must be less than 50")
     @NotBlank(message = "ZipCode is mandatory")
-    @Column(name = "ZipCode")
+    @Column(name = "zipcode")
     private String zipCode;
 }
