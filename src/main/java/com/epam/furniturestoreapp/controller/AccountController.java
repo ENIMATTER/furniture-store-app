@@ -2,12 +2,15 @@ package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.Address;
 import com.epam.furniturestoreapp.entity.Category;
+import com.epam.furniturestoreapp.entity.Review;
 import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.service.AddressService;
 import com.epam.furniturestoreapp.service.CategoryService;
+import com.epam.furniturestoreapp.service.ReviewService;
 import com.epam.furniturestoreapp.service.UserTableService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,13 +27,15 @@ import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProd
 public class AccountController {
     private final UserTableService userTableService;
     private final AddressService addressService;
-
+    private final ReviewService reviewService;
     private final List<Category> categories;
 
+    @Autowired
     public AccountController(CategoryService categoryService, UserTableService userTableService,
-                             AddressService addressService) {
+                             AddressService addressService, ReviewService reviewService) {
         this.userTableService = userTableService;
         this.addressService = addressService;
+        this.reviewService = reviewService;
         this.categories = categoryService.findAll();
     }
 
@@ -105,87 +110,20 @@ public class AccountController {
     }
 
     @DeleteMapping("/account")
-    private String deleteAccount(Model model){
+    private String deleteAccount(Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(email);
         Address address = addressService.getByUserTableID(user);
         addressService.deleteAddress(address);
+        List<Review> reviewsByUser = reviewService.getAllReviewsByUser(user);
+        reviewService.deleteReviews(reviewsByUser);
         userTableService.deleteUser(user);
         addToModelBasicAttributes(model);
-        return "index";
-    }
-
-    @GetMapping("/edit-address")
-    public String getEditAddress(Model model) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserTable user = userTableService.getUserByEmail(email);
-        Address address = addressService.getByUserTableID(user);
-        model.addAttribute("address", address);
-        addToModelBasicAttributes(model);
-        return "edit-address";
-    }
-
-    @PutMapping("/edit-address")
-    public String putEditAddress(@RequestParam("addressID") Long addressID,
-                                  @RequestParam("street") String street,
-                                  @RequestParam("city") String city,
-                                  @RequestParam("state") String state,
-                                  @RequestParam("country") String country,
-                                  @RequestParam("zipCode") String zipCode,
-                                  Model model) {
-        Address address = addressService.getAddressById(addressID);
-        if(address == null){
-            return "error-page";
-        }
-        address.setStreet(street);
-        address.setCity(city);
-        address.setState(state);
-        address.setCountry(country);
-        address.setZipCode(zipCode);
-        addressService.editAddress(address);
-        model.addAttribute("address", address);
-        addToModelBasicAttributes(model);
-        return "edit-address";
-    }
-
-    @GetMapping("/edit-user")
-    public String getEditUser(Model model) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserTable user = userTableService.getUserByEmail(email);
-        model.addAttribute("user", user);
-        addToModelBasicAttributes(model);
-        return "edit-user";
-    }
-
-    @PutMapping("/edit-user")
-    public String putEditUser(@RequestParam("userTableID") Long userTableID,
-                               @RequestParam("firstname") String firstname,
-                               @RequestParam("lastname") String lastname,
-                               @RequestParam("email") String email,
-                               @RequestParam("phoneNumber") String phoneNumber,
-                               @RequestParam("password") String password,
-                               Model model) {
-        UserTable user = userTableService.getUserById(userTableID);
-        if(user == null){
-            return "error-page";
-        }
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setEmail(email);
-        user.setPhoneNumber(phoneNumber);
-        if (!password.isBlank()) {
-            String codedPassword = new BCryptPasswordEncoder().encode(password);
-            user.setUserPassword(codedPassword);
-        }
-        userTableService.editUser(user);
-        model.addAttribute("user", user);
-        addToModelBasicAttributes(model);
-        return "edit-user";
+        return "redirect:/";
     }
 
     private void addToModelBasicAttributes(Model model) {
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
     }
-
 }
