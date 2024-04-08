@@ -13,16 +13,16 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Getter
 @ToString
-@Table(name = "cartItem")
+@Table(name = "cartitem")
 public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "CartItemID")
+    @Column(name = "cartitemID")
     private long cartItemID;
 
     @ManyToOne
-    @JoinColumn(name = "cartID", referencedColumnName = "cartID")
-    private Cart cartID;
+    @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
+    private UserTable userTableID;
 
     @ManyToOne
     @JoinColumn(name = "productID", referencedColumnName = "productID")

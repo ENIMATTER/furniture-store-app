@@ -44,11 +44,6 @@ public class MainController {
 
     ////////////////////////////////////////
 
-    @GetMapping("/cart")
-    public String cart(){
-        return "cart";
-    }
-
     @GetMapping("/checkout")
     public String checkout(){
         return "checkout";
