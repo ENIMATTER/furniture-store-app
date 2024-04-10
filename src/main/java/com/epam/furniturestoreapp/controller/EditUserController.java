@@ -45,8 +45,7 @@ public class EditUserController {
                               @RequestParam("lastname") String lastname,
                               @RequestParam("email") String email,
                               @RequestParam("phoneNumber") String phoneNumber,
-                              @RequestParam("password") String password,
-                              Model model) {
+                              @RequestParam("password") String password) {
         UserTable user = userTableService.getUserById(userTableID);
         if (user == null) {
             return "error-page";
@@ -60,9 +59,7 @@ public class EditUserController {
             user.setUserPassword(codedPassword);
         }
         userTableService.editUser(user);
-        model.addAttribute("user", user);
-        addToModelBasicAttributes(model);
-        return "edit-user";
+        return "redirect:/edit-user";
     }
 
     private void addToModelBasicAttributes(Model model) {

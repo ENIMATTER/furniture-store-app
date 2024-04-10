@@ -40,7 +40,8 @@ public class EditAddressController {
         UserTable user = userTableService.getUserByEmail(emailUsername);
         Address address = addressService.getByUserTableID(user);
         model.addAttribute("address", address);
-        addToModelBasicAttributes(model);
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", thActionForAllProducts);
         return "edit-address";
     }
 
@@ -50,8 +51,7 @@ public class EditAddressController {
                                  @RequestParam("city") String city,
                                  @RequestParam("state") String state,
                                  @RequestParam("country") String country,
-                                 @RequestParam("zipCode") String zipCode,
-                                 Model model) {
+                                 @RequestParam("zipCode") String zipCode) {
         Address address = addressService.getAddressById(addressID);
         if (address == null) {
             return "error-page";
@@ -62,13 +62,6 @@ public class EditAddressController {
         address.setCountry(country);
         address.setZipCode(zipCode);
         addressService.editAddress(address);
-        model.addAttribute("address", address);
-        addToModelBasicAttributes(model);
-        return "edit-address";
-    }
-
-    private void addToModelBasicAttributes(Model model) {
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        return "redirect:/edit-address";
     }
 }

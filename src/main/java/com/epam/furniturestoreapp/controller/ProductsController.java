@@ -189,12 +189,12 @@ public class ProductsController {
 
     private void filterOrder(List<Product> products, String filter){
         switch (filter) {
-            case byRating -> products.sort(((o1, o2) -> (int) (o2.getAverageRating() - o1.getAverageRating())));
+            case byRating -> products.sort(Comparator.comparingDouble(Product::getAverageRating).reversed());
             case lastAdded -> Collections.reverse(products);
-            case AZ -> products.sort((Comparator.comparing(Product::getProductName)));
-            case ZA -> products.sort(((o1, o2) -> o2.getProductName().compareTo(o1.getProductName())));
-            case fromHighestPrice -> products.sort(((o1, o2) -> (int) (o2.getPrice() - o1.getPrice())));
-            case fromLowestPrice -> products.sort((Comparator.comparingDouble(Product::getPrice)));
+            case AZ -> products.sort(Comparator.comparing(Product::getProductName));
+            case ZA -> products.sort(Comparator.comparing(Product::getProductName).reversed());
+            case fromHighestPrice -> products.sort(Comparator.comparingDouble(Product::getPrice).reversed());
+            case fromLowestPrice -> products.sort(Comparator.comparingDouble(Product::getPrice));
         }
         filterList.remove(filter);
         filterList.add(0, filter);
