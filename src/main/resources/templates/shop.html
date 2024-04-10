@@ -13,44 +13,52 @@
     <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
 
-    <form method="post" th:action="@{${thAction}}">
-        <!-- Sidebar Page Container -->
-        <div class="sidebar-page-container">
-            <div class="auto-container">
-                <div class="row clearfix">
-                    <!-- Content Side -->
-                    <div class="content-side col-lg-9 col-md-12 col-sm-12">
-                        <div class="shops-outer">
-                            <div class="row clearfix">
-                                <!-- Shop Item -->
-                                <div th:each="product: ${products}" class="shop-item col-lg-4 col-md-4 col-sm-12">
-                                    <div class="inner-box">
-                                        <div class="image">
-                                            <a th:href="'/products/' + ${product.getProductID()}"><img th:src="@{/images/resource/products/table1.jpg}"
-                                                                        alt=""/></a>
-                                        </div>
-                                        <div class="lower-content">
-                                            <div class="rating"
-                                                 th:text="'Rating: ' + ${product.getAverageRating()}"></div>
-                                            <h6><a th:href="'/products/' + ${product.getProductID()}" th:text="${product.getProductName()}">Table</a>
-                                            </h6>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="price" th:text="'$' + ${product.getPrice()}"></div>
-                                                <!-- Quantity Box -->
+    <!-- Sidebar Page Container -->
+    <div class="sidebar-page-container">
+        <div class="auto-container" >
+            <div class="row clearfix" style="display: flex; flex-wrap: nowrap;">
+
+                <!-- Content Side -->
+                <div class="content-side col-lg-9 col-md-12 col-sm-12">
+                    <div class="shops-outer">
+                        <div class="row clearfix">
+                            <!-- Shop Item -->
+                            <div th:each="product: ${products}" class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                <div class="inner-box">
+                                    <div class="image">
+                                        <a th:href="'/products/' + ${product.getProductID()}"><img
+                                                th:src="@{/images/resource/products/table1.jpg}"
+                                                alt=""/></a>
+                                    </div>
+                                    <div class="lower-content">
+                                        <div class="rating"
+                                             th:text="'Rating: ' + ${product.getAverageRating()}"></div>
+                                        <h6><a th:href="'/products/' + ${product.getProductID()}"
+                                               th:text="${product.getProductName()}">Table</a>
+                                        </h6>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="price" th:text="'$' + ${product.getPrice()}"></div>
+                                            <!-- Quantity Box -->
+                                            <form th:method="post" th:action="@{/cart}">
                                                 <div class="quantity-box">
                                                     <div class="item-quantity">
-                                                        <input class="qty-spinner" type="text" value="0"
-                                                               name="quantity">
+                                                        <input type="hidden" id="cartProductID" name="cartProductID"
+                                                               th:value="${product.getProductID()}"/>
+                                                        <input class="qty-spinner" type="text" value="1"
+                                                               name="cartQuantity">
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <button type="submit" style="width: 100%;">Add</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <form th:method="post" th:action="@{${thAction}}">
                     <!-- Sidebar Side -->
                     <div class="sidebar-side col-lg-3 col-md-12 col-sm-12">
                         <aside class="sidebar sticky-top">
@@ -121,11 +129,11 @@
                             </div>
                         </aside>
                     </div>
-
-                </div>
+                </form>
             </div>
         </div>
-    </form>
+    </div>
+
 
     <!-- Footer -->
     <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>

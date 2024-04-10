@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.emailUsername;
 import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
 
 @Controller
@@ -112,6 +111,7 @@ public class AccountController {
 
     @DeleteMapping("/account")
     private String deleteAccount(Model model) {
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         Address address = addressService.getByUserTableID(user);
         addressService.deleteAddress(address);

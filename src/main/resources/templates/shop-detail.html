@@ -109,23 +109,25 @@
                                 <li><a href="https://www.linkedin.com/" class="fa fa-linkedin"></a></li>
                             </ul>
 
-                            <div class="d-flex align-items-center flex-wrap">
+                            <form th:method="post" th:action="@{/cart}">
+                                <input type="hidden" id="cartProductID" name="cartProductID"
+                                       th:value="${product.getProductID()}"/>
 
-                                <!-- Button Box -->
-                                <div class="button-box">
-                                    <a href="/cart" class="theme-btn btn-style-one">
-                                        Add to cart
-                                    </a>
-                                </div>
-
-                                <!-- Quantity Box -->
-                                <div class="quantity-box">
-                                    <div class="item-quantity">
-                                        <input class="qty-spinner" type="text" value="1" name="quantity">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <!-- Quantity Box -->
+                                    <div class="quantity-box">
+                                        <div class="item-quantity">
+                                            <input class="qty-spinner" type="text" value="1" name="cartQuantity">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!-- Button Box -->
+                                    <div class="button-box">
+                                        <button type="submit" class="theme-btn btn-style-one">Add to cart</button>
                                     </div>
                                 </div>
+                            </form>
 
-                            </div>
                         </div>
                     </div>
                 </div>

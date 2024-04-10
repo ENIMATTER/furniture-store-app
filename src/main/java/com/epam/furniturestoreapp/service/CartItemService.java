@@ -20,4 +20,24 @@ public class CartItemService {
     public List<CartItem> getAllItemsByUser(UserTable user) {
         return cartItemRepository.getAllByUserTableID(user);
     }
+
+    public List<CartItem> getAll() {
+        return cartItemRepository.findAll();
+    }
+
+    public void saveAll(List<CartItem> allCartItems) {
+        cartItemRepository.saveAll(allCartItems);
+    }
+
+    public void deleteById(Long cartItemID) {
+        cartItemRepository.deleteById(cartItemID);
+    }
+
+    public CartItem getById(Long cartItemID) {
+        return cartItemRepository.findById(cartItemID).orElse(null);
+    }
+
+    public void save(CartItem cartItem) {
+        cartItemRepository.save(cartItem);
+    }
 }

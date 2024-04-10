@@ -7,6 +7,7 @@ import com.epam.furniturestoreapp.service.AddressService;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.UserTableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.emailUsername;
 import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
 
 @Controller
@@ -36,6 +36,7 @@ public class EditAddressController {
 
     @GetMapping
     public String getEditAddress(Model model) {
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         Address address = addressService.getByUserTableID(user);
         model.addAttribute("address", address);

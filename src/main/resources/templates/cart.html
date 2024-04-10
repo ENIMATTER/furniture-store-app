@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <!-- Head -->
 <head th:insert="~{blocks/head :: head}"></head>
@@ -24,7 +24,7 @@
                                 <table class="cart-table">
                                     <thead class="cart-header">
                                     <tr>
-                                        <th class="prod-column">product</th>
+                                        <th class="prod-column">Product</th>
                                         <th>&nbsp;</th>
                                         <th>Price</th>
                                         <th>Quantity</th>
@@ -37,19 +37,34 @@
                                         <td colspan="2" class="prod-column">
                                             <div class="column-box">
                                                 <figure class="prod-thumb">
-                                                    <span class="cross-icon flaticon-cancel-1"></span>
+                                                    <form th:method="delete" th:action="@{/cart}">
+                                                        <input type="hidden" name="_method" value="delete">
+                                                        <input type="hidden" name="cartItemID"
+                                                               th:value="${cartItem.getCartItemID()}">
+                                                        <button type="submit"
+                                                                class="cross-icon flaticon-cancel-1"></button>
+                                                    </form>
                                                     <a th:href="'/products/' + ${cartItem.getProductID().getProductID()}"><img
                                                             th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
                                                 </figure>
-                                                <h6 class="prod-title" th:text="${cartItem.getProductID().getProductName()}"></h6>
-                                                <div class="prod-text" th:text="'Color: ' + ${cartItem.getProductID().getColor()}"></div>
+                                                <h6 class="prod-title"
+                                                    th:text="${cartItem.getProductID().getProductName()}"></h6>
+                                                <div class="prod-text"
+                                                     th:text="'Color: ' + ${cartItem.getProductID().getColor()}"></div>
                                             </div>
                                         </td>
                                         <td class="price" th:text="'$' + ${cartItem.getProductID().getPrice()}"></td>
                                         <!-- Quantity Box -->
                                         <td class="quantity-box">
                                             <div class="item-quantity">
-                                                <input class="qty-spinner" type="text" th:value="${cartItem.getQuantity()}" name="quantity">
+                                                <form th:method="put" th:action="@{/cart}">
+                                                    <input type="hidden" name="_method" value="put">
+                                                    <input type="hidden" name="cartItemID"
+                                                           th:value="${cartItem.getCartItemID()}">
+                                                    <input class="qty-spinner" type="text"
+                                                           th:value="${cartItem.getQuantity()}" name="cartQuantity">
+                                                    <button type="submit">Change</button>
+                                                </form>
                                             </div>
                                         </td>
                                         <td class="sub-total" th:text="'$' + ${totals.get(cartItem)}"></td>

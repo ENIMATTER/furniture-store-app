@@ -5,6 +5,7 @@ import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.UserTableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.emailUsername;
 import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
 
 @Controller
@@ -32,6 +32,7 @@ public class EditUserController {
 
     @GetMapping
     public String getEditUser(Model model) {
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         model.addAttribute("user", user);
         addToModelBasicAttributes(model);
