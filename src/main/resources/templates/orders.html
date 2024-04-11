@@ -14,9 +14,9 @@
     <!-- End Header -->
 
     <!--Order Section -->
-    <section class="shoping-cart-section">
+    <section class="shoping-cart-section" th:each="order: ${orders}">
         <div class="auto-container">
-            <h4>Order 2: 19.03.2024</h4><br>
+            <h4 th:text="'Order ' + ${order.key.getOrderTableID()} + ': ' + ${order.key.getOrderDate()}"></h4><br>
             <div class="row clearfix">
                 <div class="cart-column col-lg-8 col-md-12 col-sm-12">
                     <div class="inner-column">
@@ -33,63 +33,28 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
+                                    <tr th:each="orderItem : ${order.value}">
                                         <td colspan="2" class="prod-column">
                                             <div class="column-box">
                                                 <figure class="prod-thumb">
-                                                    <a href="/shop-detail"><img
+                                                    <a th:href="'/product/' + ${orderItem.getProductID()}"><img
                                                             th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
                                                 </figure>
-                                                <h6 class="prod-title">Super chair</h6>
-                                                <div class="prod-text">Color: Brown</div>
+                                                <h6 class="prod-title"
+                                                    th:text="${orderItem.getProductID().getProductName()}"></h6>
+                                                <div class="prod-text"
+                                                     th:text="'Color: ' + ${orderItem.getProductID().getColor()}"></div>
                                             </div>
                                         </td>
-                                        <td class="price">$32.00</td>
+                                        <td class="price" th:text="'$' + ${orderItem.getProductID().getPrice()}"></td>
 
                                         <td class="quantity-box">
                                             <div class="item-quantity">
-                                                <b>2</b>
+                                                <b th:text="${orderItem.getQuantity()}"></b>
                                             </div>
                                         </td>
-                                        <td class="sub-total">$64.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" class="prod-column">
-                                            <div class="column-box">
-                                                <figure class="prod-thumb">
-                                                    <a href="/shop-detail"><img
-                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                                </figure>
-                                                <h6 class="prod-title">Super sofa</h6>
-                                                <div class="prod-text">Color: Black</div>
-                                            </div>
-                                        </td>
-                                        <td class="price">$199.00</td>
-                                        <td class="quantity-box">
-                                            <div class="item-quantity">
-                                                <b>1</b>
-                                            </div>
-                                        </td>
-                                        <td class="sub-total">$199.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" class="prod-column">
-                                            <div class="column-box">
-                                                <figure class="prod-thumb">
-                                                    <a href="/shop-detail"><img
-                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                                </figure>
-                                                <h6 class="prod-title">Super table</h6>
-                                                <div class="prod-text">Color: White</div>
-                                            </div>
-                                        </td>
-                                        <td class="price">$99.00</td>
-                                        <td class="quantity-box">
-                                            <div class="item-quantity">
-                                                <b>1</b>
-                                            </div>
-                                        </td>
-                                        <td class="sub-total">$99.00</td>
+                                        <td class="sub-total"
+                                            th:text="'$' + ${orderItem.getProductID().getPrice()}*${orderItem.getQuantity()}"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -102,14 +67,13 @@
                 <!-- Total Column -->
                 <div class="total-column col-lg-4 col-md-12 col-sm-12">
                     <div class="inner-column">
-
                         <div class="cart-total-outer">
                             <div class="title-box">
                                 <h6>Order Totals</h6>
                             </div>
                             <div class="cart-total-box">
                                 <ul class="cart-totals">
-                                    <li>Totals : <span>$362.00</span></li>
+                                    <li>Totals : <span th:text="'$' + ${order.key.getTotalAmount()}"></span></li>
                                 </ul>
                             </div>
                         </div>
@@ -120,109 +84,109 @@
     </section>
     <!-- End Order Section -->
 
-    <!--Order Section -->
-    <section class="shoping-cart-section">
-        <div class="auto-container">
-            <h4>Order 1: 18.03.2024</h4><br>
-            <div class="row clearfix">
-                <div class="cart-column col-lg-8 col-md-12 col-sm-12">
-                    <div class="inner-column">
-                        <div class="cart-outer">
-                            <div class="table-outer">
-                                <table class="cart-table">
-                                    <thead class="cart-header">
-                                    <tr>
-                                        <th class="prod-column">product</th>
-                                        <th>&nbsp;</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Total</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td colspan="2" class="prod-column">
-                                            <div class="column-box">
-                                                <figure class="prod-thumb">
-                                                    <a href="/shop-detail"><img
-                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                                </figure>
-                                                <h6 class="prod-title">Super chair</h6>
-                                                <div class="prod-text">Color: Brown</div>
-                                            </div>
-                                        </td>
-                                        <td class="price">$32.00</td>
-                                        <td class="quantity-box">
-                                            <div class="item-quantity">
-                                                <b>2</b>
-                                            </div>
-                                        </td>
-                                        <td class="sub-total">$64.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" class="prod-column">
-                                            <div class="column-box">
-                                                <figure class="prod-thumb">
-                                                    <a href="/shop-detail"><img
-                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                                </figure>
-                                                <h6 class="prod-title">Super sofa</h6>
-                                                <div class="prod-text">Color: Black</div>
-                                            </div>
-                                        </td>
-                                        <td class="price">$199.00</td>
-                                        <td class="quantity-box">
-                                            <div class="item-quantity">
-                                                <b>1</b>
-                                            </div>
-                                        </td>
-                                        <td class="sub-total">$199.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" class="prod-column">
-                                            <div class="column-box">
-                                                <figure class="prod-thumb">
-                                                    <a href="/shop-detail"><img
-                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                                </figure>
-                                                <h6 class="prod-title">Super table</h6>
-                                                <div class="prod-text">Color: White</div>
-                                            </div>
-                                        </td>
-                                        <td class="price">$99.00</td>
-                                        <td class="quantity-box">
-                                            <div class="item-quantity">
-                                                <b>1</b>
-                                            </div>
-                                        </td>
-                                        <td class="sub-total">$99.00</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!--    &lt;!&ndash;Order Section &ndash;&gt;-->
+    <!--    <section class="shoping-cart-section">-->
+    <!--        <div class="auto-container">-->
+    <!--            <h4>Order 1: 18.03.2024</h4><br>-->
+    <!--            <div class="row clearfix">-->
+    <!--                <div class="cart-column col-lg-8 col-md-12 col-sm-12">-->
+    <!--                    <div class="inner-column">-->
+    <!--                        <div class="cart-outer">-->
+    <!--                            <div class="table-outer">-->
+    <!--                                <table class="cart-table">-->
+    <!--                                    <thead class="cart-header">-->
+    <!--                                    <tr>-->
+    <!--                                        <th class="prod-column">product</th>-->
+    <!--                                        <th>&nbsp;</th>-->
+    <!--                                        <th>Price</th>-->
+    <!--                                        <th>Quantity</th>-->
+    <!--                                        <th>Total</th>-->
+    <!--                                    </tr>-->
+    <!--                                    </thead>-->
+    <!--                                    <tbody>-->
+    <!--                                    <tr>-->
+    <!--                                        <td colspan="2" class="prod-column">-->
+    <!--                                            <div class="column-box">-->
+    <!--                                                <figure class="prod-thumb">-->
+    <!--                                                    <a href="/shop-detail"><img-->
+    <!--                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>-->
+    <!--                                                </figure>-->
+    <!--                                                <h6 class="prod-title">Super chair</h6>-->
+    <!--                                                <div class="prod-text">Color: Brown</div>-->
+    <!--                                            </div>-->
+    <!--                                        </td>-->
+    <!--                                        <td class="price">$32.00</td>-->
+    <!--                                        <td class="quantity-box">-->
+    <!--                                            <div class="item-quantity">-->
+    <!--                                                <b>2</b>-->
+    <!--                                            </div>-->
+    <!--                                        </td>-->
+    <!--                                        <td class="sub-total">$64.00</td>-->
+    <!--                                    </tr>-->
+    <!--                                    <tr>-->
+    <!--                                        <td colspan="2" class="prod-column">-->
+    <!--                                            <div class="column-box">-->
+    <!--                                                <figure class="prod-thumb">-->
+    <!--                                                    <a href="/shop-detail"><img-->
+    <!--                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>-->
+    <!--                                                </figure>-->
+    <!--                                                <h6 class="prod-title">Super sofa</h6>-->
+    <!--                                                <div class="prod-text">Color: Black</div>-->
+    <!--                                            </div>-->
+    <!--                                        </td>-->
+    <!--                                        <td class="price">$199.00</td>-->
+    <!--                                        <td class="quantity-box">-->
+    <!--                                            <div class="item-quantity">-->
+    <!--                                                <b>1</b>-->
+    <!--                                            </div>-->
+    <!--                                        </td>-->
+    <!--                                        <td class="sub-total">$199.00</td>-->
+    <!--                                    </tr>-->
+    <!--                                    <tr>-->
+    <!--                                        <td colspan="2" class="prod-column">-->
+    <!--                                            <div class="column-box">-->
+    <!--                                                <figure class="prod-thumb">-->
+    <!--                                                    <a href="/shop-detail"><img-->
+    <!--                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>-->
+    <!--                                                </figure>-->
+    <!--                                                <h6 class="prod-title">Super table</h6>-->
+    <!--                                                <div class="prod-text">Color: White</div>-->
+    <!--                                            </div>-->
+    <!--                                        </td>-->
+    <!--                                        <td class="price">$99.00</td>-->
+    <!--                                        <td class="quantity-box">-->
+    <!--                                            <div class="item-quantity">-->
+    <!--                                                <b>1</b>-->
+    <!--                                            </div>-->
+    <!--                                        </td>-->
+    <!--                                        <td class="sub-total">$99.00</td>-->
+    <!--                                    </tr>-->
+    <!--                                    </tbody>-->
+    <!--                                </table>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
 
-                <!-- Total Column -->
-                <div class="total-column col-lg-4 col-md-12 col-sm-12">
-                    <div class="inner-column">
-                        <div class="cart-total-outer">
-                            <div class="title-box">
-                                <h6>Order Totals</h6>
-                            </div>
-                            <div class="cart-total-box">
-                                <ul class="cart-totals">
-                                    <li>Totals : <span>$362.00</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Order Section -->
+    <!--                &lt;!&ndash; Total Column &ndash;&gt;-->
+    <!--                <div class="total-column col-lg-4 col-md-12 col-sm-12">-->
+    <!--                    <div class="inner-column">-->
+    <!--                        <div class="cart-total-outer">-->
+    <!--                            <div class="title-box">-->
+    <!--                                <h6>Order Totals</h6>-->
+    <!--                            </div>-->
+    <!--                            <div class="cart-total-box">-->
+    <!--                                <ul class="cart-totals">-->
+    <!--                                    <li>Totals : <span>$362.00</span></li>-->
+    <!--                                </ul>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </section>-->
+    <!--    &lt;!&ndash; End Order Section &ndash;&gt;-->
 
     <!-- Footer -->
     <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>

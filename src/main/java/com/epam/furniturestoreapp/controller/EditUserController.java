@@ -48,7 +48,7 @@ public class EditUserController {
                               @RequestParam("password") String password) {
         UserTable user = userTableService.getUserById(userTableID);
         if (user == null) {
-            return "error-page";
+            return "redirect:/error-page";
         }
         user.setFirstname(firstname);
         user.setLastname(lastname);

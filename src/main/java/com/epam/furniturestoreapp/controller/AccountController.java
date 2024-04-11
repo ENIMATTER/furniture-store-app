@@ -60,7 +60,7 @@ public class AccountController {
 
         addToModelBasicAttributes(model);
         if (userTableService.existsByEmail(email)) {
-            return "error-page";
+            return "redirect:/error-page";
         }
 
         String codedPassword = new BCryptPasswordEncoder().encode(userPassword);

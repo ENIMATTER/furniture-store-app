@@ -13,15 +13,15 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Getter
 @ToString
-@Table(name = "orderItem")
+@Table(name = "orderitem")
 public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "orderItemID")
+    @Column(name = "orderitemid")
     private long orderItemID;
 
     @ManyToOne
-    @JoinColumn(name = "orderTableID", referencedColumnName = "orderTableID")
+    @JoinColumn(name = "ordertableid", referencedColumnName = "ordertableid")
     private OrderTable orderTableID;
 
     @ManyToOne

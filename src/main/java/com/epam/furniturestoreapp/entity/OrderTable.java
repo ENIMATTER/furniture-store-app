@@ -14,22 +14,22 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @ToString
-@Table(name = "orderTable")
+@Table(name = "ordertable")
 public class OrderTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "orderTableID")
+    @Column(name = "ordertableid")
     private long orderTableID;
 
     @ManyToOne
-    @JoinColumn(name = "userTableID", referencedColumnName = "userTableID")
+    @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
     private UserTable userTableID;
 
     @NotBlank(message = "Order date is mandatory")
-    @Column(name = "OrderDate")
+    @Column(name = "orderdate")
     private LocalDateTime orderDate;
 
     @NotBlank(message = "Total amount is mandatory")
-    @Column(name = "TotalAmount")
+    @Column(name = "totalamount")
     private double totalAmount;
 }

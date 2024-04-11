@@ -40,4 +40,8 @@ public class CartItemService {
     public void save(CartItem cartItem) {
         cartItemRepository.save(cartItem);
     }
+
+    public void deleteAll(List<CartItem> userCartItems) {
+        cartItemRepository.deleteAll(userCartItems);
+    }
 }

@@ -58,15 +58,22 @@ public class CartController {
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<CartItem> cartItemsByUser = cartItemService.getAllItemsByUser(user);
         List<CartItem> allCartItems = cartItemService.getAll();
+
         boolean createNewItem = true;
         for (CartItem cartItem : cartItemsByUser) {
             if (cartItem.getProductID().getProductID() == product.getProductID()) {
+                if(cartItem.getProductID().getStockQuantity() < cartItem.getQuantity() + cartQuantity){
+                    return "redirect:/error-page";
+                }
                 cartItem.setQuantity(cartItem.getQuantity() + cartQuantity);
                 createNewItem = false;
                 break;
             }
         }
         if (createNewItem) {
+            if(product.getStockQuantity() < cartQuantity){
+                return "redirect:/error-page";
+            }
             CartItem newCartItem = new CartItem();
             newCartItem.setUserTableID(user);
             newCartItem.setProductID(product);
@@ -91,6 +98,9 @@ public class CartController {
         } else {
             CartItem cartItem = cartItemService.getById(cartItemID);
             if(cartItem != null) {
+                if(cartItem.getProductID().getStockQuantity() < cartQuantity){
+                    return "redirect:/error-page";
+                }
                 cartItem.setQuantity(cartQuantity);
                 cartItemService.save(cartItem);
             }

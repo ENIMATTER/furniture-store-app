@@ -41,17 +41,4 @@ public class MainController {
         model.addAttribute("thAction", thActionForAllProducts);
         return "error-page";
     }
-
-    ////////////////////////////////////////
-
-    @GetMapping("/checkout")
-    public String checkout(){
-        return "checkout";
-    }
-
-    @GetMapping("/orders")
-    public String orders(){
-        return "orders";
-    }
-
 }

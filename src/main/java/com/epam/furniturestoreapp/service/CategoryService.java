@@ -20,23 +20,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public void addCategory(Category category) {
-        categoryRepository.save(category);
-    }
-
-    public boolean existsById(long id) {
-        return categoryRepository.existsById(id);
-    }
-
     public Category findById(long id) {
         return categoryRepository.findById(id).orElse(null);
-    }
-
-    public void updateCategory(Category category) {
-        categoryRepository.save(category);
-    }
-
-    public void deleteById(long id) {
-        categoryRepository.deleteById(id);
     }
 }

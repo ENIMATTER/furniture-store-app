@@ -48,7 +48,7 @@ public class ProductsController {
     }
 
     static {
-        colorMap = new HashMap<>();
+        colorMap = new LinkedHashMap<>();
         colorMap.put(Color.White, "background-color:#e0dfdf;");
         colorMap.put(Color.Blue, "background-color:#0b5fb5;");
         colorMap.put(Color.Green, "background-color:#00a651;");
@@ -78,12 +78,11 @@ public class ProductsController {
     @GetMapping("/category/{id}")
     public String getProductsByCategoryId(@PathVariable long id, Model model) {
         Category category = categoryService.findById(id);
-        model.addAttribute("categories", categories);
         if (category == null) {
-            model.addAttribute("thAction", thActionForAllProducts);
-            return "not-found";
+            return "redirect:/not-found";
         }
         List<Product> products = productService.getAllProductsByCategory(category);
+        products.removeIf(product -> product.getStockQuantity() == 0);
         addToModelBasicAttributes(model, products);
         model.addAttribute("thAction", thActionForProductsByCategory + id);
         return "shop";
@@ -100,10 +99,9 @@ public class ProductsController {
                                            Model model) {
         List<Product> products;
         Category category = categoryService.findById(id);
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForProductsByCategory + id);
+
         if (category == null) {
-            return "not-found";
+            return "redirect:/not-found";
         }
 
         // Search
@@ -114,13 +112,16 @@ public class ProductsController {
         }
 
         // Filter by price, color and material
-        if(from != null || to != null || color != null || materials != null){
+        if (from != null || to != null || color != null || materials != null) {
             products = productService.getAllByCategoryIDAndPriceBetweenAndColorAndMaterial(category, from, to, color, materials);
         }
 
         // Filter order
         filterOrder(products, filter);
 
+        products.removeIf(product -> product.getStockQuantity() == 0);
+
+        model.addAttribute("thAction", thActionForProductsByCategory + id);
         addToModelBasicAttributes(model, products);
         return "shop";
     }
@@ -128,6 +129,7 @@ public class ProductsController {
     @GetMapping
     public String getProducts(Model model) {
         List<Product> products = productService.getAllProducts();
+        products.removeIf(product -> product.getStockQuantity() == 0);
         addToModelBasicAttributes(model, products);
         model.addAttribute("thAction", thActionForAllProducts);
         return "shop";
@@ -135,12 +137,12 @@ public class ProductsController {
 
     @PostMapping
     public String postProducts(@RequestParam(value = "search", required = false) String search,
-                                  @RequestParam(value = "filter", defaultValue = "Last added") String filter,
-                                  @RequestParam(value = "from", required = false) Double from,
-                                  @RequestParam(value = "to", required = false) Double to,
-                                  @RequestParam(value = "color", required = false) Color color,
-                                  @RequestParam(value = "materials", required = false) Material[] materials,
-                                  Model model) {
+                               @RequestParam(value = "filter", defaultValue = "Last added") String filter,
+                               @RequestParam(value = "from", required = false) Double from,
+                               @RequestParam(value = "to", required = false) Double to,
+                               @RequestParam(value = "color", required = false) Color color,
+                               @RequestParam(value = "materials", required = false) Material[] materials,
+                               Model model) {
         List<Product> products;
 
         // Search
@@ -151,12 +153,14 @@ public class ProductsController {
         }
 
         // Filter by price, color and material
-        if(from != null || to != null || color != null || materials != null){
+        if (from != null || to != null || color != null || materials != null) {
             products = productService.getAllByPriceBetweenAndColorAndMaterial(from, to, color, materials);
         }
 
         // Filter order
         filterOrder(products, filter);
+
+        products.removeIf(product -> product.getStockQuantity() == 0);
 
         addToModelBasicAttributes(model, products);
         model.addAttribute("thAction", thActionForAllProducts);
@@ -166,20 +170,20 @@ public class ProductsController {
     @GetMapping("/{id}")
     public String getProductById(@PathVariable long id, Model model) {
         Product product = productService.getProductById(id);
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
         if (product == null) {
-            return "not-found";
+            return "redirect:/not-found";
         }
         Category category = product.getCategoryID();
         List<Review> reviews = reviewService.getAllReviewsByProduct(product);
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", thActionForAllProducts);
         model.addAttribute("reviews", reviews);
         model.addAttribute("category", category);
         model.addAttribute("product", product);
         return "shop-detail";
     }
 
-    private void addToModelBasicAttributes(Model model, List<Product> products){
+    private void addToModelBasicAttributes(Model model, List<Product> products) {
         model.addAttribute("categories", categories);
         model.addAttribute("filterList", filterList);
         model.addAttribute("colorMap", colorMap);
@@ -187,7 +191,7 @@ public class ProductsController {
         model.addAttribute("products", products);
     }
 
-    private void filterOrder(List<Product> products, String filter){
+    private void filterOrder(List<Product> products, String filter) {
         switch (filter) {
             case byRating -> products.sort(Comparator.comparingDouble(Product::getAverageRating).reversed());
             case lastAdded -> Collections.reverse(products);

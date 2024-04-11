@@ -54,7 +54,7 @@ public class EditAddressController {
                                  @RequestParam("zipCode") String zipCode) {
         Address address = addressService.getAddressById(addressID);
         if (address == null) {
-            return "error-page";
+            return "redirect:/error-page";
         }
         address.setStreet(street);
         address.setCity(city);

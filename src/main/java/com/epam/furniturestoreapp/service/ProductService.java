@@ -136,4 +136,8 @@ public class ProductService {
     public void save(Product product) {
         productRepository.save(product);
     }
+
+    public void saveAll(List<Product> products) {
+        productRepository.saveAll(products);
+    }
 }
