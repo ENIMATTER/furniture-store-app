@@ -49,7 +49,8 @@ public class ProductsController {
 
     static {
         colorMap = new LinkedHashMap<>();
-        colorMap.put(Color.White, "background-color:#e0dfdf;");
+        colorMap.put(Color.Grey, "background-color:#adadad;");
+        colorMap.put(Color.White, "background-color:#f9f9f9;");
         colorMap.put(Color.Blue, "background-color:#0b5fb5;");
         colorMap.put(Color.Green, "background-color:#00a651;");
         colorMap.put(Color.Yellow, "background-color:#f7ff01;");

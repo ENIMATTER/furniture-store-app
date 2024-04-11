@@ -24,4 +24,8 @@ public class OrderTableService {
     public List<OrderTable> getAllByUser(UserTable user) {
         return orderTableRepository.getAllByUserTableID(user);
     }
+
+    public void deleteAll(List<OrderTable> orderTables) {
+        orderTableRepository.deleteAll(orderTables);
+    }
 }

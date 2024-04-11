@@ -24,4 +24,8 @@ public class OrderItemService {
     public List<OrderItem> getAllByOrderTable(OrderTable orderTable) {
         return orderItemRepository.getAllByOrderTableID(orderTable);
     }
+
+    public void deleteAll(List<OrderItem> orderItems) {
+        orderItemRepository.deleteAll(orderItems);
+    }
 }

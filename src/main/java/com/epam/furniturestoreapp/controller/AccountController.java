@@ -1,13 +1,7 @@
 package com.epam.furniturestoreapp.controller;
 
-import com.epam.furniturestoreapp.entity.Address;
-import com.epam.furniturestoreapp.entity.Category;
-import com.epam.furniturestoreapp.entity.Review;
-import com.epam.furniturestoreapp.entity.UserTable;
-import com.epam.furniturestoreapp.service.AddressService;
-import com.epam.furniturestoreapp.service.CategoryService;
-import com.epam.furniturestoreapp.service.ReviewService;
-import com.epam.furniturestoreapp.service.UserTableService;
+import com.epam.furniturestoreapp.entity.*;
+import com.epam.furniturestoreapp.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +22,20 @@ public class AccountController {
     private final UserTableService userTableService;
     private final AddressService addressService;
     private final ReviewService reviewService;
+    private final OrderTableService orderTableService;
+    private final OrderItemService orderItemService;
     private final List<Category> categories;
 
     @Autowired
     public AccountController(CategoryService categoryService, UserTableService userTableService,
-                             AddressService addressService, ReviewService reviewService) {
+                             AddressService addressService, ReviewService reviewService,
+                             OrderTableService orderTableService, OrderItemService orderItemService) {
         this.userTableService = userTableService;
         this.addressService = addressService;
         this.reviewService = reviewService;
         this.categories = categoryService.findAll();
+        this.orderTableService = orderTableService;
+        this.orderItemService = orderItemService;
     }
 
     @GetMapping("/signup")
@@ -114,15 +113,25 @@ public class AccountController {
     }
 
     @DeleteMapping("/account")
-    private String deleteAccount(Model model) {
+    private String deleteAccount() {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
+
         Address address = addressService.getByUserTableID(user);
         addressService.deleteAddress(address);
+
         List<Review> reviewsByUser = reviewService.getAllReviewsByUser(user);
         reviewService.deleteReviews(reviewsByUser);
+
+        List<OrderTable> orderTables = orderTableService.getAllByUser(user);
+
+        for(OrderTable orderTable : orderTables){
+            orderItemService.deleteAll(orderItemService.getAllByOrderTable(orderTable));
+        }
+
+        orderTableService.deleteAll(orderTables);
+
         userTableService.deleteUser(user);
-        addToModelBasicAttributes(model);
         return "redirect:/";
     }
 
