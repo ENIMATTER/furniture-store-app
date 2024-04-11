@@ -105,6 +105,10 @@ public class AccountController {
 
     @GetMapping("/account")
     public String account(Model model) {
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserTable user = userTableService.getUserByEmail(emailUsername);
+        double balance = user.getBalance();
+        model.addAttribute("balance", balance);
         addToModelBasicAttributes(model);
         return "account";
     }
@@ -120,6 +124,27 @@ public class AccountController {
         userTableService.deleteUser(user);
         addToModelBasicAttributes(model);
         return "redirect:/";
+    }
+
+    @GetMapping("/top-up")
+    public String getTopUp(Model model) {
+        addToModelBasicAttributes(model);
+        return "top-up";
+    }
+
+    @PostMapping("/top-up")
+    public String postTopUp(@RequestParam("amount") Double amount,
+                            @RequestParam("cardNumber") String cardNumber,
+                            @RequestParam("expiryDate") String expiryDate,
+                            @RequestParam("CVV") String CVV) {
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserTable user = userTableService.getUserByEmail(emailUsername);
+        if (cardNumber == null || expiryDate == null || CVV == null) {
+            return "redirect:/error-page";
+        }
+        user.setBalance(user.getBalance() + amount);
+        userTableService.editUser(user);
+        return "redirect:/account";
     }
 
     private void addToModelBasicAttributes(Model model) {

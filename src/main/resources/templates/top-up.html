@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+    <!-- End Header -->
+
+    <!-- Address Section -->
+    <div class="register-section">
+        <div class="auto-container">
+            <div class="inner-container">
+                <div class="row clearfix">
+                    <div class="column col-lg-8 col-md-12 col-sm-12">
+                        <form th:method="post" th:action="@{/top-up}">
+                            <div class="styled-form">
+                                <div class="form-group">
+                                    <label>Enter amount:</label>
+                                    <input type="text" name="amount" placeholder="Enter amount" required>
+                                </div><br>
+                                <h4>Enter your bank card details:</h4>
+                                <div class="form-group">
+                                    <label>Card number</label>
+                                    <input type="text" name="cardNumber" placeholder="Enter card number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Expiry date:</label>
+                                    <input type="text" name="expiryDate" placeholder="Enter expiry date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>CVV</label>
+                                    <input type="password" name="CVV" placeholder="Enter CVV" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="theme-btn btn-style-one">
+                                        Pay
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Address Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>
