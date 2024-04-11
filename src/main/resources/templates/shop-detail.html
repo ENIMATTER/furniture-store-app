@@ -19,72 +19,9 @@
             <!-- Upper Box -->
             <div class="upper-box">
                 <div class="row clearfix">
-                    <!-- Gallery Column -->
+                    <!-- Image Column -->
                     <div class="gallery-column col-lg-6 col-md-12 col-sm-12">
-                        <div class="inner-column">
-                            <div class="carousel-outer">
-                                <!-- Swiper -->
-                                <div class="swiper-container content-carousel">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
-                                                                     class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                            </figure>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
-                                                                     class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                            </figure>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
-                                                                     class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                            </figure>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
-                                                                     class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                            </figure>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <figure class="image"><a th:href="@{/images/resource/products/table1.jpg}"
-                                                                     class="lightbox-image"><img
-                                                    th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
-                                            </figure>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="swiper-container thumbs-carousel">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}"
-                                                                       alt="">
-                                            </figure>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}"
-                                                                       alt="">
-                                            </figure>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}"
-                                                                       alt="">
-                                            </figure>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <figure class="thumb"><img th:src="@{/images/resource/products/table1.jpg}"
-                                                                       alt="">
-                                            </figure>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <img th:src="@{${product.getImage().getImagePath()}}" alt="" style="width: 100%;">
                     </div>
                     <!-- Content Column -->
                     <div class="content-column col-lg-6 col-md-12 col-sm-12">
@@ -182,7 +119,8 @@
                                 <div class="shop-comment-form">
                                     <h4>Add your review</h4>
                                     <form method="post" action="/review">
-                                        <input type="hidden" id="productID" th:name="productID" th:value="${product.getProductID()}"/>
+                                        <input type="hidden" id="productID" th:name="productID"
+                                               th:value="${product.getProductID()}"/>
                                         <div class="rating-box">
                                             <div class="text"> Your rating:</div>
                                             <div class="rating">
@@ -202,7 +140,8 @@
                                                 <label for="input-rating4">4 <span class="fa fa-star"></span></label>
                                             </div>
                                             <div class="rating">
-                                                <input id="input-rating5" th:name="rating" type="radio" value="5" checked/>
+                                                <input id="input-rating5" th:name="rating" type="radio" value="5"
+                                                       checked/>
                                                 <label for="input-rating5">5 <span class="fa fa-star"></span></label>
                                             </div>
                                         </div>

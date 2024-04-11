@@ -68,7 +68,8 @@ public class ProductsController {
     }
 
     @Autowired
-    public ProductsController(CategoryService categoryService, ProductService productService, ReviewService reviewService) {
+    public ProductsController(CategoryService categoryService, ProductService productService,
+                              ReviewService reviewService) {
         this.categoryService = categoryService;
         this.productService = productService;
         this.reviewService = reviewService;
@@ -83,7 +84,8 @@ public class ProductsController {
         }
         List<Product> products = productService.getAllProductsByCategory(category);
         products.removeIf(product -> product.getStockQuantity() == 0);
-        addToModelBasicAttributes(model, products);
+        addToModelBasicAttributes(model);
+        model.addAttribute("products", products);
         model.addAttribute("thAction", thActionForProductsByCategory + id);
         return "shop";
     }
@@ -122,7 +124,8 @@ public class ProductsController {
         products.removeIf(product -> product.getStockQuantity() == 0);
 
         model.addAttribute("thAction", thActionForProductsByCategory + id);
-        addToModelBasicAttributes(model, products);
+        model.addAttribute("products", products);
+        addToModelBasicAttributes(model);
         return "shop";
     }
 
@@ -130,7 +133,8 @@ public class ProductsController {
     public String getProducts(Model model) {
         List<Product> products = productService.getAllProducts();
         products.removeIf(product -> product.getStockQuantity() == 0);
-        addToModelBasicAttributes(model, products);
+        addToModelBasicAttributes(model);
+        model.addAttribute("products", products);
         model.addAttribute("thAction", thActionForAllProducts);
         return "shop";
     }
@@ -162,7 +166,8 @@ public class ProductsController {
 
         products.removeIf(product -> product.getStockQuantity() == 0);
 
-        addToModelBasicAttributes(model, products);
+        addToModelBasicAttributes(model);
+        model.addAttribute("products", products);
         model.addAttribute("thAction", thActionForAllProducts);
         return "shop";
     }
@@ -183,12 +188,11 @@ public class ProductsController {
         return "shop-detail";
     }
 
-    private void addToModelBasicAttributes(Model model, List<Product> products) {
+    private void addToModelBasicAttributes(Model model) {
         model.addAttribute("categories", categories);
         model.addAttribute("filterList", filterList);
         model.addAttribute("colorMap", colorMap);
         model.addAttribute("materialList", materialList);
-        model.addAttribute("products", products);
     }
 
     private void filterOrder(List<Product> products, String filter) {

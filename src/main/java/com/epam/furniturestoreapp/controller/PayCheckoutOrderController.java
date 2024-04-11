@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -46,15 +48,19 @@ public class PayCheckoutOrderController {
         UserTable user = userTableService.getUserByEmail(emailUsername);
         Address address = addressService.getByUserTableID(user);
         List<CartItem> cartItems = cartItemService.getAllItemsByUser(user);
+
         double sumCartItems = 0;
         for (CartItem cartItem : cartItems) {
             sumCartItems += cartItem.getProductID().getPrice() * cartItem.getQuantity();
         }
-        double shippingFee = sumCartItems * 0.1;
-        double total = sumCartItems + shippingFee;
+
+        BigDecimal shippingFee = BigDecimal.valueOf(sumCartItems * 0.1).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal total = shippingFee.add(BigDecimal.valueOf(sumCartItems)).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal sumCartItemsBigDecimal = BigDecimal.valueOf(sumCartItems).setScale(2, RoundingMode.HALF_UP);
+
         model.addAttribute("total", total);
         model.addAttribute("shippingFee", shippingFee);
-        model.addAttribute("sumCartItems", sumCartItems);
+        model.addAttribute("sumCartItems", sumCartItemsBigDecimal);
         model.addAttribute("address", address);
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);

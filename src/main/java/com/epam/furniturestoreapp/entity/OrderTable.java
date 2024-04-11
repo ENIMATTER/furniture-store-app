@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @Table(name = "ordertable")
 public class OrderTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

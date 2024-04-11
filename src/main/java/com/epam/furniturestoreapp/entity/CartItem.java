@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
@@ -12,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @Table(name = "cartitem")
 public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

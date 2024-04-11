@@ -45,7 +45,7 @@
                                                                 class="cross-icon flaticon-cancel-1"></button>
                                                     </form>
                                                     <a th:href="'/products/' + ${cartItem.getProductID().getProductID()}"><img
-                                                            th:src="@{/images/resource/products/table1.jpg}" alt=""></a>
+                                                            th:src="@{${cartItem.getProductID().getImage().getImagePath()}}" alt=""></a>
                                                 </figure>
                                                 <h6 class="prod-title"
                                                     th:text="${cartItem.getProductID().getProductName()}"></h6>

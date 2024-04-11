@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -13,7 +12,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @Table(name = "image")
 public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +19,12 @@ public class Image {
     @Column(name = "ImageID")
     private long imageID;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "productID", referencedColumnName = "productID")
     private Product productID;
 
     @Size(max = 200, message = "Image path must be less than 200")
     @NotBlank(message = "Image path is mandatory")
-    @Column(name = "ImagePath")
+    @Column(name = "imagepath")
     private String imagePath;
 }

@@ -22,12 +22,11 @@
                 <div class="content-side col-lg-9 col-md-12 col-sm-12">
                     <div class="shops-outer">
                         <div class="row clearfix">
-                            <!-- Shop Item -->
                             <div th:each="product: ${products}" class="shop-item col-lg-4 col-md-4 col-sm-12">
                                 <div class="inner-box">
                                     <div class="image">
                                         <a th:href="'/products/' + ${product.getProductID()}"><img
-                                                th:src="@{/images/resource/products/table1.jpg}"
+                                                th:src="@{${product.getImage().getImagePath()}}"
                                                 alt=""/></a>
                                     </div>
                                     <div class="lower-content">

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -13,7 +12,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @Table(name = "usertable")
 public class UserTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

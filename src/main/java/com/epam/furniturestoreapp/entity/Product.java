@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -13,7 +12,6 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Setter
 @Getter
-@ToString
 @Table(name = "product")
 public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,4 +60,7 @@ public class Product {
     @Column(name = "averagerating")
     private double averageRating;
 
+    @OneToOne
+    @JoinColumn(name = "productID", referencedColumnName = "productID")
+    private Image image;
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
@@ -37,12 +39,15 @@ public class CartController {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<CartItem> cartItems = cartItemService.getAllItemsByUser(user);
-        Map<CartItem, Double> totals = new HashMap<>();
-        cartItems.forEach(cartItem -> totals.put(cartItem, cartItem.getQuantity() * cartItem.getProductID().getPrice()));
-        double allTotal = 0;
-        for (Double d : totals.values()) {
-            allTotal += d;
+        Map<CartItem, BigDecimal> totals = new HashMap<>();
+        cartItems.forEach(cartItem -> totals.put(cartItem, BigDecimal
+                        .valueOf(cartItem.getQuantity() * cartItem.getProductID().getPrice())
+                        .setScale(2, RoundingMode.HALF_UP)));
+        BigDecimal allTotal = BigDecimal.ZERO;
+        for (BigDecimal d : totals.values()) {
+            allTotal = allTotal.add(d);
         }
+        allTotal = allTotal.setScale(2, RoundingMode.HALF_UP);
         model.addAttribute("allTotal", allTotal);
         model.addAttribute("totals", totals);
         model.addAttribute("cartItems", cartItems);
