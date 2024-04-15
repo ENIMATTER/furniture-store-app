@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
@@ -101,6 +102,14 @@ public class AccountController {
 
     @GetMapping("/top-up")
     public String getTopUp(Model model) {
+        int year = LocalDateTime.now().getYear();
+        int monthInt = LocalDateTime.now().getMonthValue();
+        String month = monthInt + "";
+        if(monthInt < 10){
+            month = "0" + month;
+        }
+        String min = year + "-" + month;
+        model.addAttribute("min", min);
         addToModelBasicAttributes(model);
         return "top-up";
     }
@@ -108,13 +117,26 @@ public class AccountController {
     @PostMapping("/top-up")
     public String postTopUp(@RequestParam("amount") Double amount,
                             @RequestParam("cardNumber") String cardNumber,
-                            @RequestParam("expiryDate") String expiryDate,
                             @RequestParam("CVV") String CVV) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
-        if (cardNumber == null || expiryDate == null || CVV == null) {
-            return "redirect:/error-page";
+        for(char c : cardNumber.toCharArray()){
+            if(Character.isLetter(c)){
+                return "redirect:/top-up?cardnumbererror";
+            }
         }
+        if(cardNumber.length() != 16){
+            return "redirect:/top-up?cardnumbererror";
+        }
+        for(char c : CVV.toCharArray()){
+            if(Character.isLetter(c)){
+                return "redirect:/top-up?CVVerror";
+            }
+        }
+        if(CVV.length() != 3){
+            return "redirect:/top-up?CVVerror";
+        }
+
         user.setBalance(user.getBalance() + amount);
         userTableService.editUser(user);
         return "redirect:/account";
