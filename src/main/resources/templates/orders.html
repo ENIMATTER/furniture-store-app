@@ -16,7 +16,7 @@
     <!--Order Section -->
     <section class="shoping-cart-section" th:each="order: ${orders}">
         <div class="auto-container">
-            <h4 th:text="'Order ' + ${order.key.getOrderTableID()} + ': ' + ${order.key.getOrderDate()}"></h4><br>
+            <h4 th:text="'Order ' + ${order.getOrderTableID()} + ': ' + ${order.getOrderDate()}"></h4><br>
             <div class="row clearfix">
                 <div class="cart-column col-lg-8 col-md-12 col-sm-12">
                     <div class="inner-column">
@@ -32,7 +32,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="orderItem : ${order.value}">
+                                    <tr th:each="orderItem : ${order.getOrderItems()}">
                                         <td colspan="2" class="prod-column">
                                             <div class="column-box">
                                                 <figure class="prod-thumb">
@@ -46,6 +46,7 @@
                                                      th:text="'Color: ' + ${orderItem.getProductID().getColor()}"></div>
                                             </div>
                                         </td>
+
                                         <td class="price" th:text="'$' + ${orderItem.getProductID().getPrice()}"></td>
 
                                         <td class="quantity-box">
@@ -66,13 +67,14 @@
                 <div class="total-column col-lg-4 col-md-12 col-sm-12">
                     <div class="inner-column">
                         <div class="cart-total-outer">
-                            <div class="title-box">
-                                <h6>Order Totals</h6>
-                            </div>
                             <div class="cart-total-box">
                                 <ul class="cart-totals">
-                                    <li>Total with shipping : <span
-                                            th:text="'$' + ${order.key.getTotalAmount()}"></span></li>
+                                    <li>Street: <span th:text="${order.getAddress().getStreet()}"></span></li>
+                                    <li>House: <span th:text="${order.getAddress().getHouse()}"></span></li>
+                                    <li>Floor: <span th:text="${order.getAddress().getFloor()}"></span></li>
+                                    <li>Apartment: <span th:text="${order.getAddress().getApartment()}"></span></li><br>
+                                    <li>Total with shipping: <span
+                                            th:text="'$' + ${order.getTotalAmount()}"></span></li>
                                 </ul>
                             </div>
                         </div>

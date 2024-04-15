@@ -38,12 +38,14 @@ public class AccountController {
     public String postSignup(@RequestParam("firstname") String firstname,
                              @RequestParam("lastname") String lastname,
                              @RequestParam("email") String email,
-                             @RequestParam("userPassword") String userPassword,
                              @RequestParam("phoneNumber") String phoneNumber,
-                             Model model) {
-        addToModelBasicAttributes(model);
+                             @RequestParam("userPassword") String userPassword,
+                             @RequestParam("userPasswordAgain") String userPasswordAgain) {
         if (userTableService.existsByEmail(email)) {
-            return "redirect:/error-page";
+            return "redirect:/signup?exist";
+        }
+        if (!userPassword.equals(userPasswordAgain)) {
+            return "redirect:/signup?notmatch";
         }
         String codedPassword = new BCryptPasswordEncoder().encode(userPassword);
         UserTable user = new UserTable();
@@ -86,10 +88,14 @@ public class AccountController {
     }
 
     @DeleteMapping("/account")
-    private String deleteAccount() {
+    private String deleteAccount(HttpServletRequest request, HttpServletResponse response) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         userTableService.deleteUser(user);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
         return "redirect:/";
     }
 

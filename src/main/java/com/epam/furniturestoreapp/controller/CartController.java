@@ -68,7 +68,7 @@ public class CartController {
         for (CartItem cartItem : cartItemsByUser) {
             if (cartItem.getProductID().getProductID().equals(product.getProductID())) {
                 if(cartItem.getProductID().getStockQuantity() < cartItem.getQuantity() + cartQuantity){
-                    return "redirect:/error-page";
+                    return "redirect:/cart?lowquantity";
                 }
                 cartItem.setQuantity(cartItem.getQuantity() + cartQuantity);
                 createNewItem = false;
@@ -77,7 +77,7 @@ public class CartController {
         }
         if (createNewItem) {
             if(product.getStockQuantity() < cartQuantity){
-                return "redirect:/error-page";
+                return "redirect:/cart?lowquantity";
             }
             CartItem newCartItem = new CartItem();
             newCartItem.setUserTableID(user);
@@ -104,7 +104,7 @@ public class CartController {
             CartItem cartItem = cartItemService.getById(cartItemID);
             if(cartItem != null) {
                 if(cartItem.getProductID().getStockQuantity() < cartQuantity){
-                    return "redirect:/error-page";
+                    return "redirect:/cart?lowquantity";
                 }
                 cartItem.setQuantity(cartQuantity);
                 cartItemService.save(cartItem);

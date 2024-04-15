@@ -4,9 +4,13 @@ import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.UserTableService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +42,11 @@ public class EditUserController {
     }
 
     @PutMapping
-    public String putEditUser(@ModelAttribute("user") UserTable user) {
+    public String putEditUser(HttpServletRequest request, HttpServletResponse response,
+                              @ModelAttribute("user") UserTable user) {
+        if(userTableService.existsByEmail(user.getEmail())){
+            return "redirect:/edit-user?exist";
+        }
         UserTable updatedUser = userTableService.getUserById(user.getUserTableID());
         updatedUser.setFirstname(user.getFirstname());
         updatedUser.setLastname(user.getLastname());
@@ -49,7 +57,11 @@ public class EditUserController {
             updatedUser.setUserPassword(codedPassword);
         }
         userTableService.editUser(updatedUser);
-        return "redirect:/logout";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        return "redirect:/login";
     }
 }
 

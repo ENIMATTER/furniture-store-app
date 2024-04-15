@@ -65,8 +65,8 @@ public class PayCheckoutOrderController {
         return "checkout";
     }
 
-    @PostMapping("/pay")
-    public String postPayAndFormOrder(@RequestParam("street") String street,
+    @PostMapping("/checkout")
+    public String checkoutAndFormOrder(@RequestParam("street") String street,
                                       @RequestParam("house") Integer house,
                                       @RequestParam("floor") Integer floor,
                                       @RequestParam("apartment") Integer apartment,
@@ -77,12 +77,7 @@ public class PayCheckoutOrderController {
         List<CartItem> userCartItems = cartItemService.getAllItemsByUser(user);
 
         if (totalToPay > user.getBalance()) {
-            return "redirect:/error-page";
-        }
-        for (CartItem cartItem : userCartItems) {
-            if (cartItem.getProductID().getStockQuantity() < cartItem.getQuantity()) {
-                return "redirect:/error-page";
-            }
+            return "redirect:/checkout?lowbalance";
         }
 
         user.setBalance(user.getBalance() - totalToPay);
@@ -131,12 +126,7 @@ public class PayCheckoutOrderController {
     public String orders(Model model) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
-        List<OrderTable> orderTables = orderTableService.getAllByUser(user);
-        Map<OrderTable, List<OrderItem>> orders = new LinkedHashMap<>();
-
-        for (OrderTable orderTable : orderTables) {
-            orders.put(orderTable, orderItemService.getAllByOrderTable(orderTable));
-        }
+        List<OrderTable> orders = orderTableService.getAllByUser(user);
         model.addAttribute("orders", orders);
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);

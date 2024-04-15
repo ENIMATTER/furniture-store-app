@@ -34,11 +34,4 @@ public class MainController {
         model.addAttribute("thAction", thActionForAllProducts);
         return "not-found";
     }
-
-    @GetMapping("/error-page")
-    public String error(Model model){
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
-        return "error-page";
-    }
 }

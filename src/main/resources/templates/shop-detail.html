@@ -38,8 +38,11 @@
                             <!-- Category -->
                             <div class="categories" th:text="'Category: ' + ${category.getCategoryName()}"></div>
 
-                            <!-- Dimensions -->
-                            <div class="categories" th:text="'Dimensions: ' + ${product.getDimensions()}"></div>
+                            <!-- Color -->
+                            <div class="categories" th:text="'Color: ' + ${product.getColor()}"></div>
+
+                            <!-- Quantity -->
+                            <div class="categories" th:text="'Stock quantity: ' + ${product.getStockQuantity()}"></div>
 
                             <!-- Social Box -->
                             <ul class="social-box">
@@ -76,8 +79,6 @@
 
             <!-- Lower Box -->
             <br>
-            <br>
-            <br>
             <div class="lower-box">
 
                 <!-- Product Info Tabs -->
@@ -94,6 +95,10 @@
                             <!-- Tab / Active Tab -->
                             <div class="tab active-tab" id="prod-details">
                                 <div class="content">
+                                    <!-- Size -->
+                                    <b><div class="categories" th:text="'Size: ' + ${product.getDimensions()}"></div></b>
+                                    <br>
+
                                     <p th:text="${product.getProductDescription()}"></p>
                                 </div>
                             </div>
