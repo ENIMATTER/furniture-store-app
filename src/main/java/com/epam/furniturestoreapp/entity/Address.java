@@ -19,32 +19,28 @@ public class Address {
     @Column(name = "AddressID")
     private long addressID;
 
-    @OneToOne
-    @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
-    private UserTable userTableID;
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "ordertableid", referencedColumnName = "ordertableid")
+    private OrderTable orderTableID;
 
     @Size(max = 50, message = "Street must be less than 50")
     @NotBlank(message = "Street is mandatory")
     @Column(name = "Street")
     private String street;
 
-    @Size(max = 50, message = "City must be less than 50")
-    @NotBlank(message = "City is mandatory")
-    @Column(name = "City")
-    private String city;
+    @NotBlank(message = "House is mandatory")
+    @Column(name = "House")
+    private Integer house;
 
-    @Size(max = 50, message = "State must be less than 50")
-    @NotBlank(message = "State is mandatory")
-    @Column(name = "State")
-    private String state;
+    @NotBlank(message = "Floor is mandatory")
+    @Column(name = "Floor")
+    private Integer floor;
 
-    @Size(max = 50, message = "Country must be less than 50")
-    @NotBlank(message = "Country is mandatory")
-    @Column(name = "Country")
-    private String country;
+    @NotBlank(message = "Apartment is mandatory")
+    @Column(name = "Apartment")
+    private Integer apartment;
 
-    @Size(max = 50, message = "Zip code must be less than 50")
-    @NotBlank(message = "ZipCode is mandatory")
-    @Column(name = "zipcode")
-    private String zipCode;
+    @Size(max = 300, message = "message must be less than 300")
+    @Column(name = "Message")
+    private String message;
 }

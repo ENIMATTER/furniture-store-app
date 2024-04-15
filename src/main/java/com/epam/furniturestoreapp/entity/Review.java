@@ -18,7 +18,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ReviewID")
-    private long reviewID;
+    private Long reviewID;
 
     @ManyToOne
     @JoinColumn(name = "productID", referencedColumnName = "productID")
@@ -30,7 +30,7 @@ public class Review {
 
     @NotBlank(message = "Rating is mandatory")
     @Column(name = "Rating")
-    private int rating;
+    private Integer rating;
 
     @Size(max = 2000, message = "Review comment description must be less than 2000")
     @NotBlank(message = "Review comment description is mandatory")

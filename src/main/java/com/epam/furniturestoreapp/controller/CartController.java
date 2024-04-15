@@ -38,9 +38,9 @@ public class CartController {
     public String getCart(Model model) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
-        List<CartItem> cartItems = cartItemService.getAllItemsByUser(user);
+        List<CartItem> cartItems = user.getCartItems();
         Map<CartItem, BigDecimal> totals = new HashMap<>();
-        cartItems.forEach(cartItem -> totals.put(cartItem, BigDecimal
+        user.getCartItems().forEach(cartItem -> totals.put(cartItem, BigDecimal
                         .valueOf(cartItem.getQuantity() * cartItem.getProductID().getPrice())
                         .setScale(2, RoundingMode.HALF_UP)));
         BigDecimal allTotal = BigDecimal.ZERO;
@@ -61,12 +61,12 @@ public class CartController {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Product product = productService.getProductById(cartProductID);
         UserTable user = userTableService.getUserByEmail(emailUsername);
-        List<CartItem> cartItemsByUser = cartItemService.getAllItemsByUser(user);
+        List<CartItem> cartItemsByUser = user.getCartItems();
         List<CartItem> allCartItems = cartItemService.getAll();
 
         boolean createNewItem = true;
         for (CartItem cartItem : cartItemsByUser) {
-            if (cartItem.getProductID().getProductID() == product.getProductID()) {
+            if (cartItem.getProductID().getProductID().equals(product.getProductID())) {
                 if(cartItem.getProductID().getStockQuantity() < cartItem.getQuantity() + cartQuantity){
                     return "redirect:/error-page";
                 }

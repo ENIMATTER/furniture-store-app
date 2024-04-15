@@ -17,9 +17,9 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ImageID")
-    private long imageID;
+    private Long imageID;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "productID", referencedColumnName = "productID")
     private Product productID;
 

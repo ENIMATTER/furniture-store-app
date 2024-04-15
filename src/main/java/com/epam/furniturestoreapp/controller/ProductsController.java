@@ -66,6 +66,7 @@ public class ProductsController {
         materialList.add(Material.Glass);
         materialList.add(Material.Leather);
         materialList.add(Material.Textile);
+        materialList.add(Material.PVC);
     }
 
     @Autowired

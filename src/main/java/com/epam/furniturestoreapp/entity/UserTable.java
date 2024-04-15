@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -17,7 +18,7 @@ public class UserTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "usertableid")
-    private long userTableID;
+    private Long userTableID;
 
     @Size(max = 50, message = "Firstname must be less than 50")
     @NotBlank(message = "Firstname is mandatory")
@@ -46,10 +47,22 @@ public class UserTable {
 
     @NotBlank(message = "Balance is mandatory")
     @Column(name = "Balance")
-    private double balance;
+    private Double balance;
 
     @Size(max = 50, message = "Roles must be less than 50")
     @NotBlank(message = "Roles is mandatory")
     @Column(name = "roles")
     private String roles;
+
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
+    private List<OrderTable> orderTables;
+
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
+    private List<Review> reviews;
+
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
+    private List<CartItem> cartItems;
 }

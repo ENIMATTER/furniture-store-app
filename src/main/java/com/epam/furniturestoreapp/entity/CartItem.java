@@ -16,7 +16,7 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "cartitemID")
-    private long cartItemID;
+    private Long cartItemID;
 
     @ManyToOne
     @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
@@ -28,5 +28,5 @@ public class CartItem {
 
     @NotBlank(message = "Quantity is mandatory")
     @Column(name = "Quantity")
-    private int quantity;
+    private Integer quantity;
 }

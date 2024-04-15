@@ -20,22 +20,12 @@ import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProd
 @Controller
 public class AccountController {
     private final UserTableService userTableService;
-    private final AddressService addressService;
-    private final ReviewService reviewService;
-    private final OrderTableService orderTableService;
-    private final OrderItemService orderItemService;
     private final List<Category> categories;
 
     @Autowired
-    public AccountController(CategoryService categoryService, UserTableService userTableService,
-                             AddressService addressService, ReviewService reviewService,
-                             OrderTableService orderTableService, OrderItemService orderItemService) {
+    public AccountController(CategoryService categoryService, UserTableService userTableService) {
         this.userTableService = userTableService;
-        this.addressService = addressService;
-        this.reviewService = reviewService;
         this.categories = categoryService.findAll();
-        this.orderTableService = orderTableService;
-        this.orderItemService = orderItemService;
     }
 
     @GetMapping("/signup")
@@ -50,18 +40,11 @@ public class AccountController {
                              @RequestParam("email") String email,
                              @RequestParam("userPassword") String userPassword,
                              @RequestParam("phoneNumber") String phoneNumber,
-                             @RequestParam("street") String street,
-                             @RequestParam("city") String city,
-                             @RequestParam("state") String state,
-                             @RequestParam("country") String country,
-                             @RequestParam("zipCode") String zipCode,
                              Model model) {
-
         addToModelBasicAttributes(model);
         if (userTableService.existsByEmail(email)) {
             return "redirect:/error-page";
         }
-
         String codedPassword = new BCryptPasswordEncoder().encode(userPassword);
         UserTable user = new UserTable();
         user.setFirstname(firstname);
@@ -69,20 +52,10 @@ public class AccountController {
         user.setEmail(email);
         user.setUserPassword(codedPassword);
         user.setPhoneNumber(phoneNumber);
-        user.setBalance(0);
+        user.setBalance(0.0);
         user.setRoles("USER");
         userTableService.addUser(user);
-
-        Address address = new Address();
-        address.setUserTableID(user);
-        address.setStreet(street);
-        address.setCity(city);
-        address.setState(state);
-        address.setCountry(country);
-        address.setZipCode(zipCode);
-        addressService.addAddress(address);
-
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     // Spring Security custom login form (email like username)
@@ -116,21 +89,6 @@ public class AccountController {
     private String deleteAccount() {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
-
-        Address address = addressService.getByUserTableID(user);
-        addressService.deleteAddress(address);
-
-        List<Review> reviewsByUser = reviewService.getAllReviewsByUser(user);
-        reviewService.deleteReviews(reviewsByUser);
-
-        List<OrderTable> orderTables = orderTableService.getAllByUser(user);
-
-        for(OrderTable orderTable : orderTables){
-            orderItemService.deleteAll(orderItemService.getAllByOrderTable(orderTable));
-        }
-
-        orderTableService.deleteAll(orderTables);
-
         userTableService.deleteUser(user);
         return "redirect:/";
     }

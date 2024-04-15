@@ -16,7 +16,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "orderitemid")
-    private long orderItemID;
+    private Long orderItemID;
 
     @ManyToOne
     @JoinColumn(name = "ordertableid", referencedColumnName = "ordertableid")
@@ -28,5 +28,5 @@ public class OrderItem {
 
     @NotBlank(message = "Quantity is mandatory")
     @Column(name = "Quantity")
-    private int quantity;
+    private Integer quantity;
 }

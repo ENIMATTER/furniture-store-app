@@ -46,7 +46,6 @@ public class PayCheckoutOrderController {
     public String checkout(Model model) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
-        Address address = addressService.getByUserTableID(user);
         List<CartItem> cartItems = cartItemService.getAllItemsByUser(user);
 
         double sumCartItems = 0;
@@ -61,38 +60,27 @@ public class PayCheckoutOrderController {
         model.addAttribute("total", total);
         model.addAttribute("shippingFee", shippingFee);
         model.addAttribute("sumCartItems", sumCartItemsBigDecimal);
-        model.addAttribute("address", address);
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
         return "checkout";
     }
 
-    @GetMapping("/pay")
-    public String getPay(@RequestParam("totalToPay") Double totalToPay,
-                         Model model) {
-        model.addAttribute("totalToPay", totalToPay);
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
-        return "pay";
-    }
-
     @PostMapping("/pay")
-    public String postPayAndFormOrder(@RequestParam("totalToPay") Double totalToPay,
-                                      @RequestParam("cardNumber") String cardNumber,
-                                      @RequestParam("expiryDate") String expiryDate,
-                                      @RequestParam("CVV") String CVV) {
+    public String postPayAndFormOrder(@RequestParam("street") String street,
+                                      @RequestParam("house") Integer house,
+                                      @RequestParam("floor") Integer floor,
+                                      @RequestParam("apartment") Integer apartment,
+                                      @RequestParam(value = "message", required = false) String message,
+                                      @RequestParam("totalToPay") Double totalToPay) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<CartItem> userCartItems = cartItemService.getAllItemsByUser(user);
 
-        if (cardNumber == null || expiryDate == null || CVV == null || totalToPay == null) {
-            return "redirect:/error-page";
-        }
         if (totalToPay > user.getBalance()) {
             return "redirect:/error-page";
         }
-        for(CartItem cartItem : userCartItems){
-            if(cartItem.getProductID().getStockQuantity() < cartItem.getQuantity()){
+        for (CartItem cartItem : userCartItems) {
+            if (cartItem.getProductID().getStockQuantity() < cartItem.getQuantity()) {
                 return "redirect:/error-page";
             }
         }
@@ -106,6 +94,15 @@ public class PayCheckoutOrderController {
         orderTable.setTotalAmount(totalToPay);
         orderTableService.addOrder(orderTable);
 
+        Address address = new Address();
+        address.setStreet(street);
+        address.setHouse(house);
+        address.setFloor(floor);
+        address.setApartment(apartment);
+        address.setMessage(message);
+        address.setOrderTableID(orderTable);
+        addressService.addAddress(address);
+
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (CartItem cartItem : userCartItems) {
@@ -118,7 +115,7 @@ public class PayCheckoutOrderController {
         orderItemService.addAllOrderItems(orderItems);
 
         List<Product> productsFromCart = new ArrayList<>();
-        for(CartItem cartItem : userCartItems){
+        for (CartItem cartItem : userCartItems) {
             Product product = cartItem.getProductID();
             product.setStockQuantity(product.getStockQuantity() - cartItem.getQuantity());
             productsFromCart.add(product);
@@ -136,6 +133,7 @@ public class PayCheckoutOrderController {
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<OrderTable> orderTables = orderTableService.getAllByUser(user);
         Map<OrderTable, List<OrderItem>> orders = new LinkedHashMap<>();
+
         for (OrderTable orderTable : orderTables) {
             orders.put(orderTable, orderItemService.getAllByOrderTable(orderTable));
         }

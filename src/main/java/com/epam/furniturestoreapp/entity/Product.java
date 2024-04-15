@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -17,7 +18,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ProductID")
-    private long productID;
+    private Long productID;
 
     @Size(max = 50, message = "Product name must be less than 50")
     @NotBlank(message = "Product name is mandatory")
@@ -35,11 +36,11 @@ public class Product {
 
     @NotBlank(message = "Price is mandatory")
     @Column(name = "price")
-    private double price;
+    private Double price;
 
     @NotBlank(message = "Stock quantity is mandatory")
     @Column(name = "stockquantity")
-    private int stockQuantity;
+    private Integer stockQuantity;
 
     @Size(max = 100, message = "Dimensions must be less than 100")
     @NotBlank(message = "Dimensions is mandatory")
@@ -58,9 +59,17 @@ public class Product {
 
     @NotBlank(message = "Average rating is mandatory")
     @Column(name = "averagerating")
-    private double averageRating;
+    private Double averageRating;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "productID", referencedColumnName = "productID")
     private Image image;
+
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "productID", referencedColumnName = "productID")
+    private List<OrderItem> orderItems;
+
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "productID", referencedColumnName = "productID")
+    private List<CartItem> cartItems;
 }

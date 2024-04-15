@@ -36,6 +36,8 @@ public class WebSecurityConfig {
                     auth.requestMatchers("/fonts/**").permitAll();
                     auth.requestMatchers("/").permitAll();
                     auth.requestMatchers("/signup").permitAll();
+                    auth.requestMatchers("/not-found").permitAll();
+                    auth.requestMatchers("/error-page").permitAll();
                     auth.requestMatchers("/products/**").permitAll();
                     auth.requestMatchers("/account").hasAnyRole("USER", "ADMIN");
                     auth.requestMatchers("/cart").hasAnyRole("USER", "ADMIN");

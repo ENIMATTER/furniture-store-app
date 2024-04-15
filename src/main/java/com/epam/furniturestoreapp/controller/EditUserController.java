@@ -9,10 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,35 +32,24 @@ public class EditUserController {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         model.addAttribute("user", user);
-        addToModelBasicAttributes(model);
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", thActionForAllProducts);
         return "edit-user";
     }
 
     @PutMapping
-    public String putEditUser(@RequestParam("userTableID") Long userTableID,
-                              @RequestParam("firstname") String firstname,
-                              @RequestParam("lastname") String lastname,
-                              @RequestParam("email") String email,
-                              @RequestParam("phoneNumber") String phoneNumber,
-                              @RequestParam("password") String password) {
-        UserTable user = userTableService.getUserById(userTableID);
-        if (user == null) {
-            return "redirect:/error-page";
+    public String putEditUser(@ModelAttribute("user") UserTable user) {
+        UserTable updatedUser = userTableService.getUserById(user.getUserTableID());
+        updatedUser.setFirstname(user.getFirstname());
+        updatedUser.setLastname(user.getLastname());
+        updatedUser.setEmail(user.getEmail());
+        updatedUser.setPhoneNumber(user.getPhoneNumber());
+        if (!user.getUserPassword().isBlank()) {
+            String codedPassword = new BCryptPasswordEncoder().encode(user.getUserPassword());
+            updatedUser.setUserPassword(codedPassword);
         }
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setEmail(email);
-        user.setPhoneNumber(phoneNumber);
-        if (!password.isBlank()) {
-            String codedPassword = new BCryptPasswordEncoder().encode(password);
-            user.setUserPassword(codedPassword);
-        }
-        userTableService.editUser(user);
-        return "redirect:/edit-user";
-    }
-
-    private void addToModelBasicAttributes(Model model) {
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        userTableService.editUser(updatedUser);
+        return "redirect:/logout";
     }
 }
+
