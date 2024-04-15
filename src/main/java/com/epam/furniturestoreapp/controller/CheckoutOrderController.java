@@ -18,7 +18,7 @@ import java.util.*;
 import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
 
 @Controller
-public class PayCheckoutOrderController {
+public class CheckoutOrderController {
     private final AddressService addressService;
     private final UserTableService userTableService;
     private final CartItemService cartItemService;
@@ -29,10 +29,10 @@ public class PayCheckoutOrderController {
     private final List<Category> categories;
 
     @Autowired
-    public PayCheckoutOrderController(AddressService addressService, UserTableService userTableService,
-                                      CartItemService cartItemService, OrderTableService orderTableService,
-                                      OrderItemService orderItemService, ProductService productService,
-                                      CategoryService categoryService) {
+    public CheckoutOrderController(AddressService addressService, UserTableService userTableService,
+                                   CartItemService cartItemService, OrderTableService orderTableService,
+                                   OrderItemService orderItemService, ProductService productService,
+                                   CategoryService categoryService) {
         this.addressService = addressService;
         this.userTableService = userTableService;
         this.cartItemService = cartItemService;
@@ -67,11 +67,11 @@ public class PayCheckoutOrderController {
 
     @PostMapping("/checkout")
     public String checkoutAndFormOrder(@RequestParam("street") String street,
-                                      @RequestParam("house") Integer house,
-                                      @RequestParam("floor") Integer floor,
-                                      @RequestParam("apartment") Integer apartment,
-                                      @RequestParam(value = "message", required = false) String message,
-                                      @RequestParam("totalToPay") Double totalToPay) {
+                                       @RequestParam("house") Integer house,
+                                       @RequestParam("floor") Integer floor,
+                                       @RequestParam("apartment") Integer apartment,
+                                       @RequestParam(value = "message", required = false) String message,
+                                       @RequestParam("totalToPay") Double totalToPay) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<CartItem> userCartItems = cartItemService.getAllItemsByUser(user);

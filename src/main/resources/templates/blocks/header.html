@@ -1,4 +1,5 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="header">
     <div class="header-upper">
         <div class="auto-container">
@@ -20,18 +21,22 @@
                 </div>
                 <!-- Options Box -->
                 <div class="options-box d-flex align-items-center">
-                    <div class="login-icon">
+
+                    <div sec:authorize="!isAuthenticated()" class="login-icon">
                         <a href="/login">Login</a>
                     </div>
-                    <div class="login-icon">
+                    <div sec:authorize="!isAuthenticated()" class="login-icon">
                         <a href="/signup">Sign up</a>
                     </div>
-                    <div class="login-icon">
+
+                    <div sec:authorize="isAuthenticated()" class="login-icon">
                         <a href="/logout">Logout</a>
                     </div>
-                    <a href="/account"><span class="icon"><img th:src="@{/images/icons/account.jpg}" alt="" /></span></a>
-                    <div class="cart-box-two">
-                        <a href="/cart"><span class="icon"><img th:src="@{/images/icons/cart.jpg}" alt="" /></span></a>
+                    <a sec:authorize="isAuthenticated()" href="/account">
+                        <span class="icon"><img th:src="@{/images/icons/account.jpg}" alt=""/></span>
+                    </a>
+                    <div sec:authorize="isAuthenticated()" class="cart-box-two">
+                        <a href="/cart"><span class="icon"><img th:src="@{/images/icons/cart.jpg}" alt=""/></span></a>
                     </div>
                 </div>
             </div>
@@ -42,10 +47,12 @@
         <div class="auto-container">
             <div class="nav-outer d-flex justify-content-between align-items-center flex-wrap">
                 <div class="select-categories">
-                    <div class="category"> Categories </div>
+                    <div class="category"> Categories</div>
                     <ul class="categories-list">
                         <li><a th:href="@{/products}">All products</a></li>
-                        <li th:each="category: ${categories}"><a th:href="@{'/products/category/' + ${category.getCategoryID()}}" th:text="${category.getCategoryName()}"></a></li>
+                        <li th:each="category: ${categories}"><a
+                                th:href="@{'/products/category/' + ${category.getCategoryID()}}"
+                                th:text="${category.getCategoryName()}"></a></li>
                     </ul>
                 </div>
             </div>
