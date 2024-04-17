@@ -23,16 +23,17 @@ import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProd
 @RequestMapping("/edit-user")
 public class EditUserController {
     private final UserTableService userTableService;
-    private final List<Category> categories;
+    private final CategoryService categoryService;
 
     @Autowired
     public EditUserController(UserTableService userTableService, CategoryService categoryService) {
         this.userTableService = userTableService;
-        this.categories = categoryService.findAll();
+        this.categoryService = categoryService;
     }
 
     @GetMapping
     public String getEditUser(Model model) {
+        List<Category> categories = categoryService.findAll();
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         model.addAttribute("user", user);

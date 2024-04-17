@@ -33,7 +33,6 @@ public class WebSecurityConfig {
                     auth.requestMatchers("/css/**").permitAll();
                     auth.requestMatchers("/js/**").permitAll();
                     auth.requestMatchers("/images/**").permitAll();
-                    auth.requestMatchers("/fonts/**").permitAll();
                     auth.requestMatchers("/").permitAll();
                     auth.requestMatchers("/signup").permitAll();
                     auth.requestMatchers("/not-found").permitAll();

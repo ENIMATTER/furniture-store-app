@@ -14,24 +14,34 @@ import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProd
 @Controller
 public class MainController {
 
-    private final List<Category> categories;
+    private final CategoryService categoryService;
 
     @Autowired
     public MainController(CategoryService categoryService) {
-        categories = categoryService.findAll();
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/")
     public String mainPage(Model model){
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        addToModelBasicAttributes(model);
         return "index";
     }
 
     @GetMapping("/not-found")
     public String notFound(Model model){
+        addToModelBasicAttributes(model);
+        return "not-found";
+    }
+
+    @GetMapping("/admin")
+    public String adminPanel(Model model){
+        addToModelBasicAttributes(model);
+        return "admin";
+    }
+
+    private void addToModelBasicAttributes(Model model) {
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
-        return "not-found";
     }
 }

@@ -2665,3 +2665,56 @@
     color: var(--color-thirtyeight);
     border: 2px solid rgba(var(--black-color-rgb), 0.08);
 }
+
+.categories-admin-input-name{
+    position: relative;
+    display: block;
+    line-height: 45px;
+    padding: 10px 20px;
+    height: 40px;
+    font-size: var(--font-16);
+    color: var(--color-fiftythree);
+    background: var(--white-color);
+    transition: all 300ms ease;
+    border: 1px solid rgba(var(--black-color-rgb), 0.06);
+}
+
+.categories-admin-edit-button{
+    position: relative;
+    padding: 0 15px;
+    height: 40px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+    font-size: var(--font-15);
+    color: var(--white-color);
+    background-color: var(--color-twentythree);
+    font-family: var(--font-family-Outfit);
+}
+
+.categories-admin-delete-button{
+    position: relative;
+    padding: 0 15px;
+    height: 40px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+    font-size: var(--font-15);
+    color: var(--white-color);
+    background-color: var(--main-color);
+    font-family: var(--font-family-Outfit);
+}
+
+.categories-admin-add-button{
+    width: 74px;
+    position: relative;
+    padding: 0 15px;
+    height: 40px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 500;
+    font-size: var(--font-15);
+    color: var(--white-color);
+    background-color: green;
+    font-family: var(--font-family-Outfit);
+}

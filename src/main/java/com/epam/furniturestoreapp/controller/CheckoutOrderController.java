@@ -25,8 +25,7 @@ public class CheckoutOrderController {
     private final OrderTableService orderTableService;
     private final OrderItemService orderItemService;
     private final ProductService productService;
-
-    private final List<Category> categories;
+    private final CategoryService categoryService;
 
     @Autowired
     public CheckoutOrderController(AddressService addressService, UserTableService userTableService,
@@ -39,7 +38,7 @@ public class CheckoutOrderController {
         this.orderTableService = orderTableService;
         this.orderItemService = orderItemService;
         this.productService = productService;
-        categories = categoryService.findAll();
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/checkout")
@@ -60,8 +59,7 @@ public class CheckoutOrderController {
         model.addAttribute("total", total);
         model.addAttribute("shippingFee", shippingFee);
         model.addAttribute("sumCartItems", sumCartItemsBigDecimal);
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        addToModelBasicAttributes(model);
         return "checkout";
     }
 
@@ -128,8 +126,13 @@ public class CheckoutOrderController {
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<OrderTable> orders = orderTableService.getAllByUser(user);
         model.addAttribute("orders", orders);
+        addToModelBasicAttributes(model);
+        return "orders";
+    }
+
+    private void addToModelBasicAttributes(Model model) {
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
-        return "orders";
     }
 }

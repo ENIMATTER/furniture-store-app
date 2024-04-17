@@ -23,7 +23,7 @@ public class CartController {
     private final CartItemService cartItemService;
     private final UserTableService userTableService;
     private final ProductService productService;
-    private final List<Category> categories;
+    private final CategoryService categoryService;
 
     @Autowired
     public CartController(CartItemService cartItemService, UserTableService userTableService,
@@ -31,7 +31,7 @@ public class CartController {
         this.cartItemService = cartItemService;
         this.userTableService = userTableService;
         this.productService = productService;
-        categories = categoryService.findAll();
+        this.categoryService = categoryService;
     }
 
     @GetMapping
@@ -114,6 +114,7 @@ public class CartController {
     }
 
     private void addToModelBasicAttributes(Model model) {
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
     }

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+    <!-- End Header -->
+
+    <section class="shoping-cart-section" th:if="${#lists.size(categories)} == 0">
+        <h4 class="h4-custom-class-margin">There is no categories.</h4>
+    </section>
+
+    <!--Categories admin Section -->
+    <section class="shoping-cart-section" th:if="${#lists.size(categories)} != 0">
+        <div class="auto-container">
+            <div class="row clearfix">
+                <div class="cart-column col-lg-12 col-md-12 col-sm-12">
+                    <div class="inner-column">
+                        <div class="cart-outer">
+                            <div class="table-outer">
+                                <table class="cart-table">
+                                    <thead class="cart-header">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>ㅤ</th>
+                                        <th>ㅤ</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <form th:method="post" th:action="@{/categories-admin}">
+
+                                            <td class="price">ㅤ</td>
+
+
+                                            <td class="price">
+                                                <input class="categories-admin-input-name" type="text"
+                                                       name="categoryName" placeholder="Enter category name">
+                                            </td>
+
+                                            <td class="price">ㅤ</td>
+
+                                            <td class="price">
+                                                <button class="categories-admin-add-button" type="submit">
+                                                    Add
+                                                </button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    <tr th:each="category: ${categories}">
+                                        <td class="price" th:text="${category.getCategoryID()}"></td>
+
+                                        <form th:method="put" th:action="@{/categories-admin}"
+                                              th:object="${categoryEdit}">
+
+                                            <td class="price">
+                                                <input class="categories-admin-input-name" type="text"
+                                                       name="categoryName" th:value="${category.getCategoryName()}">
+                                            </td>
+
+                                            <td class="price">
+                                                <input type="hidden" name="_method" value="put">
+                                                <input type="hidden" name="categoryID"
+                                                       th:value="${category.getCategoryID()}">
+                                                <button class="categories-admin-edit-button" type="submit">Edit</button>
+                                            </td>
+                                        </form>
+
+                                        <form th:method="delete" th:action="@{/categories-admin}">
+                                            <td class="price">
+                                                <input type="hidden" name="_method" value="delete">
+                                                <input type="hidden" name="categoryID"
+                                                       th:value="${category.getCategoryID()}">
+                                                <button class="categories-admin-delete-button" type="submit">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Categories admin Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

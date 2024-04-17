@@ -29,6 +29,9 @@
                         <a href="/signup">Sign up</a>
                     </div>
 
+                    <div sec:authorize="hasRole('ADMIN')" class="login-icon">
+                        <a href="/admin">Admin panel</a>
+                    </div>
                     <div sec:authorize="isAuthenticated()" class="login-icon">
                         <a href="/logout">Logout</a>
                     </div>

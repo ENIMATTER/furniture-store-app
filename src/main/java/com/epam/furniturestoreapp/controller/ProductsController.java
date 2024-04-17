@@ -28,7 +28,6 @@ public class ProductsController {
     private static final List<String> filterList;
     private static final Map<Color, String> colorMap;
     private static final List<Material> materialList;
-    private final List<Category> categories;
 
     private static final String lastAdded = "Last added";
     private static final String byRating = "By rating";
@@ -75,7 +74,6 @@ public class ProductsController {
         this.categoryService = categoryService;
         this.productService = productService;
         this.reviewService = reviewService;
-        categories = categoryService.findAll();
     }
 
     @GetMapping("/category/{id}")
@@ -182,6 +180,7 @@ public class ProductsController {
         }
         Category category = product.getCategoryID();
         List<Review> reviews = reviewService.getAllReviewsByProduct(product);
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
         model.addAttribute("reviews", reviews);
@@ -191,6 +190,7 @@ public class ProductsController {
     }
 
     private void addToModelBasicAttributes(Model model) {
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("filterList", filterList);
         model.addAttribute("colorMap", colorMap);

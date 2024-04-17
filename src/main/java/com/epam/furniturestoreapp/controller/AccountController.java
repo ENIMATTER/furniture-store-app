@@ -21,12 +21,12 @@ import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProd
 @Controller
 public class AccountController {
     private final UserTableService userTableService;
-    private final List<Category> categories;
+    private final CategoryService categoryService;
 
     @Autowired
     public AccountController(CategoryService categoryService, UserTableService userTableService) {
         this.userTableService = userTableService;
-        this.categories = categoryService.findAll();
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/signup")
@@ -143,6 +143,7 @@ public class AccountController {
     }
 
     private void addToModelBasicAttributes(Model model) {
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
     }
