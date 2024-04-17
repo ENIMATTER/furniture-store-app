@@ -37,7 +37,7 @@
 
 .main-footer .pattern-layer-one{
     position:absolute;
-    left:0px;
+    left:0;
     top:20%;
     width:138px;
     height:107px;
@@ -55,7 +55,7 @@
 
 .main-footer .widgets-section{
     position:relative;
-    padding:100px 0px 60px;
+    padding:100px 0 60px;
 }
 
 .main-footer .footer-widget{
@@ -69,7 +69,7 @@
 
 .main-footer .widgets-section .text{
     max-width:380px;
-    line-height:28.8px;
+    line-height:29px;
     color:var(--black-color);
     margin-top:var(--margin-top-15);
     font-family:var(--font-family-Jost);
@@ -92,14 +92,13 @@
 
 .main-footer .contact-list li .icon{
     position:absolute;
-    left:0px;
+    left:0;
     top:-5px;
     width:36px;
     height:36px;
     line-height:36px;
     text-align:center;
     border-radius:50px;
-    font-family: "Flaticon";
     font-size:var(--font-16);
     color:var(--white-color);
     background-color:var(--black-color);
@@ -149,7 +148,7 @@
 .main-footer .page-list-two li a:before{
     position:absolute;
     content:'';
-    left:0px;
+    left:0;
     top:8px;
     width:8px;
     height:8px;
@@ -158,7 +157,6 @@
     transition:all 0.3s ease;
     -moz-transition:all 0.3s ease;
     -webkit-transition:all 0.3s ease;
-    -ms-transition:all 0.3s ease;
     -o-transition:all 0.3s ease;
     background-color:var(--black-color);
 }
@@ -194,7 +192,7 @@
 
 .main-footer .footer-bottom{
     position:relative;
-    padding:20px 0px;
+    padding:20px 0;
     border-top:1px solid rgba(var(--black-color-rgb), 0.10);
 }
 
@@ -229,13 +227,12 @@
     position:relative;
     line-height:1em;
     top:2px;
-    font-family: "flaticon";
     color:var(--main-color);
     margin-right:var(--margin-right-15);
 }
 
 .main-footer .newslatter-widget .text{
-    line-height: 28.8px;
+    line-height: 29px;
     color: var(--black-color);
     font-family: var(--font-family-Jost);
     margin-bottom: var(--margin-bottom-25);
@@ -249,7 +246,7 @@
 
 .subscribe-box .form-group{
     position:relative;
-    margin:0px;
+    margin:0;
     width:100%;
     max-width:100%;
     padding-right:var(--padding-right-60);
@@ -262,13 +259,12 @@
     display:block;
     height:60px;
     width:100%;
-    border-radius:0px;
+    border-radius:0;
     box-shadow:inherit;
     font-size:var(--font-16);
     transition:all 500ms ease;
     -moz-transition:all 500ms ease;
     -webkit-transition:all 500ms ease;
-    -ms-transition:all 500ms ease;
     -o-transition:all 500ms ease;
     padding:10px 15px 10px 25px;
     color:var(--color-two);
@@ -282,11 +278,9 @@
 
 .subscribe-box .form-group button{
     position:absolute;
-    right:0px;
-    top:0px;
+    right:0;
+    top:0;
     width:65px;
-    height:60px;
-    font-family: "flaticon";
     font-size:var(--font-18);
     color:var(--white-color);
     text-transform:capitalize;

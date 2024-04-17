@@ -11,8 +11,12 @@
     <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
 
+    <section class="shoping-cart-section" th:if="${#lists.size(cartItems)} == 0">
+        <h4 class="h4-custom-class-margin">Your cart is empty. Let's go shopping!</h4>
+    </section>
+
     <!-- Cart Section -->
-    <section class="shoping-cart-section">
+    <section class="shoping-cart-section" th:if="${#lists.size(cartItems)} != 0">
         <div class="auto-container">
             <div class="row clearfix">
                 <!-- Cart Column -->
@@ -43,7 +47,9 @@
                                                         <input type="hidden" name="cartItemID"
                                                                th:value="${cartItem.getCartItemID()}">
                                                         <button type="submit"
-                                                                class="cross-icon flaticon-cancel-1"></button>
+                                                                class="cross-icon"
+                                                                th:style="|background-image:url(@{/images/icons/cross-icon.jpg})|">
+                                                        </button>
                                                     </form>
                                                     <a th:href="'/products/' + ${cartItem.getProductID().getProductID()}"><img
                                                             th:src="@{${cartItem.getProductID().getImage().getImagePath()}}" alt=""></a>
@@ -62,9 +68,11 @@
                                                     <input type="hidden" name="_method" value="put">
                                                     <input type="hidden" name="cartItemID"
                                                            th:value="${cartItem.getCartItemID()}">
-                                                    <input class="qty-spinner" type="text"
-                                                           th:value="${cartItem.getQuantity()}" name="cartQuantity">
-                                                    <button type="submit">Change</button>
+
+                                                    <input type="number" min="0" th:value="${cartItem.getQuantity()}"
+                                                           name="cartQuantity" class="input-quantity-shop">
+
+                                                    <button style="width: 100%;" type="submit">Change</button>
                                                 </form>
                                             </div>
                                         </td>
@@ -118,7 +126,6 @@
 <!-- End Scroll To Top -->
 
 <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
-<script type="text/javascript" th:src="@{/js/touchspin.js}"></script>
 <script type="text/javascript" th:src="@{/js/script.js}"></script>
 
 </body>

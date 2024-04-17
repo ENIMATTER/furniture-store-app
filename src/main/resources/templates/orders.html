@@ -13,8 +13,12 @@
     <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
 
+    <section class="shoping-cart-section" th:if="${#lists.size(orders)} == 0">
+        <h4 class="h4-custom-class-margin">There is no orders yet. Let's go shopping!</h4>
+    </section>
+
     <!--Order Section -->
-    <section class="shoping-cart-section" th:each="order: ${orders}">
+    <section class="shoping-cart-section" th:each="order: ${orders}" th:if="${#lists.size(orders)} != 0">
         <div class="auto-container">
             <h4 th:text="'Order ' + ${order.getOrderTableID()} + ': ' + ${order.getOrderDate()}"></h4><br>
             <div class="row clearfix">

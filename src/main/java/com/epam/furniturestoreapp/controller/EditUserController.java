@@ -44,7 +44,8 @@ public class EditUserController {
     @PutMapping
     public String putEditUser(HttpServletRequest request, HttpServletResponse response,
                               @ModelAttribute("user") UserTable user) {
-        if(userTableService.existsByEmail(user.getEmail())){
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        if(userTableService.existsByEmail(user.getEmail()) && !user.getEmail().equals(emailUsername)){
             return "redirect:/edit-user?exist";
         }
         UserTable updatedUser = userTableService.getUserById(user.getUserTableID());
