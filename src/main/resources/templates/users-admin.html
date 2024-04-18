@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three">
+        <div class="header-upper">
+            <div class="auto-container">
+                <div class="inner-container d-flex justify-content-between align-items-center flex-wrap">
+                    <!-- Logo Box -->
+                    <div class="logo-box d-flex align-items-center">
+                        <div class="logo">
+                            <a href="/"><img th:src="@{/images/logo.jpg}" alt=""></a>
+                        </div>
+                    </div>
+                    <!-- Search Box -->
+                    <div class="search-box">
+                        <form method="post" th:action="@{${thAction}}">
+                            <div class="form-group">
+                                <input th:name="search" type="search" placeholder="Search Product" required>
+                                <button type="submit"
+                                        th:style="|background:url(@{/images/icons/search.jpg});|"></button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Options Box -->
+                    <div class="options-box d-flex align-items-center">
+                        <div class="login-icon">
+                            <a href="/admin">Admin panel</a>
+                        </div>
+                        <div class="login-icon">
+                            <a href="/logout">Logout</a>
+                        </div>
+                        <a href="/account">
+                            <span class="icon"><img th:src="@{/images/icons/account.jpg}" alt=""/></span>
+                        </a>
+                        <div class="cart-box-two">
+                            <a href="/cart"><span class="icon"><img th:src="@{/images/icons/cart.jpg}"
+                                                                    alt=""/></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <section class="shoping-cart-section users-section" th:if="${#lists.size(users)} == 0">
+        <h4 class="h4-custom-class-margin">There is no users.</h4>
+    </section>
+
+    <!--Categories admin Section -->
+    <section class="shoping-cart-section users-section" th:if="${#lists.size(users)} != 0">
+        <div class="auto-container">
+            <div class="row clearfix">
+                <h4 style="color: red;" th:if="${param.exist}">User with this email exist</h4>
+                <h4 style="color: red;" th:if="${param.phone}">Phone must be a number (9 digits)</h4>
+                <div class="cart-column col-lg-12 col-md-12 col-sm-12">
+                    <div class="inner-column">
+                        <div class="cart-outer">
+                            <div class="table-outer">
+                                <table class="cart-table users-admin">
+                                    <thead class="cart-header">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Firstname</th>
+                                        <th>Lastname</th>
+                                        <th>Email</th>
+                                        <th>Password</th>
+                                        <th>Phone</th>
+                                        <th>Balance</th>
+                                        <th>Roles</th>
+                                        <th>ㅤ</th>
+                                        <th>ㅤ</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <form th:method="post" th:action="@{/users-admin}" th:object="${userUtil}">
+                                        <tr>
+                                            <td class="price"> ㅤ</td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="text"
+                                                       name="firstname" placeholder="Firstname">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="text"
+                                                       name="lastname" placeholder="Lastname">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="email"
+                                                       name="email" placeholder="Email">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="password"
+                                                       name="password" placeholder="Password">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="text"
+                                                       name="phone" placeholder="Phone">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="number" min="0"
+                                                       step=".01" name="balance" placeholder="Balance">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="text"
+                                                       name="roles" placeholder="Roles">
+                                            </td>
+
+                                            <td class="price"> ㅤ</td>
+
+                                            <td class="price">
+                                                <button class="categories-admin-add-button" type="submit">
+                                                    Add
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </form>
+                                    <tr th:each="user: ${users}">
+                                        <td class="price" th:text="${user.getUserTableID()}"></td>
+
+                                        <form th:method="put" th:action="@{/users-admin}" th:object="${user}">
+                                            <input type="hidden" name="_method" value="put">
+                                            <input type="hidden" name="userTableID"
+                                                   th:value="${user.getUserTableID()}">
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="text"
+                                                       name="firstname" th:value="${user.getFirstname()}">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="text"
+                                                       name="lastname" th:value="${user.getLastname()}">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="email"
+                                                       name="email" th:value="${user.getEmail()}">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="password"
+                                                       name="userPassword" placeholder="New pass">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="text"
+                                                       name="phoneNumber" th:value="${user.getPhoneNumber()}">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="number" min="0"
+                                                       step=".01" name="balance" th:value="${user.getBalance()}">
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="users-admin-input-name" type="text"
+                                                       name="roles" th:value="${user.getRoles()}">
+                                            </td>
+
+                                            <td class="price">
+                                                <button class="categories-admin-edit-button" type="submit">Edit</button>
+                                            </td>
+                                        </form>
+
+                                        <form th:method="delete" th:action="@{/users-admin}">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <input type="hidden" name="userTableID"
+                                                   th:value="${user.getUserTableID()}">
+                                            <td class="price">
+                                                <button class="categories-admin-delete-button" type="submit">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Categories admin Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

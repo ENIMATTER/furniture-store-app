@@ -48,15 +48,17 @@ public class AccountController {
         if (!userPassword.equals(userPasswordAgain)) {
             return "redirect:/signup?notmatch";
         }
+        if(phoneNumber.length() != 9){
+            return "redirect:/signup?phone";
+        }
+        for(char c : phoneNumber.toCharArray()){
+            if(!Character.isDigit(c)){
+                return "redirect:/signup?phone";
+            }
+        }
         String codedPassword = new BCryptPasswordEncoder().encode(userPassword);
-        UserTable user = new UserTable();
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setEmail(email);
-        user.setUserPassword(codedPassword);
-        user.setPhoneNumber(phoneNumber);
-        user.setBalance(0.0);
-        user.setRoles("USER");
+        UserTable user = new UserTable(firstname, lastname, email, codedPassword,
+                phoneNumber, 0.0, "USER");
         userTableService.addUser(user);
         return "redirect:/login";
     }
@@ -105,7 +107,7 @@ public class AccountController {
         int year = LocalDateTime.now().getYear();
         int monthInt = LocalDateTime.now().getMonthValue();
         String month = monthInt + "";
-        if(monthInt < 10){
+        if (monthInt < 10) {
             month = "0" + month;
         }
         String min = year + "-" + month;
@@ -120,20 +122,20 @@ public class AccountController {
                             @RequestParam("CVV") String CVV) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
-        for(char c : cardNumber.toCharArray()){
-            if(Character.isLetter(c)){
+        for (char c : cardNumber.toCharArray()) {
+            if (Character.isLetter(c)) {
                 return "redirect:/top-up?cardnumbererror";
             }
         }
-        if(cardNumber.length() != 16){
+        if (cardNumber.length() != 16) {
             return "redirect:/top-up?cardnumbererror";
         }
-        for(char c : CVV.toCharArray()){
-            if(Character.isLetter(c)){
+        for (char c : CVV.toCharArray()) {
+            if (Character.isLetter(c)) {
                 return "redirect:/top-up?CVVerror";
             }
         }
-        if(CVV.length() != 3){
+        if (CVV.length() != 3) {
             return "redirect:/top-up?CVVerror";
         }
 

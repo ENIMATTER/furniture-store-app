@@ -49,6 +49,14 @@ public class EditUserController {
         if(userTableService.existsByEmail(user.getEmail()) && !user.getEmail().equals(emailUsername)){
             return "redirect:/edit-user?exist";
         }
+        if(user.getPhoneNumber().length() != 9){
+            return "redirect:/edit-user?phone";
+        }
+        for(char c : user.getPhoneNumber().toCharArray()){
+            if(!Character.isDigit(c)){
+                return "redirect:/edit-user?phone";
+            }
+        }
         UserTable updatedUser = userTableService.getUserById(user.getUserTableID());
         updatedUser.setFirstname(user.getFirstname());
         updatedUser.setLastname(user.getLastname());

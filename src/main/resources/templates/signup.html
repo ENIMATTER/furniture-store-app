@@ -23,6 +23,7 @@
                             <h4>Sign Up</h4>
                             <h4 style="color: red;" th:if="${param.exist}">User with this email exist</h4>
                             <h4 style="color: red;" th:if="${param.notmatch}">Passwords doesn't match</h4>
+                            <h4 style="color: red;" th:if="${param.phone}">Phone must be a number (9 digits)</h4>
                             <form method="post" action="/signup">
                                 <div class="form-group">
                                     <label>Your first name</label>

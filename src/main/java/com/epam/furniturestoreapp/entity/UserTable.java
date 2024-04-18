@@ -65,4 +65,15 @@ public class UserTable {
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
     private List<CartItem> cartItems;
+
+    public UserTable(String firstname, String lastname, String email, String userPassword,
+                     String phoneNumber, Double balance, String roles) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.userPassword = userPassword;
+        this.phoneNumber = phoneNumber;
+        this.balance = balance;
+        this.roles = roles;
+    }
 }
