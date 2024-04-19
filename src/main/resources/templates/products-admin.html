@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+    <!-- End Header -->
+
+    <section class="shoping-cart-section" th:if="${#lists.size(products)} == 0">
+        <h4 class="h4-custom-class-margin">There is no products.</h4>
+    </section>
+
+    <!--Categories admin Section -->
+    <section class="shoping-cart-section" th:if="${#lists.size(products)} != 0">
+        <div class="auto-container">
+            <div class="row clearfix">
+                <div class="cart-column col-lg-12 col-md-12 col-sm-12">
+                    <div class="inner-column">
+                        <div class="cart-outer">
+                            <div class="table-outer">
+                                <table class="cart-table users-admin">
+                                    <thead class="cart-header">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th class="prod-column">Product</th>
+                                        <th>ㅤ</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>ㅤ</th>
+                                        <th>ㅤ</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="price">ㅤ</td>
+
+                                        <td colspan="2" class="prod-column">ㅤ</td>
+
+                                        <td class="price">ㅤ</td>
+
+                                        <td class="price">ㅤ</td>
+
+                                        <td class="price">ㅤ</td>
+
+                                        <td class="price">ㅤ</td>
+
+                                        <td class="price">
+                                            <a href="/products-admin/add">
+                                                <button class="categories-admin-add-button" type="button">
+                                                    Add
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr th:each="product: ${products}">
+                                        <td class="price" th:text="${product.getProductID()}"></td>
+                                        <td colspan="2" class="prod-column">
+                                            <div class="column-box">
+                                                <figure class="prod-thumb">
+                                                    <a th:href="'/products/' + ${product.getProductID()}"><img
+                                                            th:src="@{${product.getImage().getImagePath()}}" alt=""></a>
+                                                </figure>
+                                                <h6 class="prod-title"
+                                                    th:text="${product.getProductName()}"></h6>
+                                                <div class="prod-text"
+                                                     th:text="'Color: ' + ${product.getColor()}"></div>
+                                            </div>
+                                        </td>
+
+                                        <td class="price"
+                                            th:text="${product.getCategoryID.getCategoryName()}"></td>
+
+                                        <td class="price" th:text="${product.getPrice()}"></td>
+
+                                        <td class="price" th:text="${product.getStockQuantity()}"></td>
+
+                                        <td class="price">
+                                            <a th:href="'/products-admin/edit/' + ${product.getProductID()}">
+                                                <button class="categories-admin-edit-button" type="button">
+                                                    Edit
+                                                </button>
+                                            </a>
+                                        </td>
+
+                                        <td class="price">
+                                            <form th:method="delete" th:action="'/products-admin/delete/' + ${product.getProductID()}">
+                                                <input type="hidden" name="_method" value="delete">
+                                                <button class="categories-admin-delete-button" type="submit">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Categories admin Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

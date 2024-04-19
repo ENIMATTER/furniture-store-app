@@ -21,6 +21,7 @@
     <section class="shoping-cart-section" th:if="${#lists.size(categories)} != 0">
         <div class="auto-container">
             <div class="row clearfix">
+                <h4 style="color: red;" th:if="${param.exist}">Category with this name exist</h4>
                 <div class="cart-column col-lg-12 col-md-12 col-sm-12">
                     <div class="inner-column">
                         <div class="cart-outer">
@@ -42,7 +43,8 @@
 
                                             <td class="price">
                                                 <input class="categories-admin-input-name" type="text"
-                                                       name="categoryName" placeholder="Enter category name">
+                                                       name="categoryName" placeholder="Enter category name"
+                                                       required>
                                             </td>
 
                                             <td class="price">ㅤ</td>
@@ -62,7 +64,8 @@
 
                                             <td class="price">
                                                 <input class="categories-admin-input-name" type="text"
-                                                       name="categoryName" th:value="${category.getCategoryName()}">
+                                                       name="categoryName" th:value="${category.getCategoryName()}"
+                                                       required>
                                             </td>
 
                                             <td class="price">

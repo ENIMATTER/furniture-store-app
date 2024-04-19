@@ -27,4 +27,9 @@ public class Image {
     @NotBlank(message = "Image path is mandatory")
     @Column(name = "imagepath")
     private String imagePath;
+
+    public Image(Product productID, String imagePath) {
+        this.productID = productID;
+        this.imagePath = imagePath;
+    }
 }

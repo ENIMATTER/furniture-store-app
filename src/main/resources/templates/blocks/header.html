@@ -54,7 +54,7 @@
                     <ul class="categories-list">
                         <li><a th:href="@{/products}">All products</a></li>
                         <li th:each="category: ${categories}"><a
-                                th:href="@{'/products/category/' + ${category.getCategoryID()}}"
+                                th:href="@{'/products/category/' + ${category.getCategoryName()}}"
                                 th:text="${category.getCategoryName()}"></a></li>
                     </ul>
                 </div>

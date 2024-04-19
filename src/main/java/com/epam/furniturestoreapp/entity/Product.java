@@ -72,4 +72,17 @@ public class Product {
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "productID", referencedColumnName = "productID")
     private List<CartItem> cartItems;
+
+    public Product(String productName, String productDescription, Category categoryID, Double price,
+                   Integer stockQuantity, String dimensions, String material, String color, Double averageRating) {
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.categoryID = categoryID;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.dimensions = dimensions;
+        this.material = material;
+        this.color = color;
+        this.averageRating = averageRating;
+    }
 }

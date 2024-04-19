@@ -31,4 +31,12 @@ public class CategoryService {
     public void deleteByID(Long categoryID) {
         categoryRepository.deleteById(categoryID);
     }
+
+    public Category findByName(String categoryName) {
+        return categoryRepository.findByCategoryName(categoryName);
+    }
+
+    public boolean existByName(String categoryName) {
+        return categoryRepository.existsByCategoryName(categoryName);
+    }
 }

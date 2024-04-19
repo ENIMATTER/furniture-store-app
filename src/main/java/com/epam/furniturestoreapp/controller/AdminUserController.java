@@ -1,8 +1,6 @@
 package com.epam.furniturestoreapp.controller;
 
-import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.entity.UserTable;
-import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.UserTableService;
 import com.epam.furniturestoreapp.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +16,17 @@ import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProd
 @Controller
 @RequestMapping("/users-admin")
 public class AdminUserController {
-    private final CategoryService categoryService;
     private final UserTableService userTableService;
 
     @Autowired
-    public AdminUserController(CategoryService categoryService, UserTableService userTableService) {
-        this.categoryService = categoryService;
+    public AdminUserController(UserTableService userTableService) {
         this.userTableService = userTableService;
     }
 
     @GetMapping
     public String getUsersAdmin(Model model) {
-        List<Category> categories = categoryService.findAll();
         List<UserTable> users = userTableService.getAll();
         model.addAttribute("users", users);
-        model.addAttribute("categories", categories);
         model.addAttribute("thAction", thActionForAllProducts);
         return "users-admin";
     }

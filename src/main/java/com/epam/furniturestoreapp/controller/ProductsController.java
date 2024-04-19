@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForProductsByCategory;
+import static com.epam.furniturestoreapp.util.StaticVariables.*;
 
 @RequestMapping("/products")
 @Controller
@@ -24,49 +23,6 @@ public class ProductsController {
     private final CategoryService categoryService;
     private final ProductService productService;
     private final ReviewService reviewService;
-
-    private static final List<String> filterList;
-    private static final Map<Color, String> colorMap;
-    private static final List<Material> materialList;
-
-    private static final String lastAdded = "Last added";
-    private static final String byRating = "By rating";
-    private static final String AZ = "A-Z";
-    private static final String ZA = "Z-A";
-    private static final String fromLowestPrice = "From lowest price";
-    private static final String fromHighestPrice = "From highest price";
-
-    static {
-        filterList = new ArrayList<>();
-        filterList.add(lastAdded);
-        filterList.add(byRating);
-        filterList.add(AZ);
-        filterList.add(ZA);
-        filterList.add(fromLowestPrice);
-        filterList.add(fromHighestPrice);
-    }
-
-    static {
-        colorMap = new LinkedHashMap<>();
-        colorMap.put(Color.Grey, "background-color:#adadad;");
-        colorMap.put(Color.White, "background-color:#f9f9f9;");
-        colorMap.put(Color.Blue, "background-color:#0b5fb5;");
-        colorMap.put(Color.Green, "background-color:#00a651;");
-        colorMap.put(Color.Yellow, "background-color:#f7ff01;");
-        colorMap.put(Color.Red, "background-color:#ff0000;");
-        colorMap.put(Color.Black, "background-color:#000000;");
-        colorMap.put(Color.Brown, "background-color:#65270c;");
-    }
-
-    static {
-        materialList = new ArrayList<>();
-        materialList.add(Material.Wood);
-        materialList.add(Material.Metal);
-        materialList.add(Material.Glass);
-        materialList.add(Material.Leather);
-        materialList.add(Material.Textile);
-        materialList.add(Material.PVC);
-    }
 
     @Autowired
     public ProductsController(CategoryService categoryService, ProductService productService,
@@ -76,9 +32,9 @@ public class ProductsController {
         this.reviewService = reviewService;
     }
 
-    @GetMapping("/category/{id}")
-    public String getProductsByCategoryId(@PathVariable long id, Model model) {
-        Category category = categoryService.findById(id);
+    @GetMapping("/category/{name}")
+    public String getProductsByCategoryId(@PathVariable String name, Model model) {
+        Category category = categoryService.findByName(name);
         if (category == null) {
             return "redirect:/not-found";
         }
@@ -86,12 +42,12 @@ public class ProductsController {
         products.removeIf(product -> product.getStockQuantity() == 0);
         addToModelBasicAttributes(model);
         model.addAttribute("products", products);
-        model.addAttribute("thAction", thActionForProductsByCategory + id);
+        model.addAttribute("thAction", thActionForProductsByCategory + name);
         return "shop";
     }
 
-    @PostMapping("/category/{id}")
-    public String postProductsByCategoryId(@PathVariable long id,
+    @PostMapping("/category/{name}")
+    public String postProductsByCategoryId(@PathVariable String name,
                                            @RequestParam(value = "search", required = false) String search,
                                            @RequestParam(value = "filter", defaultValue = "Last added") String filter,
                                            @RequestParam(value = "from", required = false) Double from,
@@ -100,7 +56,7 @@ public class ProductsController {
                                            @RequestParam(value = "materials", required = false) Material[] materials,
                                            Model model) {
         List<Product> products;
-        Category category = categoryService.findById(id);
+        Category category = categoryService.findByName(name);
 
         if (category == null) {
             return "redirect:/not-found";
@@ -123,7 +79,7 @@ public class ProductsController {
 
         products.removeIf(product -> product.getStockQuantity() == 0);
 
-        model.addAttribute("thAction", thActionForProductsByCategory + id);
+        model.addAttribute("thAction", thActionForProductsByCategory + name);
         model.addAttribute("products", products);
         addToModelBasicAttributes(model);
         return "shop";

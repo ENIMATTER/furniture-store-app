@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+    <!-- End Header -->
+
+    <!-- Products admin add Section -->
+    <div class="register-section">
+        <div class="auto-container">
+            <div class="inner-container">
+
+                <!--Add form-->
+                <div class="row clearfix" th:if="${materialMap} == null">
+                    <div class="column col-lg-8 col-md-12 col-sm-12">
+                        <div class="styled-form">
+                            <h4>Add product</h4>
+                            <form th:method="post" th:action="@{/products-admin/add}" th:object="${productUtil}">
+                                <div class="form-group">
+                                    <label>Product name</label>
+                                    <input type="text" name="productName" placeholder="Enter product name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Product description</label>
+                                    <textarea class="" name="productDescription"
+                                              placeholder="Enter product description" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Select category</label>
+                                    <select name="categoryName" class="custom-select-box select-category-product-admin">
+                                        <option th:each="category : ${categories}"
+                                                th:text="${category.getCategoryName()}"
+                                                th:value="${category.getCategoryName}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input type="number" min="0" step=".01" name="price" placeholder="Enter price"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Stock quantity</label>
+                                    <input type="number" min="0" name="stockQuantity"
+                                           placeholder="Enter stock quantity" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Dimensions</label>
+                                    <input type="text" name="dimensions" placeholder="Enter dimensions" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Material</label>
+                                    <div class="brands-list">
+                                        <div th:each="materialListEl : ${materialList}" class="form-group">
+                                            <div class="check-box">
+                                                <input th:value="${materialListEl}" type="checkbox" name="materials"
+                                                       th:id="${materialListEl}">
+                                                <label th:for="${materialListEl}" th:text="${materialListEl}"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Color</label>
+                                    <div class="sel-colors">
+                                        <div th:each="colors : ${colorMap}" class="color-box">
+                                            <input type="radio" name="color" th:value="${colors.key}"
+                                                   th:id="${colors.key}">
+                                            <label th:style="|${colors.value};|" th:for="${colors.key}"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Image path</label>
+                                    <input type="text" name="imagePath" placeholder="Enter image path"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="theme-btn btn-style-one">
+                                        Add
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Edit form-->
+                <div class="row clearfix" th:if="${materialMap} != null">
+                    <div class="column col-lg-8 col-md-12 col-sm-12">
+                        <div class="styled-form">
+                            <h4>Edit product</h4>
+                            <form th:method="put" th:action="@{'/products-admin/edit/' + ${productID}}"
+                                  th:object="${productUtil}">
+                                <input type="hidden" name="_method" value="put">
+                                <div class="form-group">
+                                    <label>Product name</label>
+                                    <input type="text" name="productName" placeholder="Enter product name"
+                                           th:value="${productUtil.getProductName()}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Product description</label>
+                                    <textarea class="" name="productDescription"
+                                              placeholder="Enter product description"
+                                              th:text="${productUtil.getProductDescription()}"
+                                              required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Select category</label>
+                                    <select name="categoryName"
+                                            class="custom-select-box select-category-product-admin">
+                                        <option th:each="category : ${categories}"
+                                                th:text="${category.getCategoryName()}"
+                                                th:value="${category.getCategoryName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input type="number" min="0" step=".01" name="price"
+                                           placeholder="Enter price" th:value="${productUtil.getPrice()}"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Stock quantity</label>
+                                    <input type="number" min="0" name="stockQuantity"
+                                           placeholder="Enter stock quantity"
+                                           th:value="${productUtil.getStockQuantity()}"
+                                           required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Dimensions</label>
+                                    <input type="text" name="dimensions" placeholder="Enter dimensions"
+                                           th:value="${productUtil.getDimensions()}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Material</label>
+                                    <div class="brands-list">
+                                        <div th:each="materialEl : ${materialMap}" class="form-group">
+                                            <div class="check-box">
+                                                <input th:value="${materialEl.key}" type="checkbox" name="materials"
+                                                       th:id="${materialEl.key}"
+                                                       th:checked="${materialEl.value}">
+                                                <label th:for="${materialEl.key}" th:text="${materialEl.key}"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Color</label>
+                                    <div class="sel-colors">
+                                        <div th:each="colors : ${colorMap}" class="color-box">
+                                            <input type="radio" name="color" th:value="${colors.key}"
+                                                   th:id="${colors.key}"
+                                                   th:checked="${colors.key} == ${productUtil.getColor()}">
+                                            <label th:style="|${colors.value};|" th:for="${colors.key}"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Image path</label>
+                                    <input type="text" name="imagePath" placeholder="Enter image path"
+                                           th:value="${productUtil.getImagePath()}" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="theme-btn btn-style-one">
+                                        Edit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End Products admin add Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-ui.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

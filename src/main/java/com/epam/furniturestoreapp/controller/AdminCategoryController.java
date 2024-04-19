@@ -32,6 +32,9 @@ public class AdminCategoryController {
 
     @PutMapping
     public String editCategoryAdmin(@ModelAttribute("categoryEdit") Category categoryEdit){
+        if(categoryService.existByName(categoryEdit.getCategoryName())){
+            return "/categories-admin?exist";
+        }
         Category category = categoryService.findById(categoryEdit.getCategoryID());
         category.setCategoryName(categoryEdit.getCategoryName());
         categoryService.save(category);
@@ -40,6 +43,9 @@ public class AdminCategoryController {
 
     @PostMapping
     public String addCategoryAdmin(@RequestParam("categoryName") String categoryName){
+        if(categoryService.existByName(categoryName)){
+            return "/categories-admin?exist";
+        }
         Category category = new Category();
         category.setCategoryName(categoryName);
         categoryService.save(category);

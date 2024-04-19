@@ -664,9 +664,9 @@
 
 .filter-box .form-group{
     line-height:34px;
-    padding:0 20px;
+    /*padding:0 20px;*/
     color:var(--color-thirtyeight);
-    border:2px solid rgba(var(--black-color-rgb), 0.08);
+    /*border:2px solid rgba(var(--black-color-rgb), 0.08);*/
 }
 
 .filter-box .results{
@@ -2739,4 +2739,21 @@
 
 .users-section{
     padding: 40px 0 15px 0 !important;
+}
+
+.select-category-product-admin span{
+    position: relative;
+    display: block;
+    width: 100%;
+    background: var(--white-color);
+    line-height: 30px;
+    padding: 8px 30px;
+    height: 56px;
+    font-weight: 400;
+    border-radius: 50px;
+    font-size: var(--font-15);
+    border: 2px solid #f4f4f4;
+    color: var(--color-seventyfour);
+    transition: all 300ms ease;
+    font-family: var(--font-family-Inter);
 }
