@@ -45,7 +45,8 @@ public class WebSecurityConfig {
                     auth.requestMatchers("/edit-address").hasAnyRole("USER", "ADMIN");
                     auth.requestMatchers("/categories-admin").hasRole("ADMIN");
                     auth.requestMatchers("/users-admin").hasRole("ADMIN");
-                    auth.requestMatchers("/products-admin").hasRole("ADMIN");
+                    auth.requestMatchers("/products-admin/**").hasRole("ADMIN");
+                    auth.requestMatchers("/orders-admin").hasRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> {

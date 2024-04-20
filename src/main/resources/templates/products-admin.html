@@ -75,8 +75,10 @@
                                             </div>
                                         </td>
 
-                                        <td class="price"
+                                        <td class="price" th:if="${product.getCategoryID != null}"
                                             th:text="${product.getCategoryID.getCategoryName()}"></td>
+                                        <td class="price" th:if="${product.getCategoryID == null}"
+                                            th:text="'None'"></td>
 
                                         <td class="price" th:text="${product.getPrice()}"></td>
 

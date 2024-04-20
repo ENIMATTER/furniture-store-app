@@ -36,7 +36,10 @@
                             <div class="price" th:text="'$' + ${product.getPrice()}"></div>
 
                             <!-- Category -->
-                            <div class="categories" th:text="'Category: ' + ${category.getCategoryName()}"></div>
+                            <div class="categories" th:if="${category} != null"
+                                 th:text="'Category: ' + ${category.getCategoryName()}"></div>
+                            <div class="categories" th:if="${category} == null"
+                                 th:text="'Category: None'"></div>
 
                             <!-- Color -->
                             <div class="categories" th:text="'Color: ' + ${product.getColor()}"></div>
