@@ -25,7 +25,11 @@ public class OrderTableService {
         return orderTableRepository.getAllByUserTableID(user);
     }
 
-    public void deleteAll(List<OrderTable> orderTables) {
-        orderTableRepository.deleteAll(orderTables);
+    public List<OrderTable> getAll() {
+        return orderTableRepository.findAll();
+    }
+
+    public void deleteById(Long id) {
+        orderTableRepository.deleteById(id);
     }
 }

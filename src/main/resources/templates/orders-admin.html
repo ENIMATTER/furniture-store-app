@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
+    <!-- End Header -->
+
+    <section class="shoping-cart-section" th:if="${#lists.size(orders)} == 0">
+        <h4 class="h4-custom-class-margin">There is no orders.</h4>
+    </section>
+
+    <!--Categories admin Section -->
+    <section class="shoping-cart-section" th:if="${#lists.size(orders)} != 0">
+        <div class="auto-container">
+            <div class="row clearfix">
+                <div class="cart-column col-lg-12 col-md-12 col-sm-12">
+                    <div class="inner-column">
+                        <div class="cart-outer">
+                            <div class="table-outer">
+                                <table class="cart-table">
+                                    <thead class="cart-header">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User id</th>
+                                        <th>User email</th>
+                                        <th>Order date</th>
+                                        <th>Products</th>
+                                        <th>Total amount</th>
+                                        <th>Address</th>
+                                        <th>ㅤ</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="order: ${orders}">
+                                        <td class="price">
+                                            <div th:text="${order.getOrderTableID()}"></div>
+                                        </td>
+
+                                        <td class="price">
+                                            <div th:text="${order.getUserTableID().getUserTableID()}"></div>
+                                        </td>
+
+                                        <td class="price">
+                                            <div th:text="${order.getUserTableID().getEmail()}"></div>
+                                        </td>
+
+                                        <td class="price">
+                                            <div th:text="${order.getOrderDate()}"></div>
+                                        </td>
+
+                                        <td class="price">
+                                            <div th:each="orderItem : ${order.getOrderItems()}">
+                                                <a th:href="'/products/' +${orderItem.getProductID().getProductID()}">
+                                                    <div th:text="'ID: ' + ${orderItem.getProductID().getProductID()}"></div>
+                                                    <div th:text="'Name: ' + ${orderItem.getProductID().getProductName()}"></div>
+                                                    <div th:text="'Price: ' + ${orderItem.getProductID().getPrice()}"></div>
+                                                    <br>
+                                                </a>
+                                            </div>
+                                        </td>
+
+                                        <td class="price">
+                                            <div th:text="${order.getTotalAmount()}"></div>
+                                        </td>
+
+                                        <td class="price">
+                                            <div th:text="'ID: ' + ${order.getAddress().getAddressID()}"></div>
+                                            <div th:text="'Street: ' + ${order.getAddress().getStreet()}"></div>
+                                            <div th:text="'House: ' + ${order.getAddress().getHouse()}"></div>
+                                            <div th:text="'Floor: ' + ${order.getAddress().getFloor()}"></div>
+                                            <div th:text="'Apartment: ' + ${order.getAddress().getApartment()}"></div>
+                                            <div th:if="${order.getAddress().getMessage()} != null"
+                                                 th:text="'Message: ' + ${order.getAddress().getMessage()}"></div>
+                                        </td>
+
+                                        <form th:method="delete" th:action="@{'/orders-admin/delete/' + ${order.getOrderTableID()}}">
+                                            <td class="price">
+                                                <input type="hidden" name="_method" value="delete">
+                                                <button class="categories-admin-delete-button" type="submit">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Categories admin Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>
