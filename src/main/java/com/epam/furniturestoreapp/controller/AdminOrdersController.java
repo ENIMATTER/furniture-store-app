@@ -38,9 +38,11 @@ public class AdminOrdersController {
         return "orders-admin";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteOrderAdmin(@PathVariable Long id){
-        orderTableService.deleteById(id);
+        if(orderTableService.existById(id)){
+            orderTableService.deleteById(id);
+        }
         return "redirect:/orders-admin";
     }
 }

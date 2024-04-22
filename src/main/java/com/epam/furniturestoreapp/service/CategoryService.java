@@ -39,4 +39,8 @@ public class CategoryService {
     public boolean existByName(String categoryName) {
         return categoryRepository.existsByCategoryName(categoryName);
     }
+
+    public boolean existById(Long id) {
+        return categoryRepository.existsById(id);
+    }
 }

@@ -52,9 +52,11 @@ public class AdminCategoryController {
         return "redirect:/categories-admin";
     }
 
-    @DeleteMapping
-    public String deleteCategoryAdmin(@RequestParam("categoryID") Long categoryID){
-        categoryService.deleteByID(categoryID);
+    @DeleteMapping("/{id}")
+    public String deleteCategoryAdmin(@PathVariable Long id){
+        if(categoryService.existById(id)){
+            categoryService.deleteByID(id);
+        }
         return "redirect:/categories-admin";
     }
 }

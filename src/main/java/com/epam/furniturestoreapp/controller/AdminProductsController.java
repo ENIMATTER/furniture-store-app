@@ -166,9 +166,11 @@ public class AdminProductsController {
         return "redirect:/products-admin";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteProductAdmin(@PathVariable Long id){
-        productService.deleteById(id);
+        if(productService.existsById(id)){
+            productService.deleteById(id);
+        }
         return "redirect:/products-admin";
     }
 

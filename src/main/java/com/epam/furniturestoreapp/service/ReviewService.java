@@ -2,7 +2,6 @@ package com.epam.furniturestoreapp.service;
 
 import com.epam.furniturestoreapp.entity.Product;
 import com.epam.furniturestoreapp.entity.Review;
-import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.repo.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +29,19 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public List<Review> getAllReviewsByUser(UserTable user) {
-        return reviewRepository.getAllByUserTableID(user);
+    public Review getById(Long reviewID) {
+        return reviewRepository.findById(reviewID).orElse(null);
     }
 
-    public void deleteReviews(List<Review> reviews) {
-        reviewRepository.deleteAll(reviews);
+    public void save(Review review) {
+        reviewRepository.save(review);
+    }
+
+    public void deleteById(Long id) {
+        reviewRepository.deleteById(id);
+    }
+
+    public boolean existById(Long id) {
+        return reviewRepository.existsById(id);
     }
 }

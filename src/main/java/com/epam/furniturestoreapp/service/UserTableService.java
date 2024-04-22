@@ -71,4 +71,8 @@ public class UserTableService implements UserDetailsService {
     public void deleteUserById(Long userTableID) {
         userTableRepository.deleteById(userTableID);
     }
+
+    public boolean existsById(Long userTableID) {
+        return userTableRepository.existsById(userTableID);
+    }
 }

@@ -93,7 +93,7 @@
                                         </td>
 
                                         <td class="price">
-                                            <form th:method="delete" th:action="'/products-admin/delete/' + ${product.getProductID()}">
+                                            <form th:method="delete" th:action="'/products-admin/' + ${product.getProductID()}">
                                                 <input type="hidden" name="_method" value="delete">
                                                 <button class="categories-admin-delete-button" type="submit">
                                                     Delete

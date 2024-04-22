@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Head -->
+<head th:insert="~{blocks/head :: head}"></head>
+<!-- End Head -->
+
+<body>
+
+<div class="page-wrapper">
+
+    <!-- Header -->
+    <header class="main-header header-style-three">
+        <div class="header-upper">
+            <div class="auto-container">
+                <div class="inner-container d-flex justify-content-between align-items-center flex-wrap">
+                    <!-- Logo Box -->
+                    <div class="logo-box d-flex align-items-center">
+                        <div class="logo">
+                            <a href="/"><img th:src="@{/images/logo.jpg}" alt=""></a>
+                        </div>
+                    </div>
+                    <!-- Search Box -->
+                    <div class="search-box">
+                        <form method="post" th:action="@{${thAction}}">
+                            <div class="form-group">
+                                <input th:name="search" type="search" placeholder="Search Product" required>
+                                <button type="submit"
+                                        th:style="|background:url(@{/images/icons/search.jpg});|"></button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Options Box -->
+                    <div class="options-box d-flex align-items-center">
+                        <div class="login-icon">
+                            <a href="/admin">Admin panel</a>
+                        </div>
+                        <div class="login-icon">
+                            <a href="/logout">Logout</a>
+                        </div>
+                        <a href="/account">
+                            <span class="icon"><img th:src="@{/images/icons/account.jpg}" alt=""/></span>
+                        </a>
+                        <div class="cart-box-two">
+                            <a href="/cart"><span class="icon"><img th:src="@{/images/icons/cart.jpg}"
+                                                                    alt=""/></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- End Header -->
+
+    <section class="shoping-cart-section" th:if="${#lists.size(reviews)} == 0">
+        <h4 class="h4-custom-class-margin">There is no reviews.</h4>
+    </section>
+
+    <!--Categories admin Section -->
+    <section class="shoping-cart-section users-section" th:if="${#lists.size(reviews)} != 0">
+        <div class="auto-container">
+            <div class="row clearfix">
+                <h4 style="color: red;" th:if="${param.usererror}">User id does not exist</h4>
+                <h4 style="color: red;" th:if="${param.producterror}">Product id does not exist</h4>
+                <div class="cart-column col-lg-12 col-md-12 col-sm-12">
+                    <div class="inner-column">
+                        <div class="cart-outer">
+                            <div class="table-outer">
+                                <table class="cart-table users-admin">
+                                    <thead class="cart-header">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Product</th>
+                                        <th>User</th>
+                                        <th>Rating</th>
+                                        <th>Comment</th>
+                                        <th>Date</th>
+                                        <th>ㅤ</th>
+                                        <th>ㅤ</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="review: ${reviews}">
+                                        <td class="price" th:text="${review.getReviewID()}"></td>
+
+                                        <form th:method="put" th:action="@{/reviews-admin}"
+                                              th:object="${reviewUtil}">
+
+                                            <td class="price">
+                                                <div style="display: flex">
+                                                    <div th:text="'ID: '" style="margin-top: 7px"></div>
+                                                    <input class="reviews-admin-rating" type="number" min="0"
+                                                           name="productID" style="margin-left: 10px"
+                                                           th:value="${review.getProductID().getProductID()}"
+                                                           required>
+                                                </div>
+                                                <a th:href="'/products/' + ${review.getProductID().getProductID()}">
+                                                    <div th:text="'Name: ' + ${review.getProductID().getProductName()}"></div>
+                                                </a>
+                                            </td>
+
+                                            <td class="price">
+                                                <div style="display: flex">
+                                                    <div th:text="'ID: '" style="margin-top: 7px"></div>
+                                                    <input class="reviews-admin-rating" type="number" min="0"
+                                                           name="userTableID" style="margin-left: 10px"
+                                                           th:value="${review.getUserTableID().getUserTableID()}"
+                                                           required>
+                                                </div>
+                                                <div th:text="'Email: ' + ${review.getUserTableID().getEmail()}"></div>
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="reviews-admin-rating" type="number" min="0" max="5"
+                                                       name="rating" th:value="${review.getRating()}"
+                                                       required>
+                                            </td>
+
+                                            <td class="price">
+                                                <textarea class="reviews-admin-textarea" name="reviewComment"
+                                                          th:text="${review.getReviewComment()}"
+                                                          required></textarea>
+                                            </td>
+
+                                            <td class="price">
+                                                <input class="categories-admin-input-name" type="text"
+                                                       name="reviewDate" th:value="${review.getReviewDate()}"
+                                                       required>
+                                            </td>
+
+                                            <td class="price">
+                                                <input type="hidden" name="_method" value="put">
+                                                <input type="hidden" name="reviewID"
+                                                       th:value="${review.getReviewID()}">
+                                                <button class="categories-admin-edit-button" type="submit">Edit</button>
+                                            </td>
+                                        </form>
+
+                                        <form th:method="delete" th:action="@{'/reviews-admin/' + ${review.getReviewID()}}">
+                                            <td class="price">
+                                                <input type="hidden" name="_method" value="delete">
+                                                <button class="categories-admin-delete-button" type="submit">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </form>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Categories admin Section -->
+
+    <!-- Footer -->
+    <footer class="main-footer style-three" th:insert="~{blocks/footer :: footer}"></footer>
+    <!-- End Footer -->
+</div>
+
+<!-- Scroll To Top -->
+<div class="scroll-to-top scroll-to-target" th:style="|background:url(@{/images/icons/arrow-up.jpg});|"
+     data-target="html"></div>
+<!-- End Scroll To Top -->
+
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

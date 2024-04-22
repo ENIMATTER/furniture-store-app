@@ -32,4 +32,8 @@ public class OrderTableService {
     public void deleteById(Long id) {
         orderTableRepository.deleteById(id);
     }
+
+    public boolean existById(Long id) {
+        return orderTableRepository.existsById(id);
+    }
 }

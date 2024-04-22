@@ -76,11 +76,10 @@
                                             </td>
                                         </form>
 
-                                        <form th:method="delete" th:action="@{/categories-admin}">
+                                        <form th:method="delete"
+                                              th:action="@{'/categories-admin/' + ${category.getCategoryID()}}">
                                             <td class="price">
                                                 <input type="hidden" name="_method" value="delete">
-                                                <input type="hidden" name="categoryID"
-                                                       th:value="${category.getCategoryID()}">
                                                 <button class="categories-admin-delete-button" type="submit">
                                                     Delete
                                                 </button>

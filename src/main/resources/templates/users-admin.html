@@ -184,10 +184,9 @@
                                             </td>
                                         </form>
 
-                                        <form th:method="delete" th:action="@{/users-admin}">
+                                        <form th:method="delete"
+                                              th:action="@{'/users-admin/' + ${user.getUserTableID()}}">
                                             <input type="hidden" name="_method" value="delete">
-                                            <input type="hidden" name="userTableID"
-                                                   th:value="${user.getUserTableID()}">
                                             <td class="price">
                                                 <button class="categories-admin-delete-button" type="submit">
                                                     Delete

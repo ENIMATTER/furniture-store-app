@@ -76,9 +76,11 @@ public class AdminUserController {
         return "redirect:/users-admin";
     }
 
-    @DeleteMapping
-    public String deleteUserAdmin(@RequestParam("userTableID") Long userTableID) {
-        userTableService.deleteUserById(userTableID);
+    @DeleteMapping("/{id}")
+    public String deleteUserAdmin(@PathVariable Long id) {
+        if(userTableService.existsById(id)){
+            userTableService.deleteUserById(id);
+        }
         return "redirect:/users-admin";
     }
 }

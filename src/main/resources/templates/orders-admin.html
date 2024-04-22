@@ -29,8 +29,7 @@
                                     <thead class="cart-header">
                                     <tr>
                                         <th>ID</th>
-                                        <th>User id</th>
-                                        <th>User email</th>
+                                        <th>User</th>
                                         <th>Order date</th>
                                         <th>Products</th>
                                         <th>Total amount</th>
@@ -45,11 +44,8 @@
                                         </td>
 
                                         <td class="price">
-                                            <div th:text="${order.getUserTableID().getUserTableID()}"></div>
-                                        </td>
-
-                                        <td class="price">
-                                            <div th:text="${order.getUserTableID().getEmail()}"></div>
+                                            <div th:text="'ID: ' + ${order.getUserTableID().getUserTableID()}"></div>
+                                            <div th:text="'Email: ' + ${order.getUserTableID().getEmail()}"></div>
                                         </td>
 
                                         <td class="price">
@@ -81,7 +77,8 @@
                                                  th:text="'Message: ' + ${order.getAddress().getMessage()}"></div>
                                         </td>
 
-                                        <form th:method="delete" th:action="@{'/orders-admin/delete/' + ${order.getOrderTableID()}}">
+                                        <form th:method="delete"
+                                              th:action="@{'/orders-admin/' + ${order.getOrderTableID()}}">
                                             <td class="price">
                                                 <input type="hidden" name="_method" value="delete">
                                                 <button class="categories-admin-delete-button" type="submit">
