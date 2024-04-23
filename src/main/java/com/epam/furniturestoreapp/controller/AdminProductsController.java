@@ -120,13 +120,23 @@ public class AdminProductsController {
             }
         }
 
-        ProductUtil productUtil = new ProductUtil(product.getProductName(), product.getProductDescription(),
-                product.getCategoryID().getCategoryName(), product.getPrice(), product.getStockQuantity(),
-                product.getDimensions(), materials, color, product.getImage().getImagePath());
+        ProductUtil productUtil;
+
+        if(product.getCategoryID() != null){
+            productUtil = new ProductUtil(product.getProductName(), product.getProductDescription(),
+                    product.getCategoryID().getCategoryName(), product.getPrice(), product.getStockQuantity(),
+                    product.getDimensions(), materials, color, product.getImage().getImagePath());
+        } else {
+            productUtil = new ProductUtil(product.getProductName(), product.getProductDescription(),
+                    null, product.getPrice(), product.getStockQuantity(),
+                    product.getDimensions(), materials, color, product.getImage().getImagePath());
+        }
 
         List<Category> categories = categoryService.findAll();
-        categories.remove(product.getCategoryID());
-        categories.add(0, product.getCategoryID());
+        if(product.getCategoryID() != null){
+            categories.remove(product.getCategoryID());
+            categories.add(0, product.getCategoryID());
+        }
 
         model.addAttribute("categories", categories);
         model.addAttribute("filterList", filterList);
