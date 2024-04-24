@@ -74,4 +74,3 @@ public class EditUserController {
         return "redirect:/login";
     }
 }
-

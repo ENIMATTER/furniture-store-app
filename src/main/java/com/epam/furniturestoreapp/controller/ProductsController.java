@@ -1,11 +1,7 @@
 package com.epam.furniturestoreapp.controller;
 
-import com.epam.furniturestoreapp.entity.Category;
-import com.epam.furniturestoreapp.entity.Product;
-import com.epam.furniturestoreapp.entity.Review;
-import com.epam.furniturestoreapp.service.CategoryService;
-import com.epam.furniturestoreapp.service.ProductService;
-import com.epam.furniturestoreapp.service.ReviewService;
+import com.epam.furniturestoreapp.entity.*;
+import com.epam.furniturestoreapp.service.*;
 import com.epam.furniturestoreapp.model.Color;
 import com.epam.furniturestoreapp.model.Material;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +53,7 @@ public class ProductsController {
 
     @PostMapping("/category/{name}")
     public String postProductsByCategoryId(@PathVariable String name,
-                                           @RequestParam(value = "search", required = false) String search,
+                                           @RequestParam(defaultValue = "") String search,
                                            @RequestParam(value = "filter", defaultValue = "Last added") String filter,
                                            @RequestParam(value = "from", required = false) Double from,
                                            @RequestParam(value = "to", required = false) Double to,
@@ -103,6 +99,7 @@ public class ProductsController {
         Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
 
         addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, name);
+        model.addAttribute("search", search);
         model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
         return "shop";
     }
@@ -125,7 +122,7 @@ public class ProductsController {
     }
 
     @PostMapping
-    public String postProducts(@RequestParam(value = "search", required = false) String search,
+    public String postProducts(@RequestParam(defaultValue = "") String search,
                                @RequestParam(value = "filter", defaultValue = "Last added") String filter,
                                @RequestParam(value = "from", required = false) Double from,
                                @RequestParam(value = "to", required = false) Double to,
@@ -167,6 +164,7 @@ public class ProductsController {
 
         addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, null);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+        model.addAttribute("search", search);
         return "shop";
     }
 
@@ -179,6 +177,7 @@ public class ProductsController {
         Category category = product.getCategoryID();
         List<Review> reviews = reviewService.getAllReviewsByProduct(product);
         List<Category> categories = categoryService.findAll();
+
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         model.addAttribute("reviews", reviews);
@@ -191,6 +190,7 @@ public class ProductsController {
                                            Map<Integer, Boolean> pages, int currentPage, int maxPage,
                                            String category) {
         List<Category> categories = categoryService.findAll();
+
         model.addAttribute("categories", categories);
         model.addAttribute("filterList", FILTER_LIST);
         model.addAttribute("colorMap", COLOR_MAP);

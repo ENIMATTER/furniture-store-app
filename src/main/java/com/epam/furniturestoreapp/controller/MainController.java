@@ -13,7 +13,6 @@ import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL
 
 @Controller
 public class MainController {
-
     private final CategoryService categoryService;
 
     @Autowired

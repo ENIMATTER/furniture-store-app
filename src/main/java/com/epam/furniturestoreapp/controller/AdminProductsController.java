@@ -29,7 +29,8 @@ public class AdminProductsController {
     private final ImageService imageService;
 
     @Autowired
-    public AdminProductsController(ProductService productService, CategoryService categoryService, ImageService imageService) {
+    public AdminProductsController(ProductService productService, CategoryService categoryService,
+                                   ImageService imageService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.imageService = imageService;
@@ -38,14 +39,16 @@ public class AdminProductsController {
     @GetMapping
     public String getProductsAdmin(Model model){
         List<Product> products = productService.getAllProducts();
+        List<Category> categories = categoryService.findAll();
         model.addAttribute("products", products);
-        addToModelBasicAttributes(model);
+        addToModelBasicAttributes(model, categories);
         return "products-admin";
     }
 
     @GetMapping("/add")
     public String getAddProductAdmin(Model model){
-        addToModelBasicAttributes(model);
+        List<Category> categories = categoryService.findAll();
+        addToModelBasicAttributes(model, categories);
         model.addAttribute("materialMap", null);
         return "products-admin-add-edit";
     }
@@ -138,11 +141,7 @@ public class AdminProductsController {
             categories.add(0, product.getCategoryID());
         }
 
-        model.addAttribute("categories", categories);
-        model.addAttribute("filterList", FILTER_LIST);
-        model.addAttribute("colorMap", COLOR_MAP);
-        model.addAttribute("materialList", MATERIAL_LIST);
-        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+        addToModelBasicAttributes(model, categories);
         model.addAttribute("productID", id);
         model.addAttribute("materialMap", materialMap);
         model.addAttribute("productUtil", productUtil);
@@ -184,8 +183,7 @@ public class AdminProductsController {
         return "redirect:/products-admin";
     }
 
-    private void addToModelBasicAttributes(Model model) {
-        List<Category> categories = categoryService.findAll();
+    private void addToModelBasicAttributes(Model model, List<Category> categories) {
         model.addAttribute("categories", categories);
         model.addAttribute("filterList", FILTER_LIST);
         model.addAttribute("colorMap", COLOR_MAP);

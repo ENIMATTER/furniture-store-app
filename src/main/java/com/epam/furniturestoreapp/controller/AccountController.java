@@ -119,7 +119,7 @@ public class AccountController {
     @PostMapping("/top-up")
     public String postTopUp(@RequestParam("amount") Double amount,
                             @RequestParam("cardNumber") String cardNumber,
-                            @RequestParam("CVV") String CVV) {
+                            @RequestParam("cvv") String cvv) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         for (char c : cardNumber.toCharArray()) {
@@ -130,13 +130,13 @@ public class AccountController {
         if (cardNumber.length() != 16) {
             return "redirect:/top-up?cardnumbererror";
         }
-        for (char c : CVV.toCharArray()) {
+        for (char c : cvv.toCharArray()) {
             if (Character.isLetter(c)) {
-                return "redirect:/top-up?CVVerror";
+                return "redirect:/top-up?cvverror";
             }
         }
-        if (CVV.length() != 3) {
-            return "redirect:/top-up?CVVerror";
+        if (cvv.length() != 3) {
+            return "redirect:/top-up?cvverror";
         }
 
         user.setBalance(user.getBalance() + amount);
