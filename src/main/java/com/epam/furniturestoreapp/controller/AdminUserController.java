@@ -2,7 +2,7 @@ package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.service.UserTableService;
-import com.epam.furniturestoreapp.util.UserUtil;
+import com.epam.furniturestoreapp.model.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
+import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 
 @Controller
 @RequestMapping("/users-admin")
@@ -27,12 +27,12 @@ public class AdminUserController {
     public String getUsersAdmin(Model model) {
         List<UserTable> users = userTableService.getAll();
         model.addAttribute("users", users);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         return "users-admin";
     }
 
     @PostMapping
-    public String addUserAdmin(@ModelAttribute("userUtil") UserUtil userUtil) {
+    public String addUserAdmin(@ModelAttribute("userUtil") UserDto userUtil) {
         if(userUtil.getPhone().length() != 9){
             return "redirect:/users-admin?phone";
         }

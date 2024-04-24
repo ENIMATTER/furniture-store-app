@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
+import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 
 @Controller
 @RequestMapping("/categories-admin")
@@ -26,7 +26,7 @@ public class AdminCategoryController {
     public String getCategoriesAdmin(Model model){
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         return "categories-admin";
     }
 

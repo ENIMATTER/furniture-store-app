@@ -6,9 +6,9 @@ import com.epam.furniturestoreapp.entity.Product;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.ImageService;
 import com.epam.furniturestoreapp.service.ProductService;
-import com.epam.furniturestoreapp.util.Color;
-import com.epam.furniturestoreapp.util.Material;
-import com.epam.furniturestoreapp.util.ProductUtil;
+import com.epam.furniturestoreapp.model.Color;
+import com.epam.furniturestoreapp.model.Material;
+import com.epam.furniturestoreapp.model.ProductDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.*;
+import static com.epam.furniturestoreapp.model.StaticVariables.*;
 
 @Controller
 @RequestMapping("/products-admin")
@@ -51,7 +51,7 @@ public class AdminProductsController {
     }
 
     @PostMapping("/add")
-    public String postAddProductAdmin(@ModelAttribute("productUtil") ProductUtil productUtil){
+    public String postAddProductAdmin(@ModelAttribute("productUtil") ProductDto productUtil){
         StringBuilder material = new StringBuilder();
         Material[] materials = productUtil.getMaterials();
         for(int i = 0; i < materials.length; i++){
@@ -87,7 +87,7 @@ public class AdminProductsController {
         Material[] materials = new Material[materialsStr.length];
         int i = 0;
         for(String s : materialsStr){
-            for(Material m : materialList){
+            for(Material m : MATERIAL_LIST){
                 if(s.equals(m.name())) {
                     materials[i] = m;
                     i++;
@@ -95,9 +95,9 @@ public class AdminProductsController {
             }
         }
 
-        boolean[] checked = new boolean[materialList.size()];
+        boolean[] checked = new boolean[MATERIAL_LIST.size()];
         int j = 0;
-        for(Material m1 : materialList){
+        for(Material m1 : MATERIAL_LIST){
             for(Material m2 : materials){
                 if(m1.equals(m2)){
                     checked[j] = true;
@@ -109,25 +109,25 @@ public class AdminProductsController {
             j++;
         }
         Map<Material, Boolean> materialMap = new LinkedHashMap<>();
-        for(int k = 0; k < materialList.size(); k++){
-            materialMap.put(materialList.get(k), checked[k]);
+        for(int k = 0; k < MATERIAL_LIST.size(); k++){
+            materialMap.put(MATERIAL_LIST.get(k), checked[k]);
         }
 
         Color color = null;
-        for(Color c : colorMap.keySet()){
+        for(Color c : COLOR_MAP.keySet()){
             if(c.name().equals(product.getColor())){
                 color = c;
             }
         }
 
-        ProductUtil productUtil;
+        ProductDto productUtil;
 
         if(product.getCategoryID() != null){
-            productUtil = new ProductUtil(product.getProductName(), product.getProductDescription(),
+            productUtil = new ProductDto(product.getProductName(), product.getProductDescription(),
                     product.getCategoryID().getCategoryName(), product.getPrice(), product.getStockQuantity(),
                     product.getDimensions(), materials, color, product.getImage().getImagePath());
         } else {
-            productUtil = new ProductUtil(product.getProductName(), product.getProductDescription(),
+            productUtil = new ProductDto(product.getProductName(), product.getProductDescription(),
                     null, product.getPrice(), product.getStockQuantity(),
                     product.getDimensions(), materials, color, product.getImage().getImagePath());
         }
@@ -139,10 +139,10 @@ public class AdminProductsController {
         }
 
         model.addAttribute("categories", categories);
-        model.addAttribute("filterList", filterList);
-        model.addAttribute("colorMap", colorMap);
-        model.addAttribute("materialList", materialList);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("filterList", FILTER_LIST);
+        model.addAttribute("colorMap", COLOR_MAP);
+        model.addAttribute("materialList", MATERIAL_LIST);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         model.addAttribute("productID", id);
         model.addAttribute("materialMap", materialMap);
         model.addAttribute("productUtil", productUtil);
@@ -151,7 +151,7 @@ public class AdminProductsController {
 
     @PutMapping("/edit/{id}")
     public String putEditProductAdmin(@PathVariable Long id,
-                                      @ModelAttribute("productUtil") ProductUtil productUtil){
+                                      @ModelAttribute("productUtil") ProductDto productUtil){
         Product product = productService.getProductById(id);
         Category category = categoryService.findByName(productUtil.getCategoryName());
         String material = Arrays.toString(productUtil.getMaterials())
@@ -187,9 +187,9 @@ public class AdminProductsController {
     private void addToModelBasicAttributes(Model model) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("filterList", filterList);
-        model.addAttribute("colorMap", colorMap);
-        model.addAttribute("materialList", materialList);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("filterList", FILTER_LIST);
+        model.addAttribute("colorMap", COLOR_MAP);
+        model.addAttribute("materialList", MATERIAL_LIST);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
     }
 }

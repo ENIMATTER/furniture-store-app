@@ -3,9 +3,11 @@ package com.epam.furniturestoreapp.service;
 import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.entity.Product;
 import com.epam.furniturestoreapp.repo.ProductRepository;
-import com.epam.furniturestoreapp.util.Color;
-import com.epam.furniturestoreapp.util.Material;
+import com.epam.furniturestoreapp.model.Color;
+import com.epam.furniturestoreapp.model.Material;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,8 +26,18 @@ public class ProductService {
         return productRepository.getAllByCategoryID(category);
     }
 
+    public Page<Product> getAllProductsByCategoryPage(Category category, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return this.productRepository.getAllByCategoryID(category, pageRequest);
+    }
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    public Page<Product> getAllProductsPage(int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return this.productRepository.findAll(pageRequest);
     }
 
     private List<Product> getAllProductsByMaterial(Material[] material) {
@@ -148,4 +160,6 @@ public class ProductService {
     public boolean existsById(Long productID) {
         return productRepository.existsById(productID);
     }
+
+
 }

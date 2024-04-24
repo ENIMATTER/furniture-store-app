@@ -57,6 +57,41 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Pagination to all products-->
+                        <div class="pagination" th:if="${category} == null">
+                            <a th:if="${currentPage} != 1"
+                               th:href="'/products?page=' + (${currentPage} - 1)">&laquo;</a>
+
+                            <a th:href="'/products?page=' + ${page.key}" th:each="page : ${pages}"
+                               th:text="${page.key}" class=""
+                               th:classappend="${page.value}  ? active"></a>
+
+                            <a th:if="${maxPage} != ${currentPage}"
+                               th:href="'/products?page=' + (${currentPage} + 1)">&raquo;</a>
+
+                            <a th:href="'/products?page=1&size=' + ${countOfAllProducts}">All products</a>
+                        </div>
+                        <!-- End Pagination to all products -->
+
+                        <!-- Pagination to products by category-->
+                        <div class="pagination" th:if="${category} != null">
+                            <a th:if="${currentPage} != 1"
+                               th:href="'/products/category/' + ${category} + '?page=' + (${currentPage} - 1)">&laquo;</a>
+
+                            <a th:href="'/products/category/' + ${category} + '?page=' + ${page.key}"
+                               th:each="page : ${pages}"
+                               th:text="${page.key}" class=""
+                               th:classappend="${page.value}  ? active"></a>
+
+                            <a th:if="${maxPage} != ${currentPage}"
+                               th:href="'/products/category/' + ${category} + '?page=' + (${currentPage} + 1)">&raquo;</a>
+
+                            <a th:href="'/products/category/' + ${category} + '?page=1&size='
+                                + ${countOfAllProducts}">All products by category</a>
+                        </div>
+                        <!-- End Pagination to products by category -->
+
                     </div>
                 </div>
 

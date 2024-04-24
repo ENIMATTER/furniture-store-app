@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
+import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 
 @Controller
 public class MainController {
@@ -42,6 +42,6 @@ public class MainController {
     private void addToModelBasicAttributes(Model model) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
     }
 }

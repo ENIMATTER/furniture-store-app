@@ -15,7 +15,7 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
+import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 
 @Controller
 public class CheckoutOrderController {
@@ -133,6 +133,6 @@ public class CheckoutOrderController {
     private void addToModelBasicAttributes(Model model) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
     }
 }

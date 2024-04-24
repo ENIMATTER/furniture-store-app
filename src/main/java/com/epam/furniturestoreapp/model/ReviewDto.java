@@ -1,4 +1,4 @@
-package com.epam.furniturestoreapp.util;
+package com.epam.furniturestoreapp.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReviewUtil {
+public class ReviewDto {
     private Long reviewID;
     private Long productID;
     private Long userTableID;

@@ -1,4 +1,4 @@
-package com.epam.furniturestoreapp.util;
+package com.epam.furniturestoreapp.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ProductUtil {
+public class ProductDto {
     private String productName;
     private String productDescription;
     private String categoryName;

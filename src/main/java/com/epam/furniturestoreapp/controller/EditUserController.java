@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
+import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 
 @Controller
 @RequestMapping("/edit-user")
@@ -38,7 +38,7 @@ public class EditUserController {
         UserTable user = userTableService.getUserByEmail(emailUsername);
         model.addAttribute("user", user);
         model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         return "edit-user";
     }
 

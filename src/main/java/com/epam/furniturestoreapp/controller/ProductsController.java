@@ -6,16 +6,19 @@ import com.epam.furniturestoreapp.entity.Review;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.ProductService;
 import com.epam.furniturestoreapp.service.ReviewService;
-import com.epam.furniturestoreapp.util.Color;
-import com.epam.furniturestoreapp.util.Material;
+import com.epam.furniturestoreapp.model.Color;
+import com.epam.furniturestoreapp.model.Material;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.*;
+import static com.epam.furniturestoreapp.model.StaticVariables.*;
 
 @RequestMapping("/products")
 @Controller
@@ -33,16 +36,22 @@ public class ProductsController {
     }
 
     @GetMapping("/category/{name}")
-    public String getProductsByCategoryId(@PathVariable String name, Model model) {
+    public String getProductsByCategoryId(@PathVariable String name,
+                                          @RequestParam(defaultValue = "1") int page,
+                                          @RequestParam(defaultValue = "9") int size,
+                                          Model model) {
         Category category = categoryService.findByName(name);
         if (category == null) {
             return "redirect:/not-found";
         }
-        List<Product> products = productService.getAllProductsByCategory(category);
-        products.removeIf(product -> product.getStockQuantity() == 0);
-        addToModelBasicAttributes(model);
-        model.addAttribute("products", products);
-        model.addAttribute("thAction", thActionForProductsByCategory + name);
+        Page<Product> productPage = productService.getAllProductsByCategoryPage(category, page - 1, size);
+        int countOfPages = productPage.getTotalPages();
+        Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
+        List<Product> products = pageToListWithoutOutOfStockItems(productPage);
+        long countOfAllProducts = productPage.getTotalElements();
+
+        addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, name);
+        model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
         return "shop";
     }
 
@@ -54,6 +63,8 @@ public class ProductsController {
                                            @RequestParam(value = "to", required = false) Double to,
                                            @RequestParam(value = "color", required = false) Color color,
                                            @RequestParam(value = "materials", required = false) Material[] materials,
+                                           @RequestParam(defaultValue = "1") int page,
+                                           @RequestParam(defaultValue = "9") int size,
                                            Model model) {
         List<Product> products;
         Category category = categoryService.findByName(name);
@@ -79,19 +90,37 @@ public class ProductsController {
 
         products.removeIf(product -> product.getStockQuantity() == 0);
 
-        model.addAttribute("thAction", thActionForProductsByCategory + name);
-        model.addAttribute("products", products);
-        addToModelBasicAttributes(model);
+        // Page
+        long countOfAllProducts = products.size();
+        Pageable pageRequest = createPageRequestUsing(page - 1, size);
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), products.size());
+
+        products = products.subList(start, end);
+
+        int countOfPages = (int) Math.ceil((double) countOfAllProducts / size);
+
+        Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
+
+        addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, name);
+        model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
         return "shop";
     }
 
     @GetMapping
-    public String getProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
-        products.removeIf(product -> product.getStockQuantity() == 0);
-        addToModelBasicAttributes(model);
-        model.addAttribute("products", products);
-        model.addAttribute("thAction", thActionForAllProducts);
+    public String getProductsPage(@RequestParam(defaultValue = "1") int page,
+                                  @RequestParam(defaultValue = "9") int size,
+                                  Model model) {
+        Page<Product> productPage = productService.getAllProductsPage(page - 1, size);
+        int countOfPages = productPage.getTotalPages();
+        long countOfAllProducts = productPage.getTotalElements();
+
+        Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
+
+        List<Product> products = pageToListWithoutOutOfStockItems(productPage);
+
+        addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, null);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         return "shop";
     }
 
@@ -102,6 +131,8 @@ public class ProductsController {
                                @RequestParam(value = "to", required = false) Double to,
                                @RequestParam(value = "color", required = false) Color color,
                                @RequestParam(value = "materials", required = false) Material[] materials,
+                               @RequestParam(defaultValue = "1") int page,
+                               @RequestParam(defaultValue = "9") int size,
                                Model model) {
         List<Product> products;
 
@@ -122,9 +153,20 @@ public class ProductsController {
 
         products.removeIf(product -> product.getStockQuantity() == 0);
 
-        addToModelBasicAttributes(model);
-        model.addAttribute("products", products);
-        model.addAttribute("thAction", thActionForAllProducts);
+        // Page
+        long countOfAllProducts = products.size();
+        Pageable pageRequest = createPageRequestUsing(page - 1, size);
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), products.size());
+
+        products = products.subList(start, end);
+
+        int countOfPages = (int) Math.ceil((double) countOfAllProducts / size);
+
+        Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
+
+        addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, null);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         return "shop";
     }
 
@@ -138,31 +180,66 @@ public class ProductsController {
         List<Review> reviews = reviewService.getAllReviewsByProduct(product);
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         model.addAttribute("reviews", reviews);
         model.addAttribute("category", category);
         model.addAttribute("product", product);
         return "shop-detail";
     }
 
-    private void addToModelBasicAttributes(Model model) {
+    private void addToModelBasicAttributes(Model model, List<Product> products, long countOfAllProducts,
+                                           Map<Integer, Boolean> pages, int currentPage, int maxPage,
+                                           String category) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("filterList", filterList);
-        model.addAttribute("colorMap", colorMap);
-        model.addAttribute("materialList", materialList);
+        model.addAttribute("filterList", FILTER_LIST);
+        model.addAttribute("colorMap", COLOR_MAP);
+        model.addAttribute("materialList", MATERIAL_LIST);
+
+        model.addAttribute("products", products);
+        model.addAttribute("countOfAllProducts", countOfAllProducts);
+        model.addAttribute("pages", pages);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("category", category);
     }
 
     private void filterOrder(List<Product> products, String filter) {
         switch (filter) {
-            case byRating -> products.sort(Comparator.comparingDouble(Product::getAverageRating).reversed());
-            case lastAdded -> Collections.reverse(products);
+            case BY_RATING -> products.sort(Comparator.comparingDouble(Product::getAverageRating).reversed());
+            case LAST_ADDED -> Collections.reverse(products);
             case AZ -> products.sort(Comparator.comparing(Product::getProductName));
             case ZA -> products.sort(Comparator.comparing(Product::getProductName).reversed());
-            case fromHighestPrice -> products.sort(Comparator.comparingDouble(Product::getPrice).reversed());
-            case fromLowestPrice -> products.sort(Comparator.comparingDouble(Product::getPrice));
+            case FROM_HIGHEST_PRICE -> products.sort(Comparator.comparingDouble(Product::getPrice).reversed());
+            case FROM_LOWEST_PRICE -> products.sort(Comparator.comparingDouble(Product::getPrice));
         }
-        filterList.remove(filter);
-        filterList.add(0, filter);
+        FILTER_LIST.remove(filter);
+        FILTER_LIST.add(0, filter);
+    }
+
+    private List<Product> pageToListWithoutOutOfStockItems(Page<Product> productPage) {
+        List<Product> products = new ArrayList<>();
+        for (Product p : productPage) {
+            if (p.getStockQuantity() != 0) {
+                products.add(p);
+            }
+        }
+        return products;
+    }
+
+    private Map<Integer, Boolean> makeMapOfPagesNumbers(int countOfPages, int currentPage) {
+        Map<Integer, Boolean> pages = new LinkedHashMap<>();
+        for (int i = 1; i <= countOfPages; i++) {
+            if (i == currentPage) {
+                pages.put(i, true);
+            } else {
+                pages.put(i, false);
+            }
+        }
+        return pages;
+    }
+
+    private Pageable createPageRequestUsing(int page, int size) {
+        return PageRequest.of(page, size);
     }
 }

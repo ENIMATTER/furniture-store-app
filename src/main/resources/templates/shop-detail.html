@@ -88,6 +88,9 @@
                                     <!-- Size -->
                                     <b><div class="categories" th:text="'Size: ' + ${product.getDimensions()}"></div></b>
                                     <br>
+                                    <!-- Material -->
+                                    <b><div class="categories" th:text="'Material: ' + ${product.getMaterial()}"></div></b>
+                                    <br>
 
                                     <p th:text="${product.getProductDescription()}"></p>
                                 </div>

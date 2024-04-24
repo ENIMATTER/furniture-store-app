@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
+import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 
 @Controller
 public class AccountController {
@@ -91,7 +91,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/account")
-    private String deleteAccount(HttpServletRequest request, HttpServletResponse response) {
+    public String deleteAccount(HttpServletRequest request, HttpServletResponse response) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         userTableService.deleteUser(user);
@@ -147,6 +147,6 @@ public class AccountController {
     private void addToModelBasicAttributes(Model model) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
     }
 }

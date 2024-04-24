@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
+import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 
 @Controller
 @RequestMapping("/orders-admin")
@@ -34,7 +34,7 @@ public class AdminOrdersController {
         List<OrderTable> orders = orderTableService.getAll();
         model.addAttribute("categories", categories);
         model.addAttribute("orders", orders);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         return "orders-admin";
     }
 

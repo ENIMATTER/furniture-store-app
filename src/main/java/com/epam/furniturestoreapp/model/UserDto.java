@@ -1,4 +1,4 @@
-package com.epam.furniturestoreapp.util;
+package com.epam.furniturestoreapp.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserUtil {
+public class UserDto {
     private String firstname;
     private String lastname;
     private String email;

@@ -6,7 +6,7 @@ import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.service.ProductService;
 import com.epam.furniturestoreapp.service.ReviewService;
 import com.epam.furniturestoreapp.service.UserTableService;
-import com.epam.furniturestoreapp.util.ReviewUtil;
+import com.epam.furniturestoreapp.model.ReviewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.epam.furniturestoreapp.util.StaticVariables.thActionForAllProducts;
+import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 
 @Controller
 @RequestMapping("/reviews-admin")
@@ -35,12 +35,12 @@ public class AdminReviewController {
     public String getReviewsAdmin(Model model){
         List<Review> reviews = reviewService.getAllReviews();
         model.addAttribute("reviews", reviews);
-        model.addAttribute("thAction", thActionForAllProducts);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         return "reviews-admin";
     }
 
     @PutMapping
-    public String editReviewAdmin(@ModelAttribute("reviewUtil") ReviewUtil reviewUtil){
+    public String editReviewAdmin(@ModelAttribute("reviewUtil") ReviewDto reviewUtil){
         if(!userTableService.existsById(reviewUtil.getUserTableID())){
             return "redirect:/reviews-admin?usererror";
         }
