@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.*;
+import com.epam.furniturestoreapp.model.Roles;
 import com.epam.furniturestoreapp.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -58,7 +59,7 @@ public class AccountController {
         }
         String codedPassword = new BCryptPasswordEncoder().encode(userPassword);
         UserTable user = new UserTable(firstname, lastname, email, codedPassword,
-                phoneNumber, 0.0, "USER");
+                phoneNumber, 0.0, Roles.USER.name());
         userTableService.addUser(user);
         return "redirect:/login";
     }

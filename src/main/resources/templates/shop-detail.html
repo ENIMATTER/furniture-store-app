@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <!-- Head -->
 <head th:insert="~{blocks/head :: head}"></head>
@@ -47,21 +48,24 @@
                             <!-- Quantity -->
                             <div class="categories" th:text="'Stock quantity: ' + ${product.getStockQuantity()}"></div><br>
 
-                            <form th:method="post" th:action="@{/cart}">
-                                <input type="hidden" id="cartProductID" name="cartProductID"
-                                       th:value="${product.getProductID()}"/>
+                            <h6 sec:authorize="!isAuthenticated()">Login / Sign up to add to cart</h6>
 
-                                <div class="d-flex align-items-center flex-wrap">
-                                    <!-- Quantity Box -->
-                                    <input type="number" min="1" value="1" name="cartQuantity" class="input-quantity-number">
-                                    <br>
-                                    <!-- Button Box -->
-                                    <div class="button-box">
-                                        <button type="submit" class="theme-btn btn-style-one">Add to cart</button>
+                            <div sec:authorize="isAuthenticated()">
+                                <form th:method="post" th:action="@{/cart}">
+                                    <input type="hidden" id="cartProductID" name="cartProductID"
+                                           th:value="${product.getProductID()}"/>
+
+                                    <div class="d-flex align-items-center flex-wrap">
+                                        <!-- Quantity Box -->
+                                        <input type="number" min="1" value="1" name="cartQuantity" class="input-quantity-number">
+                                        <br>
+                                        <!-- Button Box -->
+                                        <div class="button-box">
+                                            <button type="submit" class="theme-btn btn-style-one">Add to cart</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
-
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,7 +105,12 @@
                                 <!--Reviews Container-->
                                 <div class="comments-area">
                                     <!--Comment Box-->
-                                    <div class="comment-box" th:each="review: ${reviews}">
+                                    <div class="comment-box" th:if="${#lists.size(reviews)} == 0">
+                                        <h6>There is no reviews</h6>
+                                    </div>
+
+                                    <div class="comment-box" th:if="${#lists.size(reviews)} != 0"
+                                         th:each="review: ${reviews}">
                                         <div class="comment">
                                             <div class="comment-inner">
                                                 <div class="comment-info clearfix"
@@ -113,8 +122,10 @@
                                     </div>
                                 </div>
 
+                                <h6 sec:authorize="!isAuthenticated()">Login / Sign up to add review</h6>
+
                                 <!-- Comment Form -->
-                                <div class="shop-comment-form">
+                                <div class="shop-comment-form" sec:authorize="isAuthenticated()">
                                     <h4>Add your review</h4>
                                     <form method="post" action="/review">
                                         <input type="hidden" id="productID" th:name="productID"
