@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.*;
+import com.epam.furniturestoreapp.model.OrderDto;
 import com.epam.furniturestoreapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -125,7 +126,12 @@ public class CheckoutOrderController {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<OrderTable> orders = orderTableService.getAllByUser(user);
-        model.addAttribute("orders", orders);
+        List<OrderDto> orderDtos = new ArrayList<>();
+        for(OrderTable order : orders){
+            orderDtos.add(new OrderDto(order));
+        }
+        Collections.reverse(orderDtos);
+        model.addAttribute("orderDtos", orderDtos);
         addToModelBasicAttributes(model);
         return "orders";
     }

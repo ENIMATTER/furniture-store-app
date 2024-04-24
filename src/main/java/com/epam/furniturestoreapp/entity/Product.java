@@ -61,9 +61,10 @@ public class Product {
     @Column(name = "averagerating")
     private Double averageRating;
 
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinColumn(name = "productID", referencedColumnName = "productID")
-    private Image image;
+    @Lob
+    @NotBlank(message = "Image is mandatory")
+    @Column(name = "image")
+    private byte[] image;
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "productID", referencedColumnName = "productID")

@@ -1,10 +1,9 @@
 package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.Category;
-import com.epam.furniturestoreapp.entity.Image;
 import com.epam.furniturestoreapp.entity.Product;
+import com.epam.furniturestoreapp.model.AdminProductsDto;
 import com.epam.furniturestoreapp.service.CategoryService;
-import com.epam.furniturestoreapp.service.ImageService;
 import com.epam.furniturestoreapp.service.ProductService;
 import com.epam.furniturestoreapp.model.Color;
 import com.epam.furniturestoreapp.model.Material;
@@ -14,10 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 import static com.epam.furniturestoreapp.model.StaticVariables.*;
 
@@ -26,21 +23,22 @@ import static com.epam.furniturestoreapp.model.StaticVariables.*;
 public class AdminProductsController {
     private final ProductService productService;
     private final CategoryService categoryService;
-    private final ImageService imageService;
 
     @Autowired
-    public AdminProductsController(ProductService productService, CategoryService categoryService,
-                                   ImageService imageService) {
+    public AdminProductsController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
         this.categoryService = categoryService;
-        this.imageService = imageService;
     }
 
     @GetMapping
     public String getProductsAdmin(Model model){
         List<Product> products = productService.getAllProducts();
         List<Category> categories = categoryService.findAll();
-        model.addAttribute("products", products);
+        List<AdminProductsDto> productsDtos = new ArrayList<>();
+        for(Product product : products){
+            productsDtos.add(new AdminProductsDto(product));
+        }
+        model.addAttribute("productsDtos", productsDtos);
         addToModelBasicAttributes(model, categories);
         return "products-admin";
     }
@@ -54,7 +52,7 @@ public class AdminProductsController {
     }
 
     @PostMapping("/add")
-    public String postAddProductAdmin(@ModelAttribute("productUtil") ProductDto productUtil){
+    public String postAddProductAdmin(@ModelAttribute("productUtil") ProductDto productUtil) throws IOException {
         StringBuilder material = new StringBuilder();
         Material[] materials = productUtil.getMaterials();
         for(int i = 0; i < materials.length; i++){
@@ -74,10 +72,8 @@ public class AdminProductsController {
                 category, productUtil.getPrice(), productUtil.getStockQuantity(),
                 productUtil.getDimensions(), material.toString(), color, averageRating);
 
+        product.setImage(productUtil.getImage().getBytes());
         productService.save(product);
-
-        Image image = new Image(product, productUtil.getImagePath());
-        imageService.save(image);
 
         return "redirect:/products-admin";
     }
@@ -123,17 +119,16 @@ public class AdminProductsController {
             }
         }
 
-        ProductDto productUtil;
+        ProductDto productUtil = new ProductDto(product.getProductName(), product.getProductDescription(),
+                product.getPrice(), product.getStockQuantity(), product.getDimensions(), materials, color);
 
         if(product.getCategoryID() != null){
-            productUtil = new ProductDto(product.getProductName(), product.getProductDescription(),
-                    product.getCategoryID().getCategoryName(), product.getPrice(), product.getStockQuantity(),
-                    product.getDimensions(), materials, color, product.getImage().getImagePath());
+            productUtil.setCategoryName(product.getCategoryID().getCategoryName());
         } else {
-            productUtil = new ProductDto(product.getProductName(), product.getProductDescription(),
-                    null, product.getPrice(), product.getStockQuantity(),
-                    product.getDimensions(), materials, color, product.getImage().getImagePath());
+            productUtil.setCategoryName(null);
         }
+        String imageString = Base64.getEncoder().encodeToString(product.getImage());
+        productUtil.setImageString(imageString);
 
         List<Category> categories = categoryService.findAll();
         if(product.getCategoryID() != null){
@@ -150,7 +145,7 @@ public class AdminProductsController {
 
     @PutMapping("/edit/{id}")
     public String putEditProductAdmin(@PathVariable Long id,
-                                      @ModelAttribute("productUtil") ProductDto productUtil){
+                                      @ModelAttribute("productUtil") ProductDto productUtil) throws IOException {
         Product product = productService.getProductById(id);
         Category category = categoryService.findByName(productUtil.getCategoryName());
         String material = Arrays.toString(productUtil.getMaterials())
@@ -166,12 +161,11 @@ public class AdminProductsController {
         product.setMaterial(material);
         product.setColor(color);
 
-        Image image = product.getImage();
-        image.setImagePath(productUtil.getImagePath());
+        if(productUtil.getImage().getBytes().length != 0){
+            product.setImage(productUtil.getImage().getBytes());
+        }
 
         productService.save(product);
-        imageService.save(image);
-
         return "redirect:/products-admin";
     }
 

@@ -1,9 +1,14 @@
 package com.epam.furniturestoreapp.controller;
 
-import com.epam.furniturestoreapp.entity.*;
-import com.epam.furniturestoreapp.service.*;
+import com.epam.furniturestoreapp.entity.Category;
+import com.epam.furniturestoreapp.entity.Product;
+import com.epam.furniturestoreapp.entity.Review;
+import com.epam.furniturestoreapp.model.ShopItemDto;
 import com.epam.furniturestoreapp.model.Color;
 import com.epam.furniturestoreapp.model.Material;
+import com.epam.furniturestoreapp.service.CategoryService;
+import com.epam.furniturestoreapp.service.ProductService;
+import com.epam.furniturestoreapp.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,10 +48,11 @@ public class ProductsController {
         Page<Product> productPage = productService.getAllProductsByCategoryPage(category, page - 1, size);
         int countOfPages = productPage.getTotalPages();
         Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
-        List<Product> products = pageToListWithoutOutOfStockItems(productPage);
         long countOfAllProducts = productPage.getTotalElements();
 
-        addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, name);
+        List<ShopItemDto> shopItems = pageToListWithoutOutOfStockItems(productPage);
+
+        addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, name);
         model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
         return "shop";
     }
@@ -98,7 +104,12 @@ public class ProductsController {
 
         Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
 
-        addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, name);
+        List<ShopItemDto> shopItems = new ArrayList<>();
+        for(Product p : products){
+            shopItems.add(new ShopItemDto(p));
+        }
+
+        addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, name);
         model.addAttribute("search", search);
         model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
         return "shop";
@@ -114,9 +125,9 @@ public class ProductsController {
 
         Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
 
-        List<Product> products = pageToListWithoutOutOfStockItems(productPage);
+        List<ShopItemDto> shopItems = pageToListWithoutOutOfStockItems(productPage);
 
-        addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, null);
+        addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, null);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         return "shop";
     }
@@ -162,7 +173,12 @@ public class ProductsController {
 
         Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
 
-        addToModelBasicAttributes(model, products, countOfAllProducts, pages, page, countOfPages, null);
+        List<ShopItemDto> shopItems = new ArrayList<>();
+        for(Product p : products){
+            shopItems.add(new ShopItemDto(p));
+        }
+
+        addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, null);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         model.addAttribute("search", search);
         return "shop";
@@ -178,17 +194,20 @@ public class ProductsController {
         List<Review> reviews = reviewService.getAllReviewsByProduct(product);
         List<Category> categories = categoryService.findAll();
 
+        String image = Base64.getEncoder().encodeToString(product.getImage());
+
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         model.addAttribute("reviews", reviews);
         model.addAttribute("category", category);
         model.addAttribute("product", product);
+        model.addAttribute("image", image);
         return "shop-detail";
     }
 
-    private void addToModelBasicAttributes(Model model, List<Product> products, long countOfAllProducts,
-                                           Map<Integer, Boolean> pages, int currentPage, int maxPage,
-                                           String category) {
+    private void addToModelBasicAttributes(Model model, List<ShopItemDto> shopItems, long countOfAllProducts,
+                                           Map<Integer, Boolean> pages, int currentPage,
+                                           int maxPage, String category) {
         List<Category> categories = categoryService.findAll();
 
         model.addAttribute("categories", categories);
@@ -196,7 +215,7 @@ public class ProductsController {
         model.addAttribute("colorMap", COLOR_MAP);
         model.addAttribute("materialList", MATERIAL_LIST);
 
-        model.addAttribute("products", products);
+        model.addAttribute("shopItems", shopItems);
         model.addAttribute("countOfAllProducts", countOfAllProducts);
         model.addAttribute("pages", pages);
         model.addAttribute("currentPage", currentPage);
@@ -217,11 +236,11 @@ public class ProductsController {
         FILTER_LIST.add(0, filter);
     }
 
-    private List<Product> pageToListWithoutOutOfStockItems(Page<Product> productPage) {
-        List<Product> products = new ArrayList<>();
+    private List<ShopItemDto> pageToListWithoutOutOfStockItems(Page<Product> productPage) {
+        List<ShopItemDto> products = new ArrayList<>();
         for (Product p : productPage) {
             if (p.getStockQuantity() != 0) {
-                products.add(p);
+                products.add(new ShopItemDto(p));
             }
         }
         return products;

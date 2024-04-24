@@ -11,12 +11,12 @@
     <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
 
-    <section class="shoping-cart-section" th:if="${#lists.size(cartItems)} == 0">
+    <section class="shoping-cart-section" th:if="${#lists.size(cartItemDtos)} == 0">
         <h4 class="h4-custom-class-margin">Your cart is empty. Let's go shopping!</h4>
     </section>
 
     <!-- Cart Section -->
-    <section class="shoping-cart-section" th:if="${#lists.size(cartItems)} != 0">
+    <section class="shoping-cart-section" th:if="${#lists.size(cartItemDtos)} != 0">
         <div class="auto-container">
             <div class="row clearfix">
                 <!-- Cart Column -->
@@ -38,45 +38,46 @@
                                     </thead>
                                     <tbody>
 
-                                    <tr th:each="cartItem: ${cartItems}">
+                                    <tr th:each="cartItemDto: ${cartItemDtos}">
                                         <td colspan="2" class="prod-column">
                                             <div class="column-box">
                                                 <figure class="prod-thumb">
                                                     <form th:method="delete" th:action="@{/cart}">
                                                         <input type="hidden" name="_method" value="delete">
                                                         <input type="hidden" name="cartItemID"
-                                                               th:value="${cartItem.getCartItemID()}">
+                                                               th:value="${cartItemDto.getCartItemID()}">
                                                         <button type="submit"
                                                                 class="cross-icon"
                                                                 th:style="|background-image:url(@{/images/icons/cross-icon.jpg})|">
                                                         </button>
                                                     </form>
-                                                    <a th:href="'/products/' + ${cartItem.getProductID().getProductID()}"><img
-                                                            th:src="@{${cartItem.getProductID().getImage().getImagePath()}}" alt=""></a>
+                                                    <a th:href="'/products/' + ${cartItemDto.getProductID()}"><img
+                                                            th:src="${'data:image/png;base64,' + cartItemDto.getImageString()}"
+                                                            alt=""></a>
                                                 </figure>
                                                 <h6 class="prod-title"
-                                                    th:text="${cartItem.getProductID().getProductName()}"></h6>
+                                                    th:text="${cartItemDto.getProductName()}"></h6>
                                                 <div class="prod-text"
-                                                     th:text="'Color: ' + ${cartItem.getProductID().getColor()}"></div>
+                                                     th:text="'Color: ' + ${cartItemDto.getColor()}"></div>
                                             </div>
                                         </td>
-                                        <td class="price" th:text="'$' + ${cartItem.getProductID().getPrice()}"></td>
+                                        <td class="price" th:text="'$' + ${cartItemDto.getPrice()}"></td>
                                         <!-- Quantity Box -->
                                         <td class="quantity-box">
                                             <div class="item-quantity">
                                                 <form th:method="put" th:action="@{/cart}">
                                                     <input type="hidden" name="_method" value="put">
                                                     <input type="hidden" name="cartItemID"
-                                                           th:value="${cartItem.getCartItemID()}">
+                                                           th:value="${cartItemDto.getCartItemID()}">
 
-                                                    <input type="number" min="0" th:value="${cartItem.getQuantity()}"
+                                                    <input type="number" min="0" th:value="${cartItemDto.getQuantity()}"
                                                            name="cartQuantity" class="input-quantity-shop">
 
                                                     <button style="width: 100%;" type="submit">Change</button>
                                                 </form>
                                             </div>
                                         </td>
-                                        <td class="sub-total" th:text="'$' + ${totals.get(cartItem)}"></td>
+                                        <td class="sub-total" th:text="'$' + ${cartItemDto.getTotals()}"></td>
                                     </tr>
                                     </tbody>
                                 </table>

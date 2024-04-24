@@ -4,6 +4,7 @@ import com.epam.furniturestoreapp.entity.CartItem;
 import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.entity.Product;
 import com.epam.furniturestoreapp.entity.UserTable;
+import com.epam.furniturestoreapp.model.CartItemDto;
 import com.epam.furniturestoreapp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,18 +40,14 @@ public class CartController {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<CartItem> cartItems = user.getCartItems();
-        Map<CartItem, BigDecimal> totals = new HashMap<>();
-        user.getCartItems().forEach(cartItem -> totals.put(cartItem, BigDecimal
-                        .valueOf(cartItem.getQuantity() * cartItem.getProductID().getPrice())
-                        .setScale(2, RoundingMode.HALF_UP)));
+        List<CartItemDto> cartItemDtos = getCartItemsDtoFromCartItems(cartItems);
         BigDecimal allTotal = BigDecimal.ZERO;
-        for (BigDecimal d : totals.values()) {
-            allTotal = allTotal.add(d);
+        for (CartItemDto c : cartItemDtos) {
+            allTotal = allTotal.add(c.getTotals());
         }
         allTotal = allTotal.setScale(2, RoundingMode.HALF_UP);
         model.addAttribute("allTotal", allTotal);
-        model.addAttribute("totals", totals);
-        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("cartItemDtos", cartItemDtos);
         addToModelBasicAttributes(model);
         return "cart";
     }
@@ -117,5 +114,13 @@ public class CartController {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+    }
+
+    private List<CartItemDto> getCartItemsDtoFromCartItems(List<CartItem> cartItems){
+        List<CartItemDto> cartItemDtos = new ArrayList<>();
+        for(CartItem c : cartItems){
+            cartItemDtos.add(new CartItemDto(c));
+        }
+        return cartItemDtos;
     }
 }

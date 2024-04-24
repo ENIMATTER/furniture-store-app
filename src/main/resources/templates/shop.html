@@ -13,39 +13,39 @@
     <header class="main-header header-style-three" th:insert="~{blocks/header :: header}"></header>
     <!-- End Header -->
 
-    <div class="sidebar-page-container" th:if="${#lists.size(products)} == 0">
+    <div class="sidebar-page-container" th:if="${#lists.size(shopItems)} == 0">
         <h4 class="h4-custom-class-margin">There is no products</h4>
     </div>
 
     <!-- Sidebar Page Container -->
-    <div class="sidebar-page-container" th:if="${#lists.size(products)} != 0">
+    <div class="sidebar-page-container" th:if="${#lists.size(shopItems)} != 0">
         <div class="auto-container">
             <div class="row clearfix" style="display: flex; flex-wrap: nowrap;">
                 <!-- Content Side -->
                 <div class="content-side col-lg-9 col-md-12 col-sm-12">
                     <div class="shops-outer">
                         <div class="row clearfix">
-                            <div th:each="product: ${products}" class="shop-item col-lg-4 col-md-4 col-sm-12">
+                            <div th:each="shopItem: ${shopItems}" class="shop-item col-lg-4 col-md-4 col-sm-12">
                                 <div class="inner-box">
                                     <div class="image">
-                                        <a th:href="'/products/' + ${product.getProductID()}"><img
-                                                th:src="@{${product.getImage().getImagePath()}}"
+                                        <a th:href="'/products/' + ${shopItem.getProductID()}"><img
+                                                th:src="${'data:image/png;base64,' + shopItem.getImageString()}"
                                                 alt=""/></a>
                                     </div>
                                     <div class="lower-content">
                                         <div class="rating"
-                                             th:text="'Rating: ' + ${product.getAverageRating()}"></div>
-                                        <h6><a th:href="'/products/' + ${product.getProductID()}"
-                                               th:text="${product.getProductName()}">Table</a>
+                                             th:text="'Rating: ' + ${shopItem.getAverageRating()}"></div>
+                                        <h6><a th:href="'/products/' + ${shopItem.getProductID()}"
+                                               th:text="${shopItem.getProductName()}"></a>
                                         </h6>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <div class="price" th:text="'$' + ${product.getPrice()}"></div>
+                                            <div class="price" th:text="'$' + ${shopItem.getPrice()}"></div>
                                             <!-- Quantity Box -->
                                             <form th:method="post" th:action="@{/cart}">
                                                 <div class="quantity-box">
                                                     <div class="item-quantity">
                                                         <input type="hidden" id="cartProductID" name="cartProductID"
-                                                               th:value="${product.getProductID()}"/>
+                                                               th:value="${shopItem.getProductID()}"/>
                                                         <input type="number" min="1" value="1"
                                                                name="cartQuantity" class="input-quantity-shop">
                                                     </div>

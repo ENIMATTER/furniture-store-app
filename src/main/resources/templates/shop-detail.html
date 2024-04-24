@@ -21,7 +21,7 @@
                 <div class="row clearfix">
                     <!-- Image Column -->
                     <div class="gallery-column col-lg-6 col-md-12 col-sm-12">
-                        <img th:src="@{${product.getImage().getImagePath()}}" alt="" style="width: 100%;">
+                        <img th:src="${'data:image/png;base64,' + image}" alt="" style="width: 100%;">
                     </div>
                     <!-- Content Column -->
                     <div class="content-column col-lg-6 col-md-12 col-sm-12">

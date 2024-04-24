@@ -23,7 +23,8 @@
                     <div class="column col-lg-8 col-md-12 col-sm-12">
                         <div class="styled-form">
                             <h4>Add product</h4>
-                            <form th:method="post" th:action="@{/products-admin/add}" th:object="${productUtil}">
+                            <form th:method="post" th:action="@{/products-admin/add}"
+                                  th:object="${productUtil}" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label>Product name</label>
                                     <input type="text" name="productName" placeholder="Enter product name" required>
@@ -79,9 +80,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Image path</label>
-                                    <input type="text" name="imagePath" placeholder="Enter image path"
-                                           required>
+                                    <label>Image (png)</label>
+                                    <input type="file" name="image" accept="image/png" required>
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="theme-btn btn-style-one">
@@ -99,7 +99,7 @@
                         <div class="styled-form">
                             <h4>Edit product</h4>
                             <form th:method="put" th:action="@{'/products-admin/edit/' + ${productID}}"
-                                  th:object="${productUtil}">
+                                  th:object="${productUtil}" enctype="multipart/form-data">
                                 <input type="hidden" name="_method" value="put">
                                 <div class="form-group">
                                     <label>Product name</label>
@@ -166,9 +166,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Image path</label>
-                                    <input type="text" name="imagePath" placeholder="Enter image path"
-                                           th:value="${productUtil.getImagePath()}" required>
+                                    <label>Current image: </label>
+                                    <img th:src="${'data:image/png;base64,' + productUtil.getImageString()}" alt=""/>
+                                </div>
+                                <div class="form-group">
+                                    <label>New image (png)</label>
+                                    <input type="file" name="image" accept="image/png">
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="theme-btn btn-style-one">

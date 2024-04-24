@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
 public class ProductDto {
     private String productName;
     private String productDescription;
@@ -18,5 +18,17 @@ public class ProductDto {
     private String dimensions;
     private Material[] materials;
     private Color color;
-    private String imagePath;
+    private MultipartFile image;
+    private String imageString;
+
+    public ProductDto(String productName, String productDescription, Double price, Integer stockQuantity,
+                      String dimensions, Material[] materials, Color color) {
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.dimensions = dimensions;
+        this.materials = materials;
+        this.color = color;
+    }
 }
