@@ -2,9 +2,11 @@ package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +33,11 @@ public class AdminCategoryController {
     }
 
     @PutMapping
-    public String editCategoryAdmin(@ModelAttribute("categoryEdit") Category categoryEdit){
+    public String editCategoryAdmin(@Valid @ModelAttribute("categoryEdit") Category categoryEdit,
+                                    BindingResult result){
+        if (result.hasErrors()) {
+            return "redirect:/categories-admin?fail";
+        }
         if(categoryService.existByName(categoryEdit.getCategoryName())){
             return "redirect:/categories-admin?exist";
         }

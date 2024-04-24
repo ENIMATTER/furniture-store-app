@@ -1,12 +1,13 @@
 package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -45,7 +46,7 @@ public class UserTable {
     @Column(name = "phonenumber")
     private String phoneNumber;
 
-    @NotBlank(message = "Balance is mandatory")
+    @NotNull(message = "Balance is mandatory")
     @Column(name = "Balance")
     private Double balance;
 

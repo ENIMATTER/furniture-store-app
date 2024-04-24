@@ -2,18 +2,22 @@ package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.*;
 import com.epam.furniturestoreapp.model.Roles;
+import com.epam.furniturestoreapp.model.UserSignUpDto;
 import com.epam.furniturestoreapp.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,29 +41,24 @@ public class AccountController {
     }
 
     @PostMapping("/signup")
-    public String postSignup(@RequestParam("firstname") String firstname,
-                             @RequestParam("lastname") String lastname,
-                             @RequestParam("email") String email,
-                             @RequestParam("phoneNumber") String phoneNumber,
-                             @RequestParam("userPassword") String userPassword,
-                             @RequestParam("userPasswordAgain") String userPasswordAgain) {
-        if (userTableService.existsByEmail(email)) {
+    @PreAuthorize("!@userTableService.existsByEmail(#userSignUp.email) " +
+            "&& #userSignUp.userPassword.equals(#userSignUp.userPasswordAgain)")
+    public String postSignup(@Valid @ModelAttribute("userSignUp") UserSignUpDto userSignUp,
+                             BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/signup?fail";
+        }
+        if (userTableService.existsByEmail(userSignUp.getEmail())) {
             return "redirect:/signup?exist";
         }
-        if (!userPassword.equals(userPasswordAgain)) {
+        if (!userSignUp.getUserPassword().equals(userSignUp.getUserPasswordAgain())) {
             return "redirect:/signup?notmatch";
         }
-        if(phoneNumber.length() != 9){
-            return "redirect:/signup?phone";
-        }
-        for(char c : phoneNumber.toCharArray()){
-            if(!Character.isDigit(c)){
-                return "redirect:/signup?phone";
-            }
-        }
-        String codedPassword = new BCryptPasswordEncoder().encode(userPassword);
-        UserTable user = new UserTable(firstname, lastname, email, codedPassword,
-                phoneNumber, 0.0, Roles.USER.name());
+        double balance = 0.0;
+
+        String codedPassword = new BCryptPasswordEncoder().encode(userSignUp.getUserPassword());
+        UserTable user = new UserTable(userSignUp.getFirstname(), userSignUp.getLastname(),
+                userSignUp.getEmail(), codedPassword, userSignUp.getPhoneNumber(), balance, Roles.USER.name());
         userTableService.addUser(user);
         return "redirect:/login";
     }
