@@ -18,6 +18,8 @@
         <div class="auto-container">
             <div class="inner-container">
 
+                <h4 style="color: red;" th:if="${param.fail}">Validation failed</h4>
+
                 <!--Add form-->
                 <div class="row clearfix" th:if="${materialMap} == null">
                     <div class="column col-lg-8 col-md-12 col-sm-12">

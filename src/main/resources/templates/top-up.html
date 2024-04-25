@@ -19,10 +19,9 @@
             <div class="inner-container">
                 <div class="row clearfix">
                     <div class="column col-lg-8 col-md-12 col-sm-12">
-                        <form th:method="post" th:action="@{/top-up}">
+                        <form th:method="post" th:action="@{/top-up}" th:object="${cardDto}">
                             <div class="styled-form">
-                                <h4 style="color: red;" th:if="${param.cardnumbererror}">Cart number must be 16 digits</h4>
-                                <h4 style="color: red;" th:if="${param.cvverror}">CVV must be 3 digits</h4>
+                                <h4 style="color: red;" th:if="${param.fail}">Validation failed</h4>
                                 <div class="form-group">
                                     <label>Enter amount:</label>
                                     <input type="number" class="input-dates-top-up" name="amount"

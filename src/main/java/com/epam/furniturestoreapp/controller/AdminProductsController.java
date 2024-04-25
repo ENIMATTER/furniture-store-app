@@ -8,9 +8,11 @@ import com.epam.furniturestoreapp.service.ProductService;
 import com.epam.furniturestoreapp.model.Color;
 import com.epam.furniturestoreapp.model.Material;
 import com.epam.furniturestoreapp.model.ProductDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -52,7 +54,11 @@ public class AdminProductsController {
     }
 
     @PostMapping("/add")
-    public String postAddProductAdmin(@ModelAttribute("productUtil") ProductDto productUtil) throws IOException {
+    public String postAddProductAdmin(@Valid @ModelAttribute("productUtil") ProductDto productUtil,
+                                      BindingResult result) throws IOException {
+        if (result.hasErrors()) {
+            return "redirect:/products-admin/add?fail";
+        }
         StringBuilder material = new StringBuilder();
         Material[] materials = productUtil.getMaterials();
         for(int i = 0; i < materials.length; i++){
@@ -145,7 +151,11 @@ public class AdminProductsController {
 
     @PutMapping("/edit/{id}")
     public String putEditProductAdmin(@PathVariable Long id,
-                                      @ModelAttribute("productUtil") ProductDto productUtil) throws IOException {
+                                      @Valid @ModelAttribute("productUtil") ProductDto productUtil,
+                                      BindingResult result) throws IOException {
+        if (result.hasErrors()) {
+            return "redirect:/products-admin/edit/" + id + "?fail";
+        }
         Product product = productService.getProductById(id);
         Category category = categoryService.findByName(productUtil.getCategoryName());
         String material = Arrays.toString(productUtil.getMaterials())

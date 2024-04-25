@@ -1,11 +1,10 @@
 package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @NoArgsConstructor
@@ -26,7 +25,7 @@ public class OrderItem {
     @JoinColumn(name = "productID", referencedColumnName = "productID")
     private Product productID;
 
-    @NotBlank(message = "Quantity is mandatory")
+    @NotNull(message = "Quantity is mandatory")
     @Column(name = "Quantity")
     private Integer quantity;
 }

@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.*;
+import com.epam.furniturestoreapp.model.CardDto;
 import com.epam.furniturestoreapp.model.Roles;
 import com.epam.furniturestoreapp.model.UserSignUpDto;
 import com.epam.furniturestoreapp.service.*;
@@ -47,12 +48,6 @@ public class AccountController {
                              BindingResult result) {
         if (result.hasErrors()) {
             return "redirect:/signup?fail";
-        }
-        if (userTableService.existsByEmail(userSignUp.getEmail())) {
-            return "redirect:/signup?exist";
-        }
-        if (!userSignUp.getUserPassword().equals(userSignUp.getUserPasswordAgain())) {
-            return "redirect:/signup?notmatch";
         }
         double balance = 0.0;
 
@@ -118,27 +113,12 @@ public class AccountController {
 
     @PostMapping("/top-up")
     public String postTopUp(@RequestParam("amount") Double amount,
-                            @RequestParam("cardNumber") String cardNumber,
-                            @RequestParam("cvv") String cvv) {
+                            @Valid @ModelAttribute("cardDto") CardDto cardDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/top-up?fail";
+        }
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
-        for (char c : cardNumber.toCharArray()) {
-            if (Character.isLetter(c)) {
-                return "redirect:/top-up?cardnumbererror";
-            }
-        }
-        if (cardNumber.length() != 16) {
-            return "redirect:/top-up?cardnumbererror";
-        }
-        for (char c : cvv.toCharArray()) {
-            if (Character.isLetter(c)) {
-                return "redirect:/top-up?cvverror";
-            }
-        }
-        if (cvv.length() != 3) {
-            return "redirect:/top-up?cvverror";
-        }
-
         user.setBalance(user.getBalance() + amount);
         userTableService.editUser(user);
         return "redirect:/account";

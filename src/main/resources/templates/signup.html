@@ -21,8 +21,6 @@
                     <div class="column col-lg-8 col-md-12 col-sm-12">
                         <div class="styled-form">
                             <h4>Sign Up</h4>
-                            <h4 style="color: red;" th:if="${param.exist}">User with this email exist</h4>
-                            <h4 style="color: red;" th:if="${param.notmatch}">Passwords doesn't match</h4>
                             <h4 style="color: red;" th:if="${param.fail}">Validation failed</h4>
                             <form th:method="post" th:action="@{/signup}" th:object="${userSignUp}">
                                 <div class="form-group">

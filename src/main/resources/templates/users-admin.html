@@ -60,8 +60,7 @@
     <section class="shoping-cart-section users-section" th:if="${#lists.size(users)} != 0">
         <div class="auto-container">
             <div class="row clearfix">
-                <h4 style="color: red;" th:if="${param.exist}">User with this email exist</h4>
-                <h4 style="color: red;" th:if="${param.phone}">Phone must be a number (9 digits)</h4>
+                <h4 style="color: red;" th:if="${param.fail}">Validation failed</h4>
                 <div class="cart-column col-lg-12 col-md-12 col-sm-12">
                     <div class="inner-column">
                         <div class="cart-outer">

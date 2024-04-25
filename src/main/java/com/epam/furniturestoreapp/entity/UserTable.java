@@ -2,6 +2,7 @@ package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,7 +42,7 @@ public class UserTable {
     @Column(name = "userpassword")
     private String userPassword;
 
-    @Size(max = 50, message = "Phone number must be less than 50")
+    @Pattern(regexp="\\d{9}", message = "Phone number be 9 digits")
     @NotBlank(message = "Phone number is mandatory")
     @Column(name = "phonenumber")
     private String phoneNumber;

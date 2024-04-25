@@ -128,9 +128,9 @@
                                         <h6>Price</h6>
                                     </div>
                                     <input type="number" min="0" th:name="from" placeholder="From"
-                                           class="input-price-shop">
+                                           class="input-price-shop" th:value="${from}">
                                     <input type="number" min="0" th:name="to" placeholder="To"
-                                           class="input-price-shop"><br>
+                                           class="input-price-shop" th:value="${to}"><br>
                                 </div>
                             </div>
                             <br>
@@ -145,7 +145,7 @@
                                     <div class="sel-colors">
                                         <div th:each="colors : ${colorMap}" class="color-box">
                                             <input type="radio" th:name="color" th:value="${colors.key}"
-                                                   th:id="${colors.key}">
+                                                   th:id="${colors.key}" th:checked="${colors.key} == ${color}">
                                             <label th:style="|${colors.value};|" th:for="${colors.key}"></label>
                                         </div>
                                     </div>
@@ -160,11 +160,11 @@
                                         <h6>Material</h6>
                                     </div>
                                     <div class="brands-list">
-                                        <div th:each="materialListEl : ${materialList}" class="form-group">
+                                        <div th:each="materialEl : ${materialMap}" class="form-group">
                                             <div class="check-box">
-                                                <input th:value="${materialListEl}" type="checkbox" name="materials"
-                                                       th:id="${materialListEl}">
-                                                <label th:for="${materialListEl}" th:text="${materialListEl}"></label>
+                                                <input th:value="${materialEl.key}" type="checkbox" name="materials"
+                                                       th:id="${materialEl.key}" th:checked="${materialEl.value}">
+                                                <label th:for="${materialEl.key}" th:text="${materialEl.key}"></label>
                                             </div>
                                         </div>
                                         <br>

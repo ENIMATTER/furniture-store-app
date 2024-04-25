@@ -52,19 +52,26 @@ public class ProductsController {
 
         List<ShopItemDto> shopItems = pageToListWithoutOutOfStockItems(productPage);
 
+        Map<Material, Boolean> materialMap = new LinkedHashMap<>();
+        for(Material m : MATERIAL_LIST){
+            materialMap.put(m, false);
+        }
+
         addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, name);
         model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
+
+        model.addAttribute("materialMap", materialMap);
         return "shop";
     }
 
     @PostMapping("/category/{name}")
     public String postProductsByCategoryId(@PathVariable String name,
                                            @RequestParam(defaultValue = "") String search,
-                                           @RequestParam(value = "filter", defaultValue = "Last added") String filter,
-                                           @RequestParam(value = "from", required = false) Double from,
-                                           @RequestParam(value = "to", required = false) Double to,
-                                           @RequestParam(value = "color", required = false) Color color,
-                                           @RequestParam(value = "materials", required = false) Material[] materials,
+                                           @RequestParam(defaultValue = "Last added") String filter,
+                                           @RequestParam(required = false) Double from,
+                                           @RequestParam(required = false) Double to,
+                                           @RequestParam(required = false) Color color,
+                                           @RequestParam(required = false) Material[] materials,
                                            @RequestParam(defaultValue = "1") int page,
                                            @RequestParam(defaultValue = "9") int size,
                                            Model model) {
@@ -105,13 +112,42 @@ public class ProductsController {
         Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
 
         List<ShopItemDto> shopItems = new ArrayList<>();
-        for(Product p : products){
+        for (Product p : products) {
             shopItems.add(new ShopItemDto(p));
+        }
+
+        Map<Material, Boolean> materialMap = new LinkedHashMap<>();
+        if(materials != null){
+            boolean[] checked = new boolean[MATERIAL_LIST.size()];
+            int j = 0;
+            for(Material m1 : MATERIAL_LIST){
+                for(Material m2 : materials){
+                    if(m1.equals(m2)){
+                        checked[j] = true;
+                        break;
+                    } else {
+                        checked[j] = false;
+                    }
+                }
+                j++;
+            }
+            for(int k = 0; k < MATERIAL_LIST.size(); k++){
+                materialMap.put(MATERIAL_LIST.get(k), checked[k]);
+            }
+        } else {
+            for(Material m : MATERIAL_LIST){
+                materialMap.put(m, false);
+            }
         }
 
         addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, name);
         model.addAttribute("search", search);
         model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
+        model.addAttribute("search", search);
+        model.addAttribute("from", from);
+        model.addAttribute("to", to);
+        model.addAttribute("color", color);
+        model.addAttribute("materialMap", materialMap);
         return "shop";
     }
 
@@ -127,25 +163,31 @@ public class ProductsController {
 
         List<ShopItemDto> shopItems = pageToListWithoutOutOfStockItems(productPage);
 
+        Map<Material, Boolean> materialMap = new LinkedHashMap<>();
+        for(Material m : MATERIAL_LIST){
+            materialMap.put(m, false);
+        }
+
         addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, null);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+        model.addAttribute("materialMap", materialMap);
         return "shop";
     }
 
     @PostMapping
     public String postProducts(@RequestParam(defaultValue = "") String search,
-                               @RequestParam(value = "filter", defaultValue = "Last added") String filter,
-                               @RequestParam(value = "from", required = false) Double from,
-                               @RequestParam(value = "to", required = false) Double to,
-                               @RequestParam(value = "color", required = false) Color color,
-                               @RequestParam(value = "materials", required = false) Material[] materials,
+                               @RequestParam(defaultValue = "Last added") String filter,
+                               @RequestParam(required = false) Double from,
+                               @RequestParam(required = false) Double to,
+                               @RequestParam(required = false) Color color,
+                               @RequestParam(required = false) Material[] materials,
                                @RequestParam(defaultValue = "1") int page,
                                @RequestParam(defaultValue = "9") int size,
                                Model model) {
         List<Product> products;
 
         // Search
-        if (search == null || search.isEmpty()) {
+        if (search == null || search.isBlank()) {
             products = productService.getAllProducts();
         } else {
             products = productService.getAllByProductNameContaining(search);
@@ -174,13 +216,41 @@ public class ProductsController {
         Map<Integer, Boolean> pages = makeMapOfPagesNumbers(countOfPages, page);
 
         List<ShopItemDto> shopItems = new ArrayList<>();
-        for(Product p : products){
+        for (Product p : products) {
             shopItems.add(new ShopItemDto(p));
+        }
+
+        Map<Material, Boolean> materialMap = new LinkedHashMap<>();
+        if(materials != null){
+            boolean[] checked = new boolean[MATERIAL_LIST.size()];
+            int j = 0;
+            for(Material m1 : MATERIAL_LIST){
+                for(Material m2 : materials){
+                    if(m1.equals(m2)){
+                        checked[j] = true;
+                        break;
+                    } else {
+                        checked[j] = false;
+                    }
+                }
+                j++;
+            }
+            for(int k = 0; k < MATERIAL_LIST.size(); k++){
+                materialMap.put(MATERIAL_LIST.get(k), checked[k]);
+            }
+        } else {
+            for(Material m : MATERIAL_LIST){
+                materialMap.put(m, false);
+            }
         }
 
         addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, null);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         model.addAttribute("search", search);
+        model.addAttribute("from", from);
+        model.addAttribute("to", to);
+        model.addAttribute("color", color);
+        model.addAttribute("materialMap", materialMap);
         return "shop";
     }
 

@@ -1,6 +1,8 @@
 package com.epam.furniturestoreapp.model;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,14 +12,34 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 public class ProductDto {
+    @Size(max = 50, message = "Product name must be less than 50")
+    @NotBlank(message = "Product name is mandatory")
     private String productName;
+
+    @Size(max = 2000, message = "Product description must be less than 2000")
+    @NotBlank(message = "Product description is mandatory")
     private String productDescription;
+
+    @Size(max = 50, message = "Category name must be less than 50")
+    @NotBlank(message = "Category name is mandatory")
     private String categoryName;
+
+    @NotNull(message = "Price is mandatory")
     private Double price;
+
+    @NotNull(message = "Stock quantity is mandatory")
     private Integer stockQuantity;
+
+    @Size(max = 100, message = "Dimensions must be less than 100")
+    @NotBlank(message = "Dimensions is mandatory")
     private String dimensions;
+
+    @NotNull(message = "Materials is mandatory")
     private Material[] materials;
+
+    @NotNull(message = "Color is mandatory")
     private Color color;
+
     private MultipartFile image;
     private String imageString;
 

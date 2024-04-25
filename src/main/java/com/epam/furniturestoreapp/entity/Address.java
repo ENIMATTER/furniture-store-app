@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,15 +29,15 @@ public class Address {
     @Column(name = "Street")
     private String street;
 
-    @NotBlank(message = "House is mandatory")
+    @NotNull(message = "House is mandatory")
     @Column(name = "House")
     private Integer house;
 
-    @NotBlank(message = "Floor is mandatory")
+    @NotNull(message = "Floor is mandatory")
     @Column(name = "Floor")
     private Integer floor;
 
-    @NotBlank(message = "Apartment is mandatory")
+    @NotNull(message = "Apartment is mandatory")
     @Column(name = "Apartment")
     private Integer apartment;
 

@@ -7,9 +7,11 @@ import com.epam.furniturestoreapp.service.ProductService;
 import com.epam.furniturestoreapp.service.ReviewService;
 import com.epam.furniturestoreapp.service.UserTableService;
 import com.epam.furniturestoreapp.model.ReviewDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +42,11 @@ public class AdminReviewController {
     }
 
     @PutMapping
-    public String editReviewAdmin(@ModelAttribute("reviewUtil") ReviewDto reviewUtil){
+    public String editReviewAdmin(@Valid @ModelAttribute("reviewUtil") ReviewDto reviewUtil,
+                                  BindingResult result){
+        if (result.hasErrors()) {
+            return "redirect:/reviews-admin?fail";
+        }
         if(!userTableService.existsById(reviewUtil.getUserTableID())){
             return "redirect:/reviews-admin?usererror";
         }

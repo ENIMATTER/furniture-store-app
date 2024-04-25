@@ -1,13 +1,17 @@
 package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.*;
+import com.epam.furniturestoreapp.model.AddressDto;
 import com.epam.furniturestoreapp.model.OrderDto;
 import com.epam.furniturestoreapp.service.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -65,12 +69,12 @@ public class CheckoutOrderController {
     }
 
     @PostMapping("/checkout")
-    public String checkoutAndFormOrder(@RequestParam("street") String street,
-                                       @RequestParam("house") Integer house,
-                                       @RequestParam("floor") Integer floor,
-                                       @RequestParam("apartment") Integer apartment,
-                                       @RequestParam(value = "message", required = false) String message,
-                                       @RequestParam("totalToPay") Double totalToPay) {
+    public String checkoutAndFormOrder(@Valid @ModelAttribute("addressDto") AddressDto addressDto,
+                                       @RequestParam("totalToPay") Double totalToPay, BindingResult result) {
+        if (result.hasErrors()) {
+            return "redirect:/checkout?fail";
+        }
+
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<CartItem> userCartItems = cartItemService.getAllItemsByUser(user);
@@ -89,11 +93,11 @@ public class CheckoutOrderController {
         orderTableService.addOrder(orderTable);
 
         Address address = new Address();
-        address.setStreet(street);
-        address.setHouse(house);
-        address.setFloor(floor);
-        address.setApartment(apartment);
-        address.setMessage(message);
+        address.setStreet(addressDto.getStreet());
+        address.setHouse(addressDto.getHouse());
+        address.setFloor(addressDto.getFloor());
+        address.setApartment(addressDto.getApartment());
+        address.setMessage(addressDto.getMessage());
         address.setOrderTableID(orderTable);
         addressService.addAddress(address);
 

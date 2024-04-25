@@ -6,6 +6,7 @@ import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.UserTableService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,18 +46,13 @@ public class EditUserController {
 
     @PutMapping
     public String putEditUser(HttpServletRequest request, HttpServletResponse response,
-                              @ModelAttribute("user") UserTable user) {
+                              @Valid @ModelAttribute("user") UserTable user, BindingResult result) {
+        if(result.hasErrors()){
+            return "redirect:/edit-user?fail";
+        }
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         if(userTableService.existsByEmail(user.getEmail()) && !user.getEmail().equals(emailUsername)){
             return "redirect:/edit-user?exist";
-        }
-        if(user.getPhoneNumber().length() != 9){
-            return "redirect:/edit-user?phone";
-        }
-        for(char c : user.getPhoneNumber().toCharArray()){
-            if(!Character.isDigit(c)){
-                return "redirect:/edit-user?phone";
-            }
         }
         UserTable updatedUser = userTableService.getUserById(user.getUserTableID());
         updatedUser.setFirstname(user.getFirstname());

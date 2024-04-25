@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,11 +35,11 @@ public class Product {
     @JoinColumn(name = "categoryID", referencedColumnName = "categoryID")
     private Category categoryID;
 
-    @NotBlank(message = "Price is mandatory")
+    @NotNull(message = "Price is mandatory")
     @Column(name = "price")
     private Double price;
 
-    @NotBlank(message = "Stock quantity is mandatory")
+    @NotNull(message = "Stock quantity is mandatory")
     @Column(name = "stockquantity")
     private Integer stockQuantity;
 
@@ -57,12 +58,12 @@ public class Product {
     @Column(name = "Color")
     private String color;
 
-    @NotBlank(message = "Average rating is mandatory")
+    @NotNull(message = "Average rating is mandatory")
     @Column(name = "averagerating")
     private Double averageRating;
 
     @Lob
-    @NotBlank(message = "Image is mandatory")
+    @NotNull(message = "Image is mandatory")
     @Column(name = "image")
     private byte[] image;
 

@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,11 +25,11 @@ public class OrderTable {
     @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
     private UserTable userTableID;
 
-    @NotBlank(message = "Order date is mandatory")
+    @NotNull(message = "Order date is mandatory")
     @Column(name = "orderdate")
     private LocalDateTime orderDate;
 
-    @NotBlank(message = "Total amount is mandatory")
+    @NotNull(message = "Total amount is mandatory")
     @Column(name = "totalamount")
     private Double totalAmount;
 

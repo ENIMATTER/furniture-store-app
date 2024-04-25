@@ -14,7 +14,7 @@
 
     <!-- Checkout Section -->
     <section class="checkout-section">
-        <form th:method="post" th:action="@{/checkout}">
+        <form th:method="post" th:action="@{/checkout}" th:object="${addressDto}">
             <div class="auto-container">
                 <div class="row clearfix">
                     <!-- Form Column -->
@@ -22,6 +22,7 @@
                         <div class="inner-column">
                             <h4>Delivery information</h4>
                             <h4 style="color: red;" th:if="${param.lowbalance}">Not enough balance</h4>
+                            <h4 style="color: red;" th:if="${param.fail}">Validation failed</h4>
                             <!-- Shipping Form -->
                             <div class="shipping-form">
                                 <div class="row clearfix">

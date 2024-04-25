@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +29,7 @@ public class Review {
     @JoinColumn(name = "usertableid", referencedColumnName = "usertableid")
     private UserTable userTableID;
 
-    @NotBlank(message = "Rating is mandatory")
+    @NotNull(message = "Rating is mandatory")
     @Column(name = "Rating")
     private Integer rating;
 
@@ -37,7 +38,7 @@ public class Review {
     @Column(name = "reviewcomment")
     private String reviewComment;
 
-    @NotBlank(message = "Review date is mandatory")
+    @NotNull(message = "Review date is mandatory")
     @Column(name = "reviewdate")
     private LocalDateTime reviewDate;
 }
