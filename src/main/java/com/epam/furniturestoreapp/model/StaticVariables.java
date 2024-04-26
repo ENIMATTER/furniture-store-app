@@ -9,6 +9,7 @@ public class StaticVariables {
     public static final String TH_ACTION_FOR_ALL_PRODUCTS = "/products";
     public static final String TH_ACTION_FOR_PRODUCTS_BY_CATEGORY = "/products/category/";
 
+    public static final String FIRST_ADDED = "First added";
     public static final String LAST_ADDED = "Last added";
     public static final String BY_RATING = "By rating";
     public static final String AZ = "A-Z";
@@ -22,6 +23,7 @@ public class StaticVariables {
 
     static {
         FILTER_LIST = new ArrayList<>();
+        FILTER_LIST.add(FIRST_ADDED);
         FILTER_LIST.add(LAST_ADDED);
         FILTER_LIST.add(BY_RATING);
         FILTER_LIST.add(AZ);

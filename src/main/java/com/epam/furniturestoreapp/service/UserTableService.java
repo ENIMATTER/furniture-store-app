@@ -15,8 +15,12 @@ import java.util.Optional;
 @Service
 public class UserTableService implements UserDetailsService {
 
+    private final UserTableRepository userTableRepository;
+
     @Autowired
-    private UserTableRepository userTableRepository;
+    public UserTableService(UserTableRepository userTableRepository) {
+        this.userTableRepository = userTableRepository;
+    }
 
     public void addUser(UserTable user) {
         userTableRepository.save(user);

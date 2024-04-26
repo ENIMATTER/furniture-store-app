@@ -67,7 +67,7 @@ public class ProductsController {
     @PostMapping("/category/{name}")
     public String postProductsByCategoryId(@PathVariable String name,
                                            @RequestParam(defaultValue = "") String search,
-                                           @RequestParam(defaultValue = "Last added") String filter,
+                                           @RequestParam(defaultValue = FIRST_ADDED) String filter,
                                            @RequestParam(required = false) Double from,
                                            @RequestParam(required = false) Double to,
                                            @RequestParam(required = false) Color color,
@@ -176,7 +176,7 @@ public class ProductsController {
 
     @PostMapping
     public String postProducts(@RequestParam(defaultValue = "") String search,
-                               @RequestParam(defaultValue = "Last added") String filter,
+                               @RequestParam(defaultValue = FIRST_ADDED) String filter,
                                @RequestParam(required = false) Double from,
                                @RequestParam(required = false) Double to,
                                @RequestParam(required = false) Color color,
@@ -296,7 +296,8 @@ public class ProductsController {
     private void filterOrder(List<Product> products, String filter) {
         switch (filter) {
             case BY_RATING -> products.sort(Comparator.comparingDouble(Product::getAverageRating).reversed());
-            case LAST_ADDED -> Collections.reverse(products);
+            case FIRST_ADDED -> products.sort(Comparator.comparingLong(Product::getProductID));
+            case LAST_ADDED -> products.sort(Comparator.comparingLong(Product::getProductID).reversed());
             case AZ -> products.sort(Comparator.comparing(Product::getProductName));
             case ZA -> products.sort(Comparator.comparing(Product::getProductName).reversed());
             case FROM_HIGHEST_PRICE -> products.sort(Comparator.comparingDouble(Product::getPrice).reversed());

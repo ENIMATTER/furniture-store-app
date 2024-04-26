@@ -18,87 +18,69 @@
         <h4 class="h4-custom-class-margin">There is no products</h4>
     </div>
 
-    <!-- Sidebar Page Container -->
-    <div class="sidebar-page-container" th:if="${#lists.size(shopItems)} != 0">
-        <div class="auto-container">
-            <div class="row clearfix" style="display: flex; flex-wrap: nowrap;">
-                <!-- Content Side -->
-                <div class="content-side col-lg-9 col-md-12 col-sm-12">
-                    <div class="shops-outer">
-                        <div class="row clearfix">
-                            <div th:each="shopItem: ${shopItems}" class="shop-item col-lg-4 col-md-4 col-sm-12">
-                                <div class="inner-box">
-                                    <div class="image">
-                                        <a th:href="'/products/' + ${shopItem.getProductID()}"><img
-                                                th:src="${'data:image/png;base64,' + shopItem.getImageString()}"
-                                                alt=""/></a>
-                                    </div>
-                                    <div class="lower-content">
-                                        <div class="rating"
-                                             th:text="'Rating: ' + ${shopItem.getAverageRating()}"></div>
-                                        <h6><a th:href="'/products/' + ${shopItem.getProductID()}"
-                                               th:text="${shopItem.getProductName()}"></a>
-                                        </h6>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="price" th:text="'$' + ${shopItem.getPrice()}"></div>
-                                            <!-- Quantity Box -->
-                                            <div sec:authorize="isAuthenticated()">
-                                                <form th:method="post" th:action="@{/cart}">
-                                                    <div class="quantity-box">
-                                                        <div class="item-quantity">
-                                                            <input type="hidden" id="cartProductID" name="cartProductID"
-                                                                   th:value="${shopItem.getProductID()}"/>
-                                                            <input type="number" min="1" value="1"
-                                                                   name="cartQuantity" class="input-quantity-shop">
+    <form id="filterForm" th:method="post" th:action="@{${thAction}}">
+        <!-- Sidebar Page Container -->
+        <div class="sidebar-page-container" th:if="${#lists.size(shopItems)} != 0">
+            <div class="auto-container">
+                <div class="row clearfix" style="display: flex; flex-wrap: nowrap;">
+                    <!-- Content Side -->
+                    <div class="content-side col-lg-9 col-md-12 col-sm-12">
+                        <div class="shops-outer">
+                            <div class="row clearfix">
+                                <div th:each="shopItem: ${shopItems}" class="shop-item col-lg-4 col-md-4 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image">
+                                            <a th:href="'/products/' + ${shopItem.getProductID()}"><img
+                                                    th:src="${'data:image/png;base64,' + shopItem.getImageString()}"
+                                                    alt=""/></a>
+                                        </div>
+                                        <div class="lower-content">
+                                            <div class="rating"
+                                                 th:text="'Rating: ' + ${shopItem.getAverageRating()}"></div>
+                                            <h6><a th:href="'/products/' + ${shopItem.getProductID()}"
+                                                   th:text="${shopItem.getProductName()}"></a>
+                                            </h6>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="price" th:text="'$' + ${shopItem.getPrice()}"></div>
+                                                <!-- Quantity Box -->
+                                                <div sec:authorize="isAuthenticated()">
+                                                    <form id="cartForm" th:method="post" th:action="@{/cart}">
+                                                        <div class="quantity-box">
+                                                            <div class="item-quantity">
+                                                                <input type="hidden" id="cartProductID"
+                                                                       name="cartProductID"
+                                                                       th:value="${shopItem.getProductID()}"/>
+                                                                <input type="number" min="1" value="1"
+                                                                       name="cartQuantity" class="input-quantity-shop">
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <button type="submit" style="width: 100%;">Add</button>
-                                                </form>
+                                                        <button type="submit" form="cartForm" style="width: 100%;">Add</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Pagination -->
+                        <div class="pagination">
+                            <button th:if="${currentPage} != 1" type="submit" name="page"
+                                    th:value="${currentPage} - 1" form="filterForm">&laquo;</button>
 
-                        <!-- Pagination to all products-->
-                        <div class="pagination" th:if="${category} == null">
-                            <a th:if="${currentPage} != 1"
-                               th:href="'/products?page=' + (${currentPage} - 1)">&laquo;</a>
+                            <input th:each="page : ${pages}" type="submit" name="page" form="filterForm"
+                                   th:value="${page.key}" class="" th:classappend="${page.value}  ? active"/>
 
-                            <a th:href="'/products?page=' + ${page.key}" th:each="page : ${pages}"
-                               th:text="${page.key}" class=""
-                               th:classappend="${page.value}  ? active"></a>
+                            <button th:if="${maxPage} != ${currentPage}" type="submit" name="page"
+                                    th:value="${currentPage} + 1" form="filterForm">&raquo;</button>
 
-                            <a th:if="${maxPage} != ${currentPage}"
-                               th:href="'/products?page=' + (${currentPage} + 1)">&raquo;</a>
-
-                            <a th:href="'/products?page=1&size=' + ${countOfAllProducts}">All products</a>
+                            <button type="submit" name="size" th:value="${countOfAllProducts}" form="filterForm">
+                                All products
+                            </button>
                         </div>
-                        <!-- End Pagination to all products -->
-
-                        <!-- Pagination to products by category-->
-                        <div class="pagination" th:if="${category} != null">
-                            <a th:if="${currentPage} != 1"
-                               th:href="'/products/category/' + ${category} + '?page=' + (${currentPage} - 1)">&laquo;</a>
-
-                            <a th:href="'/products/category/' + ${category} + '?page=' + ${page.key}"
-                               th:each="page : ${pages}"
-                               th:text="${page.key}" class=""
-                               th:classappend="${page.value}  ? active"></a>
-
-                            <a th:if="${maxPage} != ${currentPage}"
-                               th:href="'/products/category/' + ${category} + '?page=' + (${currentPage} + 1)">&raquo;</a>
-
-                            <a th:href="'/products/category/' + ${category} + '?page=1&size='
-                                + ${countOfAllProducts}">All products by category</a>
-                        </div>
-                        <!-- End Pagination to products by category -->
-
+                        <!-- End Pagination -->
                     </div>
-                </div>
 
-                <form th:method="post" th:action="@{${thAction}}">
                     <!-- Sidebar Side -->
                     <div class="sidebar-side col-lg-3 col-md-12 col-sm-12">
                         <aside class="sidebar sticky-top">
@@ -168,17 +150,18 @@
                                             </div>
                                         </div>
                                         <br>
-                                        <button class="theme-btn btn-style-submit-one" type="submit">Submit</button>
+                                        <button class="theme-btn btn-style-submit-one" type="submit"
+                                                form="filterForm">Submit</button>
                                     </div>
 
                                 </div>
                             </div>
                         </aside>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 
 
     <!-- Footer -->
