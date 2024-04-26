@@ -2,6 +2,7 @@ package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.entity.UserTable;
+import com.epam.furniturestoreapp.model.EditUserDto;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.UserTableService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,7 +47,7 @@ public class EditUserController {
 
     @PutMapping
     public String putEditUser(HttpServletRequest request, HttpServletResponse response,
-                              @Valid @ModelAttribute("user") UserTable user, BindingResult result) {
+                              @Valid @ModelAttribute("user") EditUserDto user, BindingResult result) {
         if(result.hasErrors()){
             return "redirect:/edit-user?fail";
         }

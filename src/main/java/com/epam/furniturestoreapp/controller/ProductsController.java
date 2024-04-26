@@ -147,6 +147,7 @@ public class ProductsController {
         model.addAttribute("from", from);
         model.addAttribute("to", to);
         model.addAttribute("color", color);
+        model.addAttribute("filter", filter);
         model.addAttribute("materialMap", materialMap);
         return "shop";
     }
@@ -247,6 +248,7 @@ public class ProductsController {
         addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, null);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
         model.addAttribute("search", search);
+        model.addAttribute("filter", filter);
         model.addAttribute("from", from);
         model.addAttribute("to", to);
         model.addAttribute("color", color);
