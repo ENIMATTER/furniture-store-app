@@ -48,31 +48,18 @@ public class CheckoutOrderController {
 
     @GetMapping("/checkout")
     public String checkout(Model model) {
-        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserTable user = userTableService.getUserByEmail(emailUsername);
-        List<CartItem> cartItems = cartItemService.getAllItemsByUser(user);
-
-        double sumCartItems = 0;
-        for (CartItem cartItem : cartItems) {
-            sumCartItems += cartItem.getProductID().getPrice() * cartItem.getQuantity();
-        }
-
-        BigDecimal shippingFee = BigDecimal.valueOf(sumCartItems * 0.1).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal total = shippingFee.add(BigDecimal.valueOf(sumCartItems)).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal sumCartItemsBigDecimal = BigDecimal.valueOf(sumCartItems).setScale(2, RoundingMode.HALF_UP);
-
-        model.addAttribute("total", total);
-        model.addAttribute("shippingFee", shippingFee);
-        model.addAttribute("sumCartItems", sumCartItemsBigDecimal);
-        addToModelBasicAttributes(model);
+        addToCheckoutModelBasicAttributes(model);
         return "checkout";
     }
 
     @PostMapping("/checkout")
     public String checkoutAndFormOrder(@Valid @ModelAttribute("addressDto") AddressDto addressDto,
-                                       @RequestParam("totalToPay") Double totalToPay, BindingResult result) {
+                                       @RequestParam("totalToPay") Double totalToPay, BindingResult result,
+                                       Model model) {
+        addToCheckoutModelBasicAttributes(model);
         if (result.hasErrors()) {
-            return "redirect:/checkout?fail";
+            model.addAttribute("fail", true);
+            return "checkout";
         }
 
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -80,7 +67,8 @@ public class CheckoutOrderController {
         List<CartItem> userCartItems = cartItemService.getAllItemsByUser(user);
 
         if (totalToPay > user.getBalance()) {
-            return "redirect:/checkout?lowbalance";
+            model.addAttribute("lowbalance", true);
+            return "checkout";
         }
 
         user.setBalance(user.getBalance() - totalToPay);
@@ -122,11 +110,40 @@ public class CheckoutOrderController {
 
         cartItemService.deleteAll(userCartItems);
 
-        return "redirect:/orders";
+        addToAccountModelBasicAttributes(model);
+        return "account";
     }
 
     @GetMapping("/orders")
     public String orders(Model model) {
+        addToOrderModelBasicAttributes(model);
+        return "orders";
+    }
+
+    private void addToCheckoutModelBasicAttributes(Model model) {
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserTable user = userTableService.getUserByEmail(emailUsername);
+        List<CartItem> cartItems = cartItemService.getAllItemsByUser(user);
+
+        double sumCartItems = getSumCartItems(cartItems);
+        BigDecimal shippingFee = BigDecimal.valueOf(sumCartItems * 0.1).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal total = shippingFee.add(BigDecimal.valueOf(sumCartItems)).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal sumCartItemsBigDecimal = BigDecimal.valueOf(sumCartItems).setScale(2, RoundingMode.HALF_UP);
+
+        model.addAttribute("total", total);
+        model.addAttribute("shippingFee", shippingFee);
+        model.addAttribute("sumCartItems", sumCartItemsBigDecimal);
+    }
+
+    private void addToOrderModelBasicAttributes(Model model) {
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         List<OrderTable> orders = orderTableService.getAllByUser(user);
@@ -136,13 +153,23 @@ public class CheckoutOrderController {
         }
         Collections.reverse(orderDtos);
         model.addAttribute("orderDtos", orderDtos);
-        addToModelBasicAttributes(model);
-        return "orders";
     }
 
-    private void addToModelBasicAttributes(Model model) {
+    private void addToAccountModelBasicAttributes(Model model) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserTable user = userTableService.getUserByEmail(emailUsername);
+        double balance = user.getBalance();
+        model.addAttribute("balance", balance);
+    }
+
+    private double getSumCartItems(List<CartItem> cartItems) {
+        double sumCartItems = 0;
+        for (CartItem cartItem : cartItems) {
+            sumCartItems += cartItem.getProductID().getPrice() * cartItem.getQuantity();
+        }
+        return sumCartItems;
     }
 }

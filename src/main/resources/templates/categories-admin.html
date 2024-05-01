@@ -21,8 +21,8 @@
     <section class="shoping-cart-section" th:if="${#lists.size(categories)} != 0">
         <div class="auto-container">
             <div class="row clearfix">
-                <h4 style="color: red;" th:if="${param.exist}">Category with this name exist</h4>
-                <h4 style="color: red;" th:if="${param.fail}">Validation failed</h4>
+                <h4 style="color: red;" th:if="${exist}">Category with this name exist</h4>
+                <h4 style="color: red;" th:if="${fail}">Validation failed</h4>
                 <div class="cart-column col-lg-12 col-md-12 col-sm-12">
                     <div class="inner-column">
                         <div class="cart-outer">

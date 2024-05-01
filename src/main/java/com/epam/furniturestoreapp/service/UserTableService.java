@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.service;
 
 import com.epam.furniturestoreapp.entity.UserTable;
+import com.epam.furniturestoreapp.model.Roles;
 import com.epam.furniturestoreapp.repo.UserTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -55,7 +56,7 @@ public class UserTableService implements UserDetailsService {
 
     private String[] getRoles(UserTable userObj) {
         if (userObj.getRoles() == null) {
-            return new String[]{"USER"};
+            return new String[]{Roles.USER.name()};
         }
         return userObj.getRoles().split(",");
     }

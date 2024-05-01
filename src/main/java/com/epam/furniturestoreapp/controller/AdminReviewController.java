@@ -35,23 +35,25 @@ public class AdminReviewController {
 
     @GetMapping
     public String getReviewsAdmin(Model model){
-        List<Review> reviews = reviewService.getAllReviews();
-        model.addAttribute("reviews", reviews);
-        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+        addToModelBasicAttributes(model);
         return "reviews-admin";
     }
 
     @PutMapping
     public String editReviewAdmin(@Valid @ModelAttribute("reviewUtil") ReviewDto reviewUtil,
-                                  BindingResult result){
+                                  BindingResult result, Model model){
+        addToModelBasicAttributes(model);
         if (result.hasErrors()) {
-            return "redirect:/reviews-admin?fail";
+            model.addAttribute("fail", true);
+            return "reviews-admin";
         }
         if(!userTableService.existsById(reviewUtil.getUserTableID())){
-            return "redirect:/reviews-admin?usererror";
+            model.addAttribute("usererror", true);
+            return "reviews-admin";
         }
         if(!productService.existsById(reviewUtil.getProductID())){
-            return "redirect:/reviews-admin?producterror";
+            model.addAttribute("producterror", true);
+            return "reviews-admin";
         }
         UserTable user = userTableService.getUserById(reviewUtil.getUserTableID());
         Product product = productService.getProductById(reviewUtil.getProductID());
@@ -73,14 +75,23 @@ public class AdminReviewController {
         product.setAverageRating(newAverageRating);
         productService.save(product);
 
-        return "redirect:/reviews-admin";
+        addToModelBasicAttributes(model);
+
+        return "reviews-admin";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteReviewAdmin(@PathVariable Long id){
+    public String deleteReviewAdmin(@PathVariable Long id, Model model){
         if(reviewService.existById(id)){
             reviewService.deleteById(id);
         }
-        return "redirect:/reviews-admin";
+        addToModelBasicAttributes(model);
+        return "reviews-admin";
+    }
+
+    private void addToModelBasicAttributes(Model model) {
+        List<Review> reviews = reviewService.getAllReviews();
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
     }
 }

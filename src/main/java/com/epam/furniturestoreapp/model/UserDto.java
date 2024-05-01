@@ -1,13 +1,11 @@
 package com.epam.furniturestoreapp.model;
 
 import jakarta.validation.constraints.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
 public class UserDto {
     @Size(max = 50, message = "Firstname must be less than 50")
     @NotBlank(message = "Firstname is mandatory")

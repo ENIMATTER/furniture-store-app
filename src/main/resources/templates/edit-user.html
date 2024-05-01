@@ -20,8 +20,8 @@
                     <div class="column col-lg-8 col-md-12 col-sm-12">
                         <div class="styled-form">
                             <h4>Edit user information</h4>
-                            <h4 style="color: red;" th:if="${param.exist}">User with this email exist</h4>
-                            <h4 style="color: red;" th:if="${param.fail}">Validation failed</h4>
+                            <h4 style="color: red;" th:if="${exist}">User with this email exist</h4>
+                            <h4 style="color: red;" th:if="${fail}">Validation failed</h4>
                             <form th:method="put" th:action="@{/edit-user}" th:object="${user}">
                                 <input type="hidden" name="_method" value="put">
                                 <input type="hidden" name="userTableID" th:value="${user.userTableID}"/>

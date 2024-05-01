@@ -2,18 +2,16 @@ package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @Table(name = "address")
+@Data
+@NoArgsConstructor
 public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

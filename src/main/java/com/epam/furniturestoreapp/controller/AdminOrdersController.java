@@ -30,19 +30,24 @@ public class AdminOrdersController {
 
     @GetMapping
     public String getOrdersAdmin(Model model){
+        addToModelBasicAttributes(model);
+        return "orders-admin";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteOrderAdmin(@PathVariable Long id, Model model){
+        if(orderTableService.existById(id)){
+            orderTableService.deleteById(id);
+        }
+        addToModelBasicAttributes(model);
+        return "orders-admin";
+    }
+
+    private void addToModelBasicAttributes(Model model) {
         List<Category> categories = categoryService.findAll();
         List<OrderTable> orders = orderTableService.getAll();
         model.addAttribute("categories", categories);
         model.addAttribute("orders", orders);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
-        return "orders-admin";
-    }
-
-    @DeleteMapping("/{id}")
-    public String deleteOrderAdmin(@PathVariable Long id){
-        if(orderTableService.existById(id)){
-            orderTableService.deleteById(id);
-        }
-        return "redirect:/orders-admin";
     }
 }

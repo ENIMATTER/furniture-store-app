@@ -2,16 +2,14 @@ package com.epam.furniturestoreapp.model;
 
 import com.epam.furniturestoreapp.entity.OrderItem;
 import com.epam.furniturestoreapp.entity.OrderTable;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class OrderDto {
     private Long orderTableID;

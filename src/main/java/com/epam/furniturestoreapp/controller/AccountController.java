@@ -45,9 +45,11 @@ public class AccountController {
     @PreAuthorize("!@userTableService.existsByEmail(#userSignUp.email) " +
             "&& #userSignUp.userPassword.equals(#userSignUp.userPasswordAgain)")
     public String postSignup(@Valid @ModelAttribute("userSignUp") UserSignUpDto userSignUp,
-                             BindingResult result) {
+                             BindingResult result, Model model) {
+        addToModelBasicAttributes(model);
         if (result.hasErrors()) {
-            return "redirect:/signup?fail";
+            model.addAttribute("fail", true);
+            return "signup";
         }
         double balance = 0.0;
 
@@ -55,7 +57,7 @@ public class AccountController {
         UserTable user = new UserTable(userSignUp.getFirstname(), userSignUp.getLastname(),
                 userSignUp.getEmail(), codedPassword, userSignUp.getPhoneNumber(), balance, Roles.USER.name());
         userTableService.addUser(user);
-        return "redirect:/login";
+        return "login";
     }
 
     // Spring Security custom login form (email like username)
@@ -67,12 +69,14 @@ public class AccountController {
 
     // Spring Security custom logout
     @GetMapping("/logout")
-    public String customLogout(HttpServletRequest request, HttpServletResponse response) {
+    public String customLogout(HttpServletRequest request, HttpServletResponse response, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-        return "redirect:/login?logout";
+        addToModelBasicAttributes(model);
+        model.addAttribute("logout", true);
+        return "login";
     }
 
     @GetMapping("/account")
@@ -86,7 +90,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/account")
-    public String deleteAccount(HttpServletRequest request, HttpServletResponse response) {
+    public String deleteAccount(HttpServletRequest request, HttpServletResponse response, Model model) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         userTableService.deleteUser(user);
@@ -94,7 +98,8 @@ public class AccountController {
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-        return "redirect:/";
+        addToModelBasicAttributes(model);
+        return "index";
     }
 
     @GetMapping("/top-up")
@@ -112,16 +117,21 @@ public class AccountController {
     }
 
     @PostMapping("/top-up")
-    public String postTopUp(@RequestParam("amount") Double amount,
+    public String postTopUp(@RequestParam("amount") Double amount, Model model,
                             @Valid @ModelAttribute("cardDto") CardDto cardDto, BindingResult result) {
+        addToModelBasicAttributes(model);
         if (result.hasErrors()) {
-            return "redirect:/top-up?fail";
+            model.addAttribute("fail", true);
+            return "top-up";
         }
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         UserTable user = userTableService.getUserByEmail(emailUsername);
         user.setBalance(user.getBalance() + amount);
         userTableService.editUser(user);
-        return "redirect:/account";
+
+        double balance = user.getBalance();
+        model.addAttribute("balance", balance);
+        return "account";
     }
 
     private void addToModelBasicAttributes(Model model) {

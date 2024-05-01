@@ -1,5 +1,6 @@
 package com.epam.furniturestoreapp.controller;
 
+import com.epam.furniturestoreapp.entity.Review;
 import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.service.UserTableService;
 import com.epam.furniturestoreapp.model.UserDto;
@@ -27,42 +28,38 @@ public class AdminUserController {
 
     @GetMapping
     public String getUsersAdmin(Model model) {
-        List<UserTable> users = userTableService.getAll();
-        model.addAttribute("users", users);
-        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+        addToModelBasicAttributes(model);
         return "users-admin";
     }
 
     @PostMapping
     public String addUserAdmin(@Valid @ModelAttribute("userUtil") UserDto userUtil,
-                               BindingResult result) {
+                               BindingResult result, Model model) {
+        addToModelBasicAttributes(model);
         if(result.hasErrors()){
-            return "redirect:/users-admin?fail";
+            model.addAttribute("fail", true);
+            return "users-admin";
         }
         String codedPassword = new BCryptPasswordEncoder().encode(userUtil.getPassword());
         UserTable userTable = new UserTable(userUtil.getFirstname(), userUtil.getLastname(), userUtil.getEmail(),
                 codedPassword, userUtil.getPhone(), userUtil.getBalance(), userUtil.getRoles());
         userTableService.addUser(userTable);
-        return "redirect:/users-admin";
+        addToModelBasicAttributes(model);
+        return "users-admin";
     }
 
     @PutMapping
     public String editUserAdmin(@Valid @ModelAttribute("user") UserTable user,
-                                BindingResult result) {
+                                BindingResult result, Model model) {
+        addToModelBasicAttributes(model);
         if(result.hasErrors()){
-            return "redirect:/users-admin?fail";
+            model.addAttribute("fail", true);
+            return "users-admin";
         }
         UserTable userTable = userTableService.getUserById(user.getUserTableID());
         if(userTableService.existsByEmail(user.getEmail()) && !userTable.getEmail().equals(user.getEmail())){
-            return "redirect:/users-admin?exist";
-        }
-        if(user.getPhoneNumber().length() != 9){
-            return "redirect:/users-admin?phone";
-        }
-        for(char c : user.getPhoneNumber().toCharArray()){
-            if(!Character.isDigit(c)){
-                return "redirect:/users-admin?phone";
-            }
+            model.addAttribute("exist", true);
+            return "users-admin";
         }
         userTable.setFirstname(user.getFirstname());
         userTable.setLastname(user.getLastname());
@@ -75,14 +72,22 @@ public class AdminUserController {
             userTable.setUserPassword(codedPassword);
         }
         userTableService.editUser(userTable);
-        return "redirect:/users-admin";
+        addToModelBasicAttributes(model);
+        return "users-admin";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteUserAdmin(@PathVariable Long id) {
+    public String deleteUserAdmin(@PathVariable Long id, Model model) {
         if(userTableService.existsById(id)){
             userTableService.deleteUserById(id);
         }
-        return "redirect:/users-admin";
+        addToModelBasicAttributes(model);
+        return "users-admin";
+    }
+
+    private void addToModelBasicAttributes(Model model) {
+        List<UserTable> users = userTableService.getAll();
+        model.addAttribute("users", users);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
     }
 }

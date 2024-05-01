@@ -43,7 +43,10 @@ public class ProductsController {
                                           Model model) {
         Category category = categoryService.findByName(name);
         if (category == null) {
-            return "redirect:/not-found";
+            List<Category> categories = categoryService.findAll();
+            model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
+            model.addAttribute("categories", categories);
+            return "not-found";
         }
         Page<Product> productPage = productService.getAllProductsByCategoryPage(category, page - 1, size);
         int countOfPages = productPage.getTotalPages();
@@ -79,7 +82,10 @@ public class ProductsController {
         Category category = categoryService.findByName(name);
 
         if (category == null) {
-            return "redirect:/not-found";
+            List<Category> categories = categoryService.findAll();
+            model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
+            model.addAttribute("categories", categories);
+            return "not-found";
         }
 
         // Search
@@ -258,18 +264,18 @@ public class ProductsController {
 
     @GetMapping("/{id}")
     public String getProductById(@PathVariable long id, Model model) {
-        Product product = productService.getProductById(id);
-        if (product == null) {
-            return "redirect:/not-found";
-        }
-        Category category = product.getCategoryID();
-        List<Review> reviews = reviewService.getAllReviewsByProduct(product);
         List<Category> categories = categoryService.findAll();
-
-        String image = Base64.getEncoder().encodeToString(product.getImage());
-
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+
+        Product product = productService.getProductById(id);
+        if (product == null) {
+            return "not-found";
+        }
+
+        Category category = product.getCategoryID();
+        List<Review> reviews = reviewService.getAllReviewsByProduct(product);
+        String image = Base64.getEncoder().encodeToString(product.getImage());
         model.addAttribute("reviews", reviews);
         model.addAttribute("category", category);
         model.addAttribute("product", product);

@@ -37,35 +37,27 @@ public class CartController {
 
     @GetMapping
     public String getCart(Model model) {
-        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserTable user = userTableService.getUserByEmail(emailUsername);
-        List<CartItem> cartItems = user.getCartItems();
-        List<CartItemDto> cartItemDtos = getCartItemsDtoFromCartItems(cartItems);
-        BigDecimal allTotal = BigDecimal.ZERO;
-        for (CartItemDto c : cartItemDtos) {
-            allTotal = allTotal.add(c.getTotals());
-        }
-        allTotal = allTotal.setScale(2, RoundingMode.HALF_UP);
-        model.addAttribute("allTotal", allTotal);
-        model.addAttribute("cartItemDtos", cartItemDtos);
-        addToModelBasicAttributes(model);
+        addToModelAllAttributes(model);
         return "cart";
     }
 
     @PostMapping
     public String addToCartItem(@RequestParam("cartProductID") Long cartProductID,
-                                @RequestParam("cartQuantity") Integer cartQuantity) {
+                                @RequestParam("cartQuantity") Integer cartQuantity, Model model) {
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Product product = productService.getProductById(cartProductID);
         UserTable user = userTableService.getUserByEmail(emailUsername);
-        List<CartItem> cartItemsByUser = user.getCartItems();
+        List<CartItem> cartItemsByUser = cartItemService.getAllItemsByUser(user);
         List<CartItem> allCartItems = cartItemService.getAll();
+
+        addToModelAllAttributes(model);
 
         boolean createNewItem = true;
         for (CartItem cartItem : cartItemsByUser) {
             if (cartItem.getProductID().getProductID().equals(product.getProductID())) {
                 if(cartItem.getProductID().getStockQuantity() < cartItem.getQuantity() + cartQuantity){
-                    return "redirect:/cart?lowquantity";
+                    model.addAttribute("lowquantity", true);
+                    return "cart";
                 }
                 cartItem.setQuantity(cartItem.getQuantity() + cartQuantity);
                 createNewItem = false;
@@ -74,7 +66,8 @@ public class CartController {
         }
         if (createNewItem) {
             if(product.getStockQuantity() < cartQuantity){
-                return "redirect:/cart?lowquantity";
+                model.addAttribute("lowquantity", true);
+                return "cart";
             }
             CartItem newCartItem = new CartItem();
             newCartItem.setUserTableID(user);
@@ -83,35 +76,43 @@ public class CartController {
             allCartItems.add(newCartItem);
         }
         cartItemService.saveAll(allCartItems);
-        return "redirect:/cart";
+
+        addToModelAllAttributes(model);
+        return "cart";
     }
 
     @DeleteMapping
-    public String deleteCartItem(@RequestParam("cartItemID") Long cartItemID) {
+    public String deleteCartItem(@RequestParam("cartItemID") Long cartItemID, Model model) {
         cartItemService.deleteById(cartItemID);
-        return "redirect:/cart";
+        addToModelAllAttributes(model);
+        return "cart";
     }
 
     @PutMapping
     public String changeQuantityCartItem(@RequestParam("cartItemID") Long cartItemID,
-                                         @RequestParam("cartQuantity") Integer cartQuantity){
+                                         @RequestParam("cartQuantity") Integer cartQuantity, Model model){
+        addToModelAllAttributes(model);
         if(cartQuantity == 0){
             cartItemService.deleteById(cartItemID);
         } else {
             CartItem cartItem = cartItemService.getById(cartItemID);
             if(cartItem != null) {
                 if(cartItem.getProductID().getStockQuantity() < cartQuantity){
-                    return "redirect:/cart?lowquantity";
+                    model.addAttribute("lowquantity", true);
+                    return "cart";
                 }
                 cartItem.setQuantity(cartQuantity);
                 cartItemService.save(cartItem);
             }
         }
-        return "redirect:/cart";
+        addToModelAllAttributes(model);
+        return "cart";
     }
 
-    private void addToModelBasicAttributes(Model model) {
+    private void addToModelBasicAttributes(Model model, BigDecimal allTotal, List<CartItemDto> cartItemDtos) {
         List<Category> categories = categoryService.findAll();
+        model.addAttribute("allTotal", allTotal);
+        model.addAttribute("cartItemDtos", cartItemDtos);
         model.addAttribute("categories", categories);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
     }
@@ -122,5 +123,23 @@ public class CartController {
             cartItemDtos.add(new CartItemDto(c));
         }
         return cartItemDtos;
+    }
+
+    private BigDecimal getAllTotal(List<CartItemDto> cartItemDtos) {
+        BigDecimal allTotal = BigDecimal.ZERO;
+        for (CartItemDto c : cartItemDtos) {
+            allTotal = allTotal.add(c.getTotals());
+        }
+        allTotal = allTotal.setScale(2, RoundingMode.HALF_UP);
+        return allTotal;
+    }
+
+    private void addToModelAllAttributes(Model model) {
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserTable user = userTableService.getUserByEmail(emailUsername);
+        List<CartItem> cartItems = cartItemService.getAllItemsByUser(user);
+        List<CartItemDto> cartItemDtos = getCartItemsDtoFromCartItems(cartItems);
+        BigDecimal allTotal = getAllTotal(cartItemDtos);
+        addToModelBasicAttributes(model, allTotal, cartItemDtos);
     }
 }

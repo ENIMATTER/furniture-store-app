@@ -3,14 +3,13 @@ package com.epam.furniturestoreapp.model;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
+import lombok.Data;
+
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
 public class ProductDto {
     @Size(max = 50, message = "Product name must be less than 50")
     @NotBlank(message = "Product name is mandatory")

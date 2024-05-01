@@ -36,10 +36,7 @@ public class AdminProductsController {
     public String getProductsAdmin(Model model){
         List<Product> products = productService.getAllProducts();
         List<Category> categories = categoryService.findAll();
-        List<AdminProductsDto> productsDtos = new ArrayList<>();
-        for(Product product : products){
-            productsDtos.add(new AdminProductsDto(product));
-        }
+        List<AdminProductsDto> productsDtos = getAdminProductsDtos(products);
         model.addAttribute("productsDtos", productsDtos);
         addToModelBasicAttributes(model, categories);
         return "products-admin";
@@ -55,9 +52,13 @@ public class AdminProductsController {
 
     @PostMapping("/add")
     public String postAddProductAdmin(@Valid @ModelAttribute("productUtil") ProductDto productUtil,
-                                      BindingResult result) throws IOException {
+                                      BindingResult result, Model model) throws IOException {
+        List<Category> categories = categoryService.findAll();
+        addToModelBasicAttributes(model, categories);
+        model.addAttribute("materialMap", null);
         if (result.hasErrors()) {
-            return "redirect:/products-admin/add?fail";
+            model.addAttribute("fail", true);
+            return "products-admin-add-edit";
         }
         StringBuilder material = new StringBuilder();
         Material[] materials = productUtil.getMaterials();
@@ -81,42 +82,19 @@ public class AdminProductsController {
         product.setImage(productUtil.getImage().getBytes());
         productService.save(product);
 
-        return "redirect:/products-admin";
+        List<Product> products = productService.getAllProducts();
+        List<AdminProductsDto> productsDtos = getAdminProductsDtos(products);
+        model.addAttribute("productsDtos", productsDtos);
+
+        return "products-admin";
     }
 
     @GetMapping("/edit/{id}")
     public String getEditProductAdmin(@PathVariable Long id, Model model){
         Product product = productService.getProductById(id);
-        String[] materialsStr = product.getMaterial().split(",");
-
-        Material[] materials = new Material[materialsStr.length];
-        int i = 0;
-        for(String s : materialsStr){
-            for(Material m : MATERIAL_LIST){
-                if(s.equals(m.name())) {
-                    materials[i] = m;
-                    i++;
-                }
-            }
-        }
-
-        boolean[] checked = new boolean[MATERIAL_LIST.size()];
-        int j = 0;
-        for(Material m1 : MATERIAL_LIST){
-            for(Material m2 : materials){
-                if(m1.equals(m2)){
-                    checked[j] = true;
-                    break;
-                } else {
-                    checked[j] = false;
-                }
-            }
-            j++;
-        }
-        Map<Material, Boolean> materialMap = new LinkedHashMap<>();
-        for(int k = 0; k < MATERIAL_LIST.size(); k++){
-            materialMap.put(MATERIAL_LIST.get(k), checked[k]);
-        }
+        String[] productMaterials = product.getMaterial().split(",");
+        Material[] materials = getMaterialArrayFromStringArray(productMaterials);
+        Map<Material, Boolean> materialMap = getMaterialMapForProduct(materials);
 
         Color color = null;
         for(Color c : COLOR_MAP.keySet()){
@@ -136,11 +114,7 @@ public class AdminProductsController {
         String imageString = Base64.getEncoder().encodeToString(product.getImage());
         productUtil.setImageString(imageString);
 
-        List<Category> categories = categoryService.findAll();
-        if(product.getCategoryID() != null){
-            categories.remove(product.getCategoryID());
-            categories.add(0, product.getCategoryID());
-        }
+        List<Category> categories = getListCategoriesForProduct(product);
 
         addToModelBasicAttributes(model, categories);
         model.addAttribute("productID", id);
@@ -152,11 +126,25 @@ public class AdminProductsController {
     @PutMapping("/edit/{id}")
     public String putEditProductAdmin(@PathVariable Long id,
                                       @Valid @ModelAttribute("productUtil") ProductDto productUtil,
-                                      BindingResult result) throws IOException {
-        if (result.hasErrors()) {
-            return "redirect:/products-admin/edit/" + id + "?fail";
-        }
+                                      BindingResult result, Model model) throws IOException {
         Product product = productService.getProductById(id);
+        List<Category> categories = categoryService.findAll();
+        addToModelBasicAttributes(model, categories);
+
+        if (result.hasErrors()) {
+            categories = getListCategoriesForProduct(product);
+            String[] productMaterials = product.getMaterial().split(",");
+            Material[] materials = getMaterialArrayFromStringArray(productMaterials);
+            Map<Material, Boolean> materialMap = getMaterialMapForProduct(materials);
+
+            model.addAttribute("productID", id);
+            model.addAttribute("materialMap", materialMap);
+            model.addAttribute("productUtil", productUtil);
+            model.addAttribute("categories", categories);
+            model.addAttribute("fail", true);
+            return "products-admin-add-edit";
+        }
+
         Category category = categoryService.findByName(productUtil.getCategoryName());
         String material = Arrays.toString(productUtil.getMaterials())
                 .replace(" ", "").replace("[", "").replace("]", "");
@@ -176,15 +164,27 @@ public class AdminProductsController {
         }
 
         productService.save(product);
-        return "redirect:/products-admin";
+
+        List<Product> products = productService.getAllProducts();
+        List<AdminProductsDto> productsDtos = getAdminProductsDtos(products);
+        model.addAttribute("productsDtos", productsDtos);
+
+        return "products-admin";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProductAdmin(@PathVariable Long id){
+    public String deleteProductAdmin(@PathVariable Long id, Model model) {
+        List<Category> categories = categoryService.findAll();
+        List<Product> products = productService.getAllProducts();
+
         if(productService.existsById(id)){
             productService.deleteById(id);
         }
-        return "redirect:/products-admin";
+        List<AdminProductsDto> productsDtos = getAdminProductsDtos(products);
+        model.addAttribute("productsDtos", productsDtos);
+        addToModelBasicAttributes(model, categories);
+
+        return "products-admin";
     }
 
     private void addToModelBasicAttributes(Model model, List<Category> categories) {
@@ -193,5 +193,57 @@ public class AdminProductsController {
         model.addAttribute("colorMap", COLOR_MAP);
         model.addAttribute("materialList", MATERIAL_LIST);
         model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+    }
+
+    private List<Category> getListCategoriesForProduct(Product product){
+        List<Category> categories = categoryService.findAll();
+        if(product.getCategoryID() != null){
+            categories.remove(product.getCategoryID());
+            categories.add(0, product.getCategoryID());
+        }
+        return categories;
+    }
+
+    private Map<Material, Boolean> getMaterialMapForProduct(Material[] materials){
+        boolean[] checked = new boolean[MATERIAL_LIST.size()];
+        int j = 0;
+        for(Material m1 : MATERIAL_LIST){
+            for(Material m2 : materials){
+                if(m1.equals(m2)){
+                    checked[j] = true;
+                    break;
+                } else {
+                    checked[j] = false;
+                }
+            }
+            j++;
+        }
+        Map<Material, Boolean> materialMap = new LinkedHashMap<>();
+        for(int k = 0; k < MATERIAL_LIST.size(); k++){
+            materialMap.put(MATERIAL_LIST.get(k), checked[k]);
+        }
+        return materialMap;
+    }
+
+    private Material[] getMaterialArrayFromStringArray(String[] productMaterials){
+        Material[] materials = new Material[productMaterials.length];
+        int i = 0;
+        for(String s : productMaterials){
+            for(Material m : MATERIAL_LIST){
+                if(s.equals(m.name())) {
+                    materials[i] = m;
+                    i++;
+                }
+            }
+        }
+        return materials;
+    }
+
+    private List<AdminProductsDto> getAdminProductsDtos(List<Product> products) {
+        List<AdminProductsDto> productsDtos = new ArrayList<>();
+        for(Product product : products){
+            productsDtos.add(new AdminProductsDto(product));
+        }
+        return productsDtos;
     }
 }

@@ -26,43 +26,57 @@ public class AdminCategoryController {
 
     @GetMapping
     public String getCategoriesAdmin(Model model){
-        List<Category> categories = categoryService.findAll();
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+        addToModelBasicAttributes(model);
         return "categories-admin";
     }
 
     @PutMapping
     public String editCategoryAdmin(@Valid @ModelAttribute("categoryEdit") Category categoryEdit,
-                                    BindingResult result){
+                                    BindingResult result, Model model){
+        addToModelBasicAttributes(model);
+
         if (result.hasErrors()) {
-            return "redirect:/categories-admin?fail";
+            model.addAttribute("fail", true);
+            return "categories-admin";
         }
         if(categoryService.existByName(categoryEdit.getCategoryName())){
-            return "redirect:/categories-admin?exist";
+            model.addAttribute("exist", true);
+            return "categories-admin";
         }
         Category category = categoryService.findById(categoryEdit.getCategoryID());
         category.setCategoryName(categoryEdit.getCategoryName());
         categoryService.save(category);
-        return "redirect:/categories-admin";
+        addToModelBasicAttributes(model);
+
+        return "categories-admin";
     }
 
     @PostMapping
-    public String addCategoryAdmin(@RequestParam("categoryName") String categoryName){
+    public String addCategoryAdmin(@RequestParam("categoryName") String categoryName, Model model){
+        addToModelBasicAttributes(model);
         if(categoryService.existByName(categoryName)){
-            return "redirect:/categories-admin?exist";
+            model.addAttribute("exist", true);
+            return "categories-admin";
         }
         Category category = new Category();
         category.setCategoryName(categoryName);
         categoryService.save(category);
-        return "redirect:/categories-admin";
+        addToModelBasicAttributes(model);
+        return "categories-admin";
     }
 
     @DeleteMapping("/{id}")
-    public String deleteCategoryAdmin(@PathVariable Long id){
+    public String deleteCategoryAdmin(@PathVariable Long id, Model model){
         if(categoryService.existById(id)){
             categoryService.deleteByID(id);
         }
-        return "redirect:/categories-admin";
+        addToModelBasicAttributes(model);
+        return "categories-admin";
+    }
+
+    private void addToModelBasicAttributes(Model model) {
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
     }
 }

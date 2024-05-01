@@ -1,14 +1,12 @@
 package com.epam.furniturestoreapp.model;
 
 import com.epam.furniturestoreapp.entity.OrderItem;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Base64;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class OrderItemDto {
     private Long productID;

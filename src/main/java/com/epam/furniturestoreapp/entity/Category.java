@@ -1,19 +1,17 @@
 package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @Table(name = "category")
+@Data
+@NoArgsConstructor
 public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

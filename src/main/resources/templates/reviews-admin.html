@@ -60,9 +60,9 @@
     <section class="shoping-cart-section users-section" th:if="${#lists.size(reviews)} != 0">
         <div class="auto-container">
             <div class="row clearfix">
-                <h4 style="color: red;" th:if="${param.usererror}">User id does not exist</h4>
-                <h4 style="color: red;" th:if="${param.producterror}">Product id does not exist</h4>
-                <h4 style="color: red;" th:if="${param.fail}">Validation failed</h4>
+                <h4 style="color: red;" th:if="${usererror}">User id does not exist</h4>
+                <h4 style="color: red;" th:if="${producterror}">Product id does not exist</h4>
+                <h4 style="color: red;" th:if="${fail}">Validation failed</h4>
                 <div class="cart-column col-lg-12 col-md-12 col-sm-12">
                     <div class="inner-column">
                         <div class="cart-outer">

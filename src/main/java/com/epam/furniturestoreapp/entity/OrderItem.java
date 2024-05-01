@@ -2,15 +2,13 @@ package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @Table(name = "orderitem")
+@Data
+@NoArgsConstructor
 public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

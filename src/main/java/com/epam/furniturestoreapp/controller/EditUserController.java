@@ -36,24 +36,23 @@ public class EditUserController {
 
     @GetMapping
     public String getEditUser(Model model) {
-        List<Category> categories = categoryService.findAll();
-        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserTable user = userTableService.getUserByEmail(emailUsername);
-        model.addAttribute("user", user);
-        model.addAttribute("categories", categories);
-        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+        addToModelBasicAttributes(model);
         return "edit-user";
     }
 
     @PutMapping
     public String putEditUser(HttpServletRequest request, HttpServletResponse response,
-                              @Valid @ModelAttribute("user") EditUserDto user, BindingResult result) {
+                              @Valid @ModelAttribute("user") EditUserDto user, BindingResult result,
+                              Model model) {
+        addToModelBasicAttributes(model);
         if(result.hasErrors()){
-            return "redirect:/edit-user?fail";
+            model.addAttribute("fail", true);
+            return "edit-user";
         }
         String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         if(userTableService.existsByEmail(user.getEmail()) && !user.getEmail().equals(emailUsername)){
-            return "redirect:/edit-user?exist";
+            model.addAttribute("exist", true);
+            return "edit-user";
         }
         UserTable updatedUser = userTableService.getUserById(user.getUserTableID());
         updatedUser.setFirstname(user.getFirstname());
@@ -69,6 +68,15 @@ public class EditUserController {
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
-        return "redirect:/login";
+        return "login";
+    }
+
+    private void addToModelBasicAttributes(Model model) {
+        List<Category> categories = categoryService.findAll();
+        String emailUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserTable user = userTableService.getUserByEmail(emailUsername);
+        model.addAttribute("user", user);
+        model.addAttribute("categories", categories);
+        model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
     }
 }

@@ -2,19 +2,17 @@ package com.epam.furniturestoreapp.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @Table(name = "review")
+@Data
+@NoArgsConstructor
 public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

@@ -3,19 +3,18 @@ package com.epam.furniturestoreapp.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@Setter
-@Getter
 @Table(name = "usertable")
+@Data
+@NoArgsConstructor
 public class UserTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
