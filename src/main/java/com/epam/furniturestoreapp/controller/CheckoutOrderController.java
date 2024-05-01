@@ -56,8 +56,8 @@ public class CheckoutOrderController {
     public String checkoutAndFormOrder(@Valid @ModelAttribute("addressDto") AddressDto addressDto,
                                        @RequestParam("totalToPay") Double totalToPay, BindingResult result,
                                        Model model) {
-        addToCheckoutModelBasicAttributes(model);
         if (result.hasErrors()) {
+            addToCheckoutModelBasicAttributes(model);
             model.addAttribute("fail", true);
             return "checkout";
         }

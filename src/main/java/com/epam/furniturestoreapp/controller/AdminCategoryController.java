@@ -33,13 +33,13 @@ public class AdminCategoryController {
     @PutMapping
     public String editCategoryAdmin(@Valid @ModelAttribute("categoryEdit") Category categoryEdit,
                                     BindingResult result, Model model){
-        addToModelBasicAttributes(model);
-
         if (result.hasErrors()) {
+            addToModelBasicAttributes(model);
             model.addAttribute("fail", true);
             return "categories-admin";
         }
         if(categoryService.existByName(categoryEdit.getCategoryName())){
+            addToModelBasicAttributes(model);
             model.addAttribute("exist", true);
             return "categories-admin";
         }
@@ -53,8 +53,8 @@ public class AdminCategoryController {
 
     @PostMapping
     public String addCategoryAdmin(@RequestParam("categoryName") String categoryName, Model model){
-        addToModelBasicAttributes(model);
         if(categoryService.existByName(categoryName)){
+            addToModelBasicAttributes(model);
             model.addAttribute("exist", true);
             return "categories-admin";
         }

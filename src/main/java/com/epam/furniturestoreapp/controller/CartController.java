@@ -50,12 +50,11 @@ public class CartController {
         List<CartItem> cartItemsByUser = cartItemService.getAllItemsByUser(user);
         List<CartItem> allCartItems = cartItemService.getAll();
 
-        addToModelAllAttributes(model);
-
         boolean createNewItem = true;
         for (CartItem cartItem : cartItemsByUser) {
             if (cartItem.getProductID().getProductID().equals(product.getProductID())) {
                 if(cartItem.getProductID().getStockQuantity() < cartItem.getQuantity() + cartQuantity){
+                    addToModelAllAttributes(model);
                     model.addAttribute("lowquantity", true);
                     return "cart";
                 }
@@ -66,6 +65,7 @@ public class CartController {
         }
         if (createNewItem) {
             if(product.getStockQuantity() < cartQuantity){
+                addToModelAllAttributes(model);
                 model.addAttribute("lowquantity", true);
                 return "cart";
             }
@@ -91,13 +91,13 @@ public class CartController {
     @PutMapping
     public String changeQuantityCartItem(@RequestParam("cartItemID") Long cartItemID,
                                          @RequestParam("cartQuantity") Integer cartQuantity, Model model){
-        addToModelAllAttributes(model);
         if(cartQuantity == 0){
             cartItemService.deleteById(cartItemID);
         } else {
             CartItem cartItem = cartItemService.getById(cartItemID);
             if(cartItem != null) {
                 if(cartItem.getProductID().getStockQuantity() < cartQuantity){
+                    addToModelAllAttributes(model);
                     model.addAttribute("lowquantity", true);
                     return "cart";
                 }

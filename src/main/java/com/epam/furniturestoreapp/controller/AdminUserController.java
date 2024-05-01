@@ -1,6 +1,5 @@
 package com.epam.furniturestoreapp.controller;
 
-import com.epam.furniturestoreapp.entity.Review;
 import com.epam.furniturestoreapp.entity.UserTable;
 import com.epam.furniturestoreapp.service.UserTableService;
 import com.epam.furniturestoreapp.model.UserDto;
@@ -35,8 +34,8 @@ public class AdminUserController {
     @PostMapping
     public String addUserAdmin(@Valid @ModelAttribute("userUtil") UserDto userUtil,
                                BindingResult result, Model model) {
-        addToModelBasicAttributes(model);
         if(result.hasErrors()){
+            addToModelBasicAttributes(model);
             model.addAttribute("fail", true);
             return "users-admin";
         }
@@ -51,13 +50,14 @@ public class AdminUserController {
     @PutMapping
     public String editUserAdmin(@Valid @ModelAttribute("user") UserTable user,
                                 BindingResult result, Model model) {
-        addToModelBasicAttributes(model);
         if(result.hasErrors()){
+            addToModelBasicAttributes(model);
             model.addAttribute("fail", true);
             return "users-admin";
         }
         UserTable userTable = userTableService.getUserById(user.getUserTableID());
         if(userTableService.existsByEmail(user.getEmail()) && !userTable.getEmail().equals(user.getEmail())){
+            addToModelBasicAttributes(model);
             model.addAttribute("exist", true);
             return "users-admin";
         }

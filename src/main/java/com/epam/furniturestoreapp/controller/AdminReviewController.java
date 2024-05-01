@@ -42,16 +42,18 @@ public class AdminReviewController {
     @PutMapping
     public String editReviewAdmin(@Valid @ModelAttribute("reviewUtil") ReviewDto reviewUtil,
                                   BindingResult result, Model model){
-        addToModelBasicAttributes(model);
         if (result.hasErrors()) {
+            addToModelBasicAttributes(model);
             model.addAttribute("fail", true);
             return "reviews-admin";
         }
         if(!userTableService.existsById(reviewUtil.getUserTableID())){
+            addToModelBasicAttributes(model);
             model.addAttribute("usererror", true);
             return "reviews-admin";
         }
         if(!productService.existsById(reviewUtil.getProductID())){
+            addToModelBasicAttributes(model);
             model.addAttribute("producterror", true);
             return "reviews-admin";
         }
