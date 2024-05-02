@@ -1,7 +1,5 @@
 package com.epam.furniturestoreapp.controller;
 
-import com.epam.furniturestoreapp.entity.Category;
-import com.epam.furniturestoreapp.entity.OrderTable;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.OrderTableService;
 import org.junit.jupiter.api.Test;
@@ -12,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,53 +31,49 @@ public class AdminOrdersControllerTest {
 
     @Test
     void testGetOrdersAdmin() {
-        List<Category> categories = new ArrayList<>();
-        List<OrderTable> orders = new ArrayList<>();
-        when(categoryService.findAll()).thenReturn(categories);
-        when(orderTableService.getAll()).thenReturn(orders);
+        when(categoryService.findAll()).thenReturn(new ArrayList<>());
+        when(orderTableService.getAll()).thenReturn(new ArrayList<>());
 
-        String viewName = adminOrdersController.getOrdersAdmin(model);
+        String result = adminOrdersController.getOrdersAdmin(model);
 
-        verifyModel(categories, orders);
+        verifyModel();
 
-        assertEquals("orders-admin", viewName);
+        assertEquals("orders-admin", result);
     }
 
     @Test
     void testDeleteOrderAdmin_ExistingId() {
-        List<Category> categories = new ArrayList<>();
-        List<OrderTable> orders = new ArrayList<>();
-        when(categoryService.findAll()).thenReturn(categories);
-        when(orderTableService.getAll()).thenReturn(orders);
         Long orderId = 1L;
+
+        when(categoryService.findAll()).thenReturn(new ArrayList<>());
+        when(orderTableService.getAll()).thenReturn(new ArrayList<>());
         when(orderTableService.existById(orderId)).thenReturn(true);
 
-        String viewName = adminOrdersController.deleteOrderAdmin(orderId, model);
+        String result = adminOrdersController.deleteOrderAdmin(orderId, model);
 
         verify(orderTableService, times(1)).deleteById(orderId);
-        verifyModel(categories, orders);
+        verifyModel();
 
-        assertEquals("orders-admin", viewName);
+        assertEquals("orders-admin", result);
     }
 
     @Test
     void testDeleteOrderAdmin_NonExistingId() {
-        List<Category> categories = new ArrayList<>();
-        List<OrderTable> orders = new ArrayList<>();
         Long orderId = 1L;
+
         when(orderTableService.existById(orderId)).thenReturn(false);
 
-        String viewName = adminOrdersController.deleteOrderAdmin(orderId, model);
+        String result = adminOrdersController.deleteOrderAdmin(orderId, model);
 
         verify(orderTableService, never()).deleteById(orderId);
-        verifyModel(categories, orders);
+        verifyModel();
 
-        assertEquals("orders-admin", viewName);
+        assertEquals("orders-admin", result);
     }
 
-    private void verifyModel(List<Category> categories, List<OrderTable> orders) {
-        verify(model, times(1)).addAttribute("categories", categories);
-        verify(model, times(1)).addAttribute("orders", orders);
-        verify(model, times(1)).addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+    private void verifyModel() {
+        verify(model, times(1)).addAttribute(eq("categories"), anyList());
+        verify(model, times(1)).addAttribute("orders", new ArrayList<>());
+        verify(model, times(1)).addAttribute(eq("thAction"), eq(TH_ACTION_FOR_ALL_PRODUCTS));
     }
 }

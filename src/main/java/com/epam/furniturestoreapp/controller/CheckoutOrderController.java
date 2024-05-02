@@ -67,6 +67,7 @@ public class CheckoutOrderController {
         List<CartItem> userCartItems = cartItemService.getAllItemsByUser(user);
 
         if (totalToPay > user.getBalance()) {
+            addToCheckoutModelBasicAttributes(model);
             model.addAttribute("lowbalance", true);
             return "checkout";
         }

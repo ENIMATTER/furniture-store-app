@@ -44,7 +44,7 @@ public class ProductsController {
         Category category = categoryService.findByName(name);
         if (category == null) {
             List<Category> categories = categoryService.findAll();
-            model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
+            model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
             model.addAttribute("categories", categories);
             return "not-found";
         }
@@ -83,7 +83,7 @@ public class ProductsController {
 
         if (category == null) {
             List<Category> categories = categoryService.findAll();
-            model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
+            model.addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
             model.addAttribute("categories", categories);
             return "not-found";
         }
@@ -147,7 +147,6 @@ public class ProductsController {
         }
 
         addToModelBasicAttributes(model, shopItems, countOfAllProducts, pages, page, countOfPages, name);
-        model.addAttribute("search", search);
         model.addAttribute("thAction", TH_ACTION_FOR_PRODUCTS_BY_CATEGORY + name);
         model.addAttribute("search", search);
         model.addAttribute("from", from);

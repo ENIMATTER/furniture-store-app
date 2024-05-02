@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.UserTable;
+import com.epam.furniturestoreapp.model.AdminEditUserDto;
 import com.epam.furniturestoreapp.model.UserDto;
 import com.epam.furniturestoreapp.service.UserTableService;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import static com.epam.furniturestoreapp.StaticVariablesForTests.*;
 import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -81,7 +83,7 @@ public class AdminUserControllerTest {
     @Test
     public void testEditUserAdmin_Success() {
         List<UserTable> mockUsers = new ArrayList<>();
-        UserTable user = getTestUser();
+        AdminEditUserDto user = getTestAdminEditUserDto();
         UserTable existingUser = getTestUser();
 
         when(bindingResult.hasErrors()).thenReturn(false);
@@ -99,7 +101,7 @@ public class AdminUserControllerTest {
     @Test
     public void testEditUserAdmin_Failure() {
         List<UserTable> mockUsers = new ArrayList<>();
-        UserTable user = getTestUser();
+        AdminEditUserDto user = getTestAdminEditUserDto();
 
         when(bindingResult.hasErrors()).thenReturn(true);
 
@@ -140,25 +142,6 @@ public class AdminUserControllerTest {
         verifyModel(mockUsers);
 
         assertEquals("users-admin", viewName);
-    }
-
-    private UserTable getTestUser(){
-        UserTable user = new UserTable("firstname", "lastname", "email@text.com",
-                "userPassword", "123123123", 0.0, "roles");
-        user.setUserTableID(1L);
-        return user;
-    }
-
-    private UserDto getTestUserDto(){
-        UserDto user = new UserDto();
-        user.setFirstname("firstname");
-        user.setLastname("lastname");
-        user.setEmail("email@text.com");
-        user.setPassword("userPassword");
-        user.setPhone("123123123");
-        user.setBalance(0.0);
-        user.setRoles("roles");
-        return user;
     }
 
     private void verifyModel(List<UserTable> users) {

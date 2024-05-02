@@ -3,8 +3,6 @@ package com.epam.furniturestoreapp.controller;
 import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.entity.Product;
 import com.epam.furniturestoreapp.model.AdminProductsDto;
-import com.epam.furniturestoreapp.model.Color;
-import com.epam.furniturestoreapp.model.Material;
 import com.epam.furniturestoreapp.model.ProductDto;
 import com.epam.furniturestoreapp.service.CategoryService;
 import com.epam.furniturestoreapp.service.ProductService;
@@ -12,12 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import java.io.IOException;
 import java.util.*;
 
+import static com.epam.furniturestoreapp.StaticVariablesForTests.*;
 import static com.epam.furniturestoreapp.model.StaticVariables.*;
 import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -193,27 +191,5 @@ public class AdminProductsControllerTest {
         verify(model, times(1)).addAttribute("colorMap", COLOR_MAP);
         verify(model, times(1)).addAttribute("materialList", MATERIAL_LIST);
         verify(model, times(1)).addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
-    }
-
-    private Product getTestProduct(){
-        Product product = new Product("productName", "productDescription",
-                getTestCategory(), 100.0, 100, "dimensions", "material",
-                "color", 5.0);
-        product.setImage(new byte[1]);
-        return product;
-    }
-
-    private ProductDto getTestProductDto(){
-        ProductDto productDto = new ProductDto("productName", "productDescription",
-                100.0, 100, "dimensions", new Material[]{Material.GLASS}, Color.BLUE);
-        productDto.setImage(new MockMultipartFile("name", new byte[3]));
-        return productDto;
-    }
-
-    private Category getTestCategory(){
-        Category testCategory = new Category();
-        testCategory.setCategoryID(1L);
-        testCategory.setCategoryName("testCategory");
-        return testCategory;
     }
 }

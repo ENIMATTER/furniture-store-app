@@ -174,12 +174,12 @@ public class AdminProductsController {
 
     @DeleteMapping("/{id}")
     public String deleteProductAdmin(@PathVariable Long id, Model model) {
-        List<Category> categories = categoryService.findAll();
-        List<Product> products = productService.getAllProducts();
-
         if(productService.existsById(id)){
             productService.deleteById(id);
         }
+
+        List<Category> categories = categoryService.findAll();
+        List<Product> products = productService.getAllProducts();
         List<AdminProductsDto> productsDtos = getAdminProductsDtos(products);
         model.addAttribute("productsDtos", productsDtos);
         addToModelBasicAttributes(model, categories);

@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.epam.furniturestoreapp.StaticVariablesForTests.getTestCategory;
 import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -35,21 +36,19 @@ public class AdminCategoryControllerTest {
     @Test
     void testGetCategoriesAdmin() {
         List<Category> categories = new ArrayList<>();
+
         when(categoryService.findAll()).thenReturn(categories);
 
         String result = adminCategoryController.getCategoriesAdmin(model);
 
-        verify(model).addAttribute("categories", categories);
-        verify(model).addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
+        verifyModel();
 
         assertEquals("categories-admin", result);
     }
 
     @Test
     public void testEditCategoryAdmin_Success() {
-        Category categoryEdit = new Category();
-        categoryEdit.setCategoryID(1L);
-        categoryEdit.setCategoryName("New Category Name");
+        Category categoryEdit = getTestCategory();
 
         when(bindingResult.hasErrors()).thenReturn(false);
         when(categoryService.existByName(categoryEdit.getCategoryName())).thenReturn(false);
@@ -59,14 +58,14 @@ public class AdminCategoryControllerTest {
 
         verify(categoryService, times(1)).findById(categoryEdit.getCategoryID());
         verify(categoryService, times(1)).save(categoryEdit);
+        verifyModel();
 
         assertEquals("categories-admin", result);
     }
 
     @Test
     void testEditCategoryAdmin_Fail() {
-        Category category = new Category();
-        category.setCategoryID(1L);
+        Category category = getTestCategory();
 
         when(bindingResult.hasErrors()).thenReturn(true);
 
@@ -74,14 +73,14 @@ public class AdminCategoryControllerTest {
 
         verify(categoryService, never()).save(any(Category.class));
         verify(model, times(1)).addAttribute(eq("fail"), eq(true));
+        verifyModel();
 
         assertEquals("categories-admin", result);
     }
 
     @Test
     void testEditCategoryAdmin_CategoryExists() {
-        Category category = new Category();
-        category.setCategoryID(1L);
+        Category category = getTestCategory();
 
         when(bindingResult.hasErrors()).thenReturn(false);
         when(categoryService.existByName(category.getCategoryName())).thenReturn(true);
@@ -91,6 +90,7 @@ public class AdminCategoryControllerTest {
         verify(categoryService, never()).findById(category.getCategoryID());
         verify(categoryService, never()).save(category);
         verify(model, times(1)).addAttribute(eq("exist"), eq(true));
+        verifyModel();
 
         assertEquals("categories-admin", result);
     }
@@ -103,7 +103,8 @@ public class AdminCategoryControllerTest {
 
         String result = adminCategoryController.addCategoryAdmin(categoryName, model);
 
-        verify(categoryService).save(any(Category.class));
+        verify(categoryService, times(1)).save(any(Category.class));
+        verifyModel();
 
         assertEquals("categories-admin", result);
     }
@@ -117,6 +118,7 @@ public class AdminCategoryControllerTest {
         String result = adminCategoryController.addCategoryAdmin(categoryName, model);
 
         verify(categoryService, never()).save(any(Category.class));
+        verifyModel();
 
         assertEquals("categories-admin", result);
     }
@@ -131,7 +133,13 @@ public class AdminCategoryControllerTest {
 
         verify(categoryService, times(1)).existById(categoryIdToDelete);
         verify(categoryService, times(1)).deleteByID(categoryIdToDelete);
+        verifyModel();
 
         assertEquals("categories-admin", result);
+    }
+
+    private void verifyModel() {
+        verify(model, times(1)).addAttribute(eq("categories"), anyList());
+        verify(model, times(1)).addAttribute(eq("thAction"), eq(TH_ACTION_FOR_ALL_PRODUCTS));
     }
 }

@@ -72,6 +72,10 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "productID", referencedColumnName = "productID")
+    private List<Review> reviews;
+
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "productID", referencedColumnName = "productID")
     private List<CartItem> cartItems;
 
     public Product(String productName, String productDescription, Category categoryID, Double price,

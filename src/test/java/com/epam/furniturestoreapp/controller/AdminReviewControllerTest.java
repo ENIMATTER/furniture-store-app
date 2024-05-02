@@ -1,6 +1,5 @@
 package com.epam.furniturestoreapp.controller;
 
-import com.epam.furniturestoreapp.entity.Category;
 import com.epam.furniturestoreapp.entity.Product;
 import com.epam.furniturestoreapp.entity.Review;
 import com.epam.furniturestoreapp.entity.UserTable;
@@ -15,9 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.epam.furniturestoreapp.StaticVariablesForTests.*;
 import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -166,50 +165,5 @@ public class AdminReviewControllerTest {
     private void verifyModel(List<Review> mockReviews) {
         verify(model).addAttribute("reviews", mockReviews);
         verify(model).addAttribute("thAction", TH_ACTION_FOR_ALL_PRODUCTS);
-    }
-
-    private UserTable getTestUser(){
-        UserTable user = new UserTable("firstname", "lastname", "email@text.com", "userPassword",
-                "123123123", 0.0, "roles");
-        user.setUserTableID(1L);
-        return user;
-    }
-
-    private Product getTestProduct(){
-        Product product = new Product("productName", "productDescription",
-                getTestCategory(), 100.0, 100, "dimensions", "material",
-                "color", 5.0);
-        product.setImage(new byte[1]);
-        product.setProductID(1L);
-        return product;
-    }
-
-    private Category getTestCategory(){
-        Category testCategory = new Category();
-        testCategory.setCategoryID(1L);
-        testCategory.setCategoryName("testCategory");
-        return testCategory;
-    }
-
-    private Review getTestReview(){
-        Review review = new Review();
-        review.setReviewID(1L);
-        review.setProductID(getTestProduct());
-        review.setUserTableID(getTestUser());
-        review.setRating(5);
-        review.setReviewComment("ReviewComment");
-        review.setReviewDate(LocalDateTime.now());
-        return review;
-    }
-
-    private ReviewDto getTestReviewDto(){
-        ReviewDto reviewDto = new ReviewDto();
-        reviewDto.setReviewID(1L);
-        reviewDto.setProductID(1L);
-        reviewDto.setUserTableID(1L);
-        reviewDto.setRating(5);
-        reviewDto.setReviewComment("ReviewComment");
-        reviewDto.setReviewDate(LocalDateTime.now());
-        return reviewDto;
     }
 }

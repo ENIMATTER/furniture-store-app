@@ -1,6 +1,7 @@
 package com.epam.furniturestoreapp.controller;
 
 import com.epam.furniturestoreapp.entity.UserTable;
+import com.epam.furniturestoreapp.model.AdminEditUserDto;
 import com.epam.furniturestoreapp.service.UserTableService;
 import com.epam.furniturestoreapp.model.UserDto;
 import jakarta.validation.Valid;
@@ -48,7 +49,7 @@ public class AdminUserController {
     }
 
     @PutMapping
-    public String editUserAdmin(@Valid @ModelAttribute("user") UserTable user,
+    public String editUserAdmin(@Valid @ModelAttribute("user") AdminEditUserDto user,
                                 BindingResult result, Model model) {
         if(result.hasErrors()){
             addToModelBasicAttributes(model);
@@ -67,7 +68,7 @@ public class AdminUserController {
         userTable.setPhoneNumber(user.getPhoneNumber());
         userTable.setBalance(user.getBalance());
         userTable.setRoles(user.getRoles());
-        if (!user.getUserPassword().isBlank()) {
+        if (user.getUserPassword() != null && !user.getUserPassword().isBlank()) {
             String codedPassword = new BCryptPasswordEncoder().encode(user.getUserPassword());
             userTable.setUserPassword(codedPassword);
         }

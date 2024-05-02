@@ -17,6 +17,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import static com.epam.furniturestoreapp.StaticVariablesForTests.getTestUser;
+import static com.epam.furniturestoreapp.StaticVariablesForTests.getTestUserSignUpDto;
+import static com.epam.furniturestoreapp.model.StaticVariables.TH_ACTION_FOR_ALL_PRODUCTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -39,6 +42,9 @@ public class AccountControllerTest {
     @Mock
     private Authentication authentication;
 
+    @Mock
+    BindingResult bindingResult;
+
     @InjectMocks
     private AccountController accountController;
 
@@ -46,42 +52,36 @@ public class AccountControllerTest {
     void testGetSignup() {
         String result = accountController.getSignup(model);
 
-        verify(model, times(1)).addAttribute(eq("categories"), any());
-        verify(model, times(1)).addAttribute(eq("thAction"), any());
+        verifyModel();
 
         assertEquals("signup", result);
     }
 
     @Test
     void testPostSignup_Success() {
-        UserSignUpDto userSignUpDto = new UserSignUpDto();
-        userSignUpDto.setEmail("test@example.com");
-        userSignUpDto.setUserPassword("password");
-        userSignUpDto.setUserPasswordAgain("password");
+        UserSignUpDto userSignUpDto = getTestUserSignUpDto();
 
-        BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
 
         String result = accountController.postSignup(userSignUpDto, bindingResult, model);
 
         verify(userTableService, times(1)).addUser(any(UserTable.class));
-        verify(model, times(1)).addAttribute(eq("categories"), any());
-        verify(model, times(1)).addAttribute(eq("thAction"), any());
+        verifyModel();
 
         assertEquals("login", result);
     }
 
     @Test
     void testPostSignup_FailValidation() {
-        UserSignUpDto userSignUpDto = new UserSignUpDto();
+        UserSignUpDto userSignUpDto = getTestUserSignUpDto();
 
-        BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
 
         String result = accountController.postSignup(userSignUpDto, bindingResult, model);
 
         verify(userTableService, never()).addUser(any(UserTable.class));
         verify(model, times(1)).addAttribute(eq("fail"), eq(true));
+        verifyModel();
 
         assertEquals("signup", result);
     }
@@ -90,8 +90,7 @@ public class AccountControllerTest {
     void testGetLogin() {
         String result = accountController.getLogin(model);
 
-        verify(model, times(1)).addAttribute(eq("categories"), any());
-        verify(model, times(1)).addAttribute(eq("thAction"), any());
+        verifyModel();
 
         assertEquals("login", result);
     }
@@ -107,27 +106,25 @@ public class AccountControllerTest {
 
         String result = accountController.customLogout(request, response, model);
 
-        verify(securityContext).setAuthentication(null);
+        verify(securityContext, times(1)).setAuthentication(null);
+        verifyModel();
 
         assertEquals("login", result);
     }
 
     @Test
     void testAccount() {
-        when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
+        UserTable user = getTestUser();
 
-        when(authentication.getName()).thenReturn("testUser");
-
-        UserTable user = new UserTable();
-        user.setBalance(0.0);
         when(userTableService.getUserByEmail(anyString())).thenReturn(user);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getName()).thenReturn("testUser");
 
         String result = accountController.account(model);
 
         verify(model, times(1)).addAttribute(eq("balance"), anyDouble());
-        verify(model, times(1)).addAttribute(eq("categories"), any());
-        verify(model, times(1)).addAttribute(eq("thAction"), any());
+        verifyModel();
 
         assertEquals("account", result);
     }
@@ -136,20 +133,19 @@ public class AccountControllerTest {
     void testDeleteAccount() {
         SecurityContextHolder.setContext(securityContext);
 
-        String emailUsername = "test@example.com";
-        UserTable user = new UserTable();
-        user.setEmail(emailUsername);
+        UserTable user = getTestUser();
 
         when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn(emailUsername);
-        when(userTableService.getUserByEmail(emailUsername)).thenReturn(user);
+        when(authentication.getName()).thenReturn(user.getEmail());
+        when(userTableService.getUserByEmail(user.getEmail())).thenReturn(user);
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         String result = accountController.deleteAccount(request, response, model);
 
-        verify(userTableService).deleteUser(user);
+        verify(userTableService, times(1)).deleteUser(user);
+        verifyModel();
 
         assertEquals("index", result);
     }
@@ -159,43 +155,44 @@ public class AccountControllerTest {
         String result = accountController.getTopUp(model);
 
         verify(model, times(1)).addAttribute(eq("min"), anyString());
-        verify(model, times(1)).addAttribute(eq("categories"), any());
-        verify(model, times(1)).addAttribute(eq("thAction"), any());
+        verifyModel();
 
         assertEquals("top-up", result);
     }
 
     @Test
     void testPostTopUp_Success() {
-        when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
+        UserTable user = getTestUser();
 
-        when(authentication.getName()).thenReturn("testUser");
-
-        UserTable user = new UserTable();
-        user.setBalance(0.0);
         when(userTableService.getUserByEmail(anyString())).thenReturn(user);
+        when(authentication.getName()).thenReturn("testUser");
+        when(securityContext.getAuthentication()).thenReturn(authentication);
 
-        String result = accountController.postTopUp(100.0, model, new CardDto(), mock(BindingResult.class));
+        String result = accountController.postTopUp(100.0, model, new CardDto(), bindingResult);
 
         verify(userTableService, times(1)).editUser(any(UserTable.class));
         verify(model, times(1)).addAttribute(eq("balance"), anyDouble());
-        verify(model, times(1)).addAttribute(eq("categories"), any());
+        verifyModel();
 
         assertEquals("account", result);
     }
 
     @Test
     void testPostTopUp_FailValidation() {
-        Model model = mock(Model.class);
-        BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
 
         String result = accountController.postTopUp(100.0, model, new CardDto(), bindingResult);
 
         verify(userTableService, never()).editUser(any(UserTable.class));
         verify(model, times(1)).addAttribute(eq("fail"), eq(true));
+        verifyModel();
 
         assertEquals("top-up", result);
+    }
+
+    private void verifyModel() {
+        verify(model, times(1)).addAttribute(eq("categories"), anyList());
+        verify(model, times(1)).addAttribute(eq("thAction"), eq(TH_ACTION_FOR_ALL_PRODUCTS));
     }
 }
