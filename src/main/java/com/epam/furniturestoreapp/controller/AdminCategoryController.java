@@ -53,6 +53,11 @@ public class AdminCategoryController {
 
     @PostMapping
     public String addCategoryAdmin(@RequestParam("categoryName") String categoryName, Model model){
+        if(categoryName.length() > 50){
+            addToModelBasicAttributes(model);
+            model.addAttribute("fail", true);
+            return "categories-admin";
+        }
         if(categoryService.existByName(categoryName)){
             addToModelBasicAttributes(model);
             model.addAttribute("exist", true);

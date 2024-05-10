@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -49,7 +50,7 @@ public class ProductService {
         }
         for(Product p : productList){
             String[] productMaterials = p.getMaterial().split(",");
-            if(List.of(productMaterials).containsAll(materialStrings)){
+            if(new HashSet<>(List.of(productMaterials)).containsAll(materialStrings)){
                 result.add(p);
             }
         }

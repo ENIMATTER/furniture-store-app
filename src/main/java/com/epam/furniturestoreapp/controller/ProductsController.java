@@ -27,6 +27,7 @@ public class ProductsController {
     private final CategoryService categoryService;
     private final ProductService productService;
     private final ReviewService reviewService;
+    private List<String> sortOrderList;
 
     @Autowired
     public ProductsController(CategoryService categoryService, ProductService productService,
@@ -41,6 +42,7 @@ public class ProductsController {
                                           @RequestParam(defaultValue = "1") int page,
                                           @RequestParam(defaultValue = "9") int size,
                                           Model model) {
+        sortOrderList = new ArrayList<>(FILTER_LIST);
         Category category = categoryService.findByName(name);
         if (category == null) {
             List<Category> categories = categoryService.findAll();
@@ -161,6 +163,7 @@ public class ProductsController {
     public String getProductsPage(@RequestParam(defaultValue = "1") int page,
                                   @RequestParam(defaultValue = "9") int size,
                                   Model model) {
+        sortOrderList = new ArrayList<>(FILTER_LIST);
         Page<Product> productPage = productService.getAllProductsPage(page - 1, size);
         int countOfPages = productPage.getTotalPages();
         long countOfAllProducts = productPage.getTotalElements();
@@ -288,7 +291,7 @@ public class ProductsController {
         List<Category> categories = categoryService.findAll();
 
         model.addAttribute("categories", categories);
-        model.addAttribute("filterList", FILTER_LIST);
+        model.addAttribute("filterList", sortOrderList);
         model.addAttribute("colorMap", COLOR_MAP);
         model.addAttribute("materialList", MATERIAL_LIST);
 
@@ -310,8 +313,8 @@ public class ProductsController {
             case FROM_HIGHEST_PRICE -> products.sort(Comparator.comparingDouble(Product::getPrice).reversed());
             case FROM_LOWEST_PRICE -> products.sort(Comparator.comparingDouble(Product::getPrice));
         }
-        FILTER_LIST.remove(filter);
-        FILTER_LIST.add(0, filter);
+        sortOrderList.remove(filter);
+        sortOrderList.add(0, filter);
     }
 
     private List<ShopItemDto> pageToListWithoutOutOfStockItems(Page<Product> productPage) {

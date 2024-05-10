@@ -1,7 +1,6 @@
 package com.epam.furniturestoreapp.service;
 
 import com.epam.furniturestoreapp.entity.OrderItem;
-import com.epam.furniturestoreapp.entity.OrderTable;
 import com.epam.furniturestoreapp.repo.OrderItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +20,4 @@ public class OrderItemService {
         orderItemRepository.saveAll(orderItems);
     }
 
-    public List<OrderItem> getAllByOrderTable(OrderTable orderTable) {
-        return orderItemRepository.getAllByOrderTableID(orderTable);
-    }
-
-    public void deleteAll(List<OrderItem> orderItems) {
-        orderItemRepository.deleteAll(orderItems);
-    }
 }
