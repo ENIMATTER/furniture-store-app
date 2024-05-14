@@ -35,6 +35,7 @@ public class ProductsController {
         this.categoryService = categoryService;
         this.productService = productService;
         this.reviewService = reviewService;
+        this.sortOrderList = new ArrayList<>();
     }
 
     @GetMapping("/category/{name}")
